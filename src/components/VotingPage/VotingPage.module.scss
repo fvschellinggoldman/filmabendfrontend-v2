@@ -1,0 +1,20 @@
+.ImageList{
+    width: 75%;
+}
+
+.VotingPageContainer {
+    display: flex;
+    background-color: white;
+}
+
+@media (max-width: 600px) {
+    .ImageList{
+        width: 100%;
+    }
+
+    .VotingPageContainer{
+        display: block;
+    }
+}
+
+

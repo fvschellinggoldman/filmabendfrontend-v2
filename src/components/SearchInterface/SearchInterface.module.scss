@@ -1,0 +1,9 @@
+.SearchInterfaceWrapper{
+    width: 25%;
+}
+
+@media (max-width: 600px) {
+    .SearchInterfaceWrapper{
+        width: 100%;
+    }
+}

@@ -1,0 +1,68 @@
+.VotingElementWrapper {
+    width: 100%;
+    perspective: 1000px; // Perspective for the 3D effect
+}
+
+.VotingElementWrapper:hover .ImageContainer {
+    transform: rotateY(180deg);
+  }
+
+.ImageContainer {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s; // Animation duration
+
+    .image {
+        width: 100%;// Make the image take up the full width of the container
+        height: 100%; // Maintain the aspect ratio by setting the height to 100%
+    }
+}
+
+.selected {
+    border: rgb(11, 59, 154);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5); /* Blue box shadow */
+    opacity: 0.3;
+
+  }
+
+.VotingMovieDetails {
+    transform-style: preserve-3d;
+    background-color: rgb(125, 28, 28);
+    color: white;
+    transform: rotateY(180deg);
+    width: 100%;
+    height: 100%;
+    display: 'flex';
+    justify-content: 'center';
+    align-items: 'center';
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+@media (max-width: 600px) {
+    .ImageContainer {
+
+        .image {
+            width: 60%;// Make the image take up the full width of the container
+            float: left
+        }
+    }
+
+    .VotingMovieDetails{
+        position: relative;
+        transform: none;
+        float: right;
+        width: 40%;
+    }
+
+    .VotingElementWrapper:hover .ImageContainer {
+        transform: none;
+    }
+
+    .ItemBarContainer {
+        display: none;
+    }
+}
