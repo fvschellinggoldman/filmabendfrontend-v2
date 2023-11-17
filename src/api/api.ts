@@ -1,28 +1,22 @@
+//const baseUrl = "https://filmabend-backend.fly.dev";
+const baseUrl = "";
+
 export async function postRequest<T>(
     url: string,
-    params: Record<any, any>
+    data: any
   ): Promise<T> {
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("bearerToken")}`,
-        },
-        body: JSON.stringify(params),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      const responseData: T = await response.json();
-      return responseData;
-    } catch (error) {
-      console.error("Error:", error);
-      throw error;
-    }
+
+    const options = {
+      method: "POST", // Specify the HTTP method (GET, POST, PATCH, DELETE, etc.)
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("bearerToken")}`,
+      },
+      body: JSON.stringify(data),
+
+  };
+  return fetch(`${baseUrl}${url}`, options).then((res) => res.json());
 }
   
 export async function postFile<T>(
@@ -34,10 +28,10 @@ export async function postFile<T>(
         headers: {
             Authorization: `Bearer ${localStorage.getItem("bearerToken")}`,
           },
-        body: data
+        body: data,
     };
     
-    return fetch(url, options).then((res) => res.json());
+    return fetch(`${baseUrl}${url}`, options).then((res) => res.json());
 }
 
 export async function getRequest<T>(
@@ -62,5 +56,5 @@ const options = {
     },
 };
 
-return fetch(url, options).then((res) => res.json());
+return fetch(`${baseUrl}${url}`, options).then((res) => res.json());
 }

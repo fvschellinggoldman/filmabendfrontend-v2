@@ -20,7 +20,7 @@ const SearchResult: FC<SearchResultProps> = ({ searchResult, eventId }) => {
       <ListItemButton>
         <ListItemText
           primary={searchResult.title}
-          secondary={searchResult.releaseDate.toString()}
+          secondary={searchResult.releaseDate?.toString()}
         />
         <ListItemIcon
           onClick={handleAddMovie}

@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthProvider/AuthProvider";
+import { useFetchUser } from "../../api/users/Users";
 
 const pages = ["Home", "Archive", "Statistics"];
 const settings = ["Profile", "Admin", "Logout"];
@@ -26,6 +27,7 @@ const Navbar: FC<NavbarProps> = () => {
   let navigate = useNavigate();
 
   const { isLoggedIn } = useAuth();
+  const { user } = useFetchUser();
 
   if (!isLoggedIn) {
     // Redirect to the login page if the user is not logged in
@@ -105,7 +107,10 @@ const Navbar: FC<NavbarProps> = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt={user?.displayName}
+                  src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${user?.profilePicturePath}`}
+                />
               </IconButton>
             </Tooltip>
             <Menu

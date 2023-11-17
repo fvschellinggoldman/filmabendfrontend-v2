@@ -13,12 +13,24 @@ import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import InfoIcon from "@mui/icons-material/Info";
 import { Movie } from "../../types/movie";
+import { postRequest } from "../../api/api";
+import { mutate } from "swr";
 
 interface VotingMovieDetailsProps {
   movie: Movie;
 }
 
 const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({ movie }) => {
+  const handleRatingChange = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    postRequest(`/api/movie/${movie.id}/modify_rating_state`, {
+      rateable: movie.rateable,
+    });
+    mutate("/api/event");
+    event.stopPropagation();
+  };
+
   return (
     <div>
       <Table>
@@ -30,16 +42,24 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({ movie }) => {
         </TableBody>
       </Table>
       <Toolbar className={styles.OverlayToolbar}>
-        {movie.ratingLocked ? (
-          <Tooltip title="Unlock Rating">
-            <IconButton color="inherit" aria-label="unlock rating">
-              <LockOpenIcon></LockOpenIcon>
+        {movie.rateable ? (
+          <Tooltip title="Lock Rating">
+            <IconButton
+              onClick={handleRatingChange}
+              color="inherit"
+              aria-label="lock rating"
+            >
+              <LockIcon></LockIcon>
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="Lock Rating">
-            <IconButton color="inherit" aria-label="lock rating">
-              <LockIcon></LockIcon>
+          <Tooltip title="Unlock Rating">
+            <IconButton
+              onClick={handleRatingChange}
+              color="inherit"
+              aria-label="unlock rating"
+            >
+              <LockOpenIcon></LockOpenIcon>
             </IconButton>
           </Tooltip>
         )}

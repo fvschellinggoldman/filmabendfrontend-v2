@@ -1,8 +1,7 @@
 import React, { FC } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { mutate } from "swr";
-import { postFile, postRequest } from "../../api/api";
-import styles from "./EventCreationModal.module.scss";
+import { postFile } from "../../api/api";
 
 type IEventCreationFormInput = {
   name: string;

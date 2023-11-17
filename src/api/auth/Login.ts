@@ -1,3 +1,6 @@
+//const baseUrl = "https://filmabend-backend.fly.dev";
+const baseUrl = "";
+
 export async function loginRequest<T>(
     url: string,
     params: Record<any, any>
@@ -12,7 +15,7 @@ export async function loginRequest<T>(
             .join("&")
         : null;
   
-      const response = await fetch(url, {
+      const response = await fetch(`${baseUrl}${url}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",

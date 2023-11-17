@@ -6,32 +6,66 @@ import {
   RadioGroup,
 } from "@mui/material";
 import React, { FC } from "react";
+import { Controller, FieldValues, useForm } from "react-hook-form";
+import { postRequest } from "../../api/api";
+import { RatingQueueElement } from "../../types/rating";
 import styles from "./RatingInterface.module.scss";
 
-interface RatingInterfaceProps {}
+type IRatingFormInput = {
+  rating: number;
+};
 
-const RatingInterface: FC<RatingInterfaceProps> = () => {
+interface RatingInterfaceProps {
+  ratingQueueElement: RatingQueueElement;
+}
+
+const RatingInterface: FC<RatingInterfaceProps> = ({ ratingQueueElement }) => {
   const formControlLabels = Array.from({ length: 10 }, (_, index) => (
     <FormControlLabel
-      value={index}
-      control={<Radio />}
-      label={index}
+      value={index + 1}
+      control={<Radio color="secondary" />}
+      label={index + 1}
       key={index}
     />
   ));
 
+  const { control, handleSubmit } = useForm<IRatingFormInput>();
+
+  const onSubmit = async (data: IRatingFormInput) => {
+    const { rating } = data;
+    await postRequest(`/api/movie/${ratingQueueElement.movie.id}/rate`, {
+      rating,
+    });
+  };
+
   return (
     <div className={styles.RatingInterface}>
-      <FormControl>
-        <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby="demo-radio-buttons-group-label"
-          name="radio-buttons-group"
-        >
-          {formControlLabels}
-        </RadioGroup>
-      </FormControl>
+      {ratingQueueElement.currentUserHasRated ? (
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.RatingForm}>
+          <FormControl>
+            <FormLabel id="demo-radio-buttons-group-label" color="secondary">
+              Rating for {ratingQueueElement.movie.name}
+            </FormLabel>
+            <Controller
+              name="rating"
+              control={control}
+              render={({ field }: { field: FieldValues["rating"] }) => (
+                <RadioGroup
+                  row
+                  {...field}
+                  aria-labelledby="demo-radio-buttons-group-label"
+                  name="radio-buttons-group"
+                >
+                  {formControlLabels}
+                </RadioGroup>
+              )}
+            />
+          </FormControl>
+          <input type="submit" className={styles.RatingSubmitButton} />
+        </form>
+      ) : (
+        <p>Waiting for results to be tallied.</p>
+      )}
     </div>
   );
 };

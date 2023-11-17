@@ -4,16 +4,20 @@ import styles from "./VotingElement.module.scss";
 import VotingMovieDetails from "../VotingMovieDetails/VotingMovieDetails";
 import cn from "classnames";
 import { Movie } from "../../types/movie";
+import { postRequest } from "../../api/api";
 
 interface VotingElementProps {
   movie: Movie;
 }
 
 const VotingElement: FC<VotingElementProps> = ({ movie }) => {
-  const [selected, setSelected] = useState(false);
+  const [selected, setSelected] = useState(movie.votedForByCurrentUser);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     setSelected(!selected);
+    await postRequest(`/api/movie/${movie.id}/modify_voting_state`, {
+      vote: !selected,
+    });
   };
 
   return (
@@ -27,7 +31,7 @@ const VotingElement: FC<VotingElementProps> = ({ movie }) => {
         <div className={styles.ImageContainer}>
           <img
             className={styles.image}
-            src={movie.posterPath}
+            src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.posterPath}`}
             alt="Movie poster"
             loading="lazy"
           ></img>

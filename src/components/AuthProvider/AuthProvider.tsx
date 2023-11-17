@@ -1,5 +1,6 @@
 // AuthContext.tsx
 import { createContext, useContext, useState, ReactNode } from "react";
+import { jwtDecode } from "jwt-decode";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -14,7 +15,18 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    const storedToken = localStorage.getItem("bearerToken");
+    if (storedToken) {
+      try {
+        const { exp } = jwtDecode(storedToken);
+        return exp ? exp > Math.floor(Date.now() / 1000) : false;
+      } catch (error) {
+        console.error("Error decoding the token:", error);
+      }
+    }
+    return false; // Token is expired or couldn't be decoded
+  });
 
   const login = (access_token: string) => {
     localStorage.setItem("bearerToken", access_token);

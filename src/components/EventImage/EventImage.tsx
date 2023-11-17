@@ -5,14 +5,17 @@ import { IconButton, Toolbar, Tooltip } from "@mui/material";
 import { Event } from "../../types/event";
 import { AddCircle } from "@mui/icons-material";
 import EventCreationModal from "../EventCreationModal/EventCreationModal";
+import { postRequest } from "../../api/api";
+import { mutate } from "swr";
 
 interface EventImageProps {
-  event?: Event;
+  event: Event;
 }
 
 const EventImage: FC<EventImageProps> = ({ event }) => {
-  const closeVoting = () => {
-    console.log("Not implemented");
+  const closeVoting = async () => {
+    await postRequest(`/api/event/${event.id}`, {});
+    mutate("/api/event/");
   };
 
   const [showEventCreationModal, setShowEventCreationModal] = useState(false);
@@ -21,7 +24,12 @@ const EventImage: FC<EventImageProps> = ({ event }) => {
     <>
       {showEventCreationModal && <EventCreationModal></EventCreationModal>}
       <div className={styles.EventImageContainer}>
-        <img src={event?.imagePath} width="100%" height={200} alt="Event"></img>
+        <img
+          src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${event?.imageUrl}`}
+          width="100%"
+          height={200}
+          alt="Event"
+        ></img>
         <div className={styles.OverlayText}>{event?.name}</div>
         <Toolbar className={styles.OverlayToolbar}>
           <Tooltip title="Close Voting">

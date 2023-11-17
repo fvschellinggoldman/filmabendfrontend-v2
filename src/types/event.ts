@@ -2,7 +2,7 @@ import { Movie } from "./movie"
 
 export type Event = { 
     name: string
-    imagePath: string
+    imageUrl: string
     id: number
     movies: Movie[]
 }

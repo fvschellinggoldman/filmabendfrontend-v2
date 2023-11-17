@@ -6,9 +6,10 @@ import styles from "./SearchResults.module.scss";
 
 interface SearchResultsProps {
   searchResults: MovieSearchResult[];
+  eventId: number;
 }
 
-const SearchResults: FC<SearchResultsProps> = ({ searchResults }) => {
+const SearchResults: FC<SearchResultsProps> = ({ searchResults, eventId }) => {
   return (
     <div className={styles.SearchResults}>
       <List>
@@ -16,7 +17,7 @@ const SearchResults: FC<SearchResultsProps> = ({ searchResults }) => {
           <ListItem key={searchResult.title}>
             <SearchResult
               searchResult={searchResult}
-              eventId={5}
+              eventId={eventId}
             ></SearchResult>
           </ListItem>
         ))}

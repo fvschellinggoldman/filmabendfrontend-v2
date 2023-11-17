@@ -8,6 +8,9 @@ import { useAuth } from "../AuthProvider/AuthProvider";
 import { Navigate } from "react-router-dom";
 import RatingInterface from "../RatingInterface/RatingInterface";
 import { useEvent } from "../../api/events/Events";
+import { useFetchRatingQueue } from "../../api/movies/RatingQueue";
+import RatingResult from "../RatingResult/RatingResult";
+import { RatingState } from "../../types/rating";
 
 interface VotingPageProps {}
 
@@ -15,6 +18,7 @@ const VotingPage: FC<VotingPageProps> = () => {
   const { isLoggedIn } = useAuth();
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const { event } = useEvent();
+  const { ratingQueue } = useFetchRatingQueue();
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,6 +35,9 @@ const VotingPage: FC<VotingPageProps> = () => {
     // Redirect to the login page if the user is not logged in
     return <Navigate to="/login" />;
   }
+  if (!event) {
+    return <Navigate to="/login" />;
+  }
 
   const columnAmount = screenWidth <= 600 ? 1 : 3;
   const movies = event ? event.movies : [];
@@ -38,17 +45,23 @@ const VotingPage: FC<VotingPageProps> = () => {
   return (
     <div>
       <EventImage event={event}></EventImage>
+      {ratingQueue.map((ratingQueueElement, index) =>
+        ratingQueueElement.state === RatingState.OPEN ? (
+          <RatingInterface
+            ratingQueueElement={ratingQueueElement}
+          ></RatingInterface>
+        ) : (
+          <RatingResult ratingQueueElement={ratingQueueElement} />
+        )
+      )}
       <div className={styles.VotingPageContainer}>
-        {movies.map((movie, index) =>
-          movie.ratingLocked ? <RatingInterface></RatingInterface> : null
-        )}
         <ImageList className={styles.ImageList} cols={columnAmount}>
           {movies.map((movie) => (
             <VotingElement movie={movie} key={movie.id}></VotingElement>
           ))}
         </ImageList>
         <Divider orientation="vertical" flexItem={true}></Divider>
-        <SearchInterface></SearchInterface>
+        <SearchInterface eventId={event.id}></SearchInterface>
       </div>
     </div>
   );

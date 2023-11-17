@@ -1,0 +1,20 @@
+# fly.toml app configuration file generated for filmabend on 2023-11-13T22:17:29+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "filmabend"
+primary_region = "ams"
+swap_size_mb = 1024
+
+[env]
+  PORT = "80"
+  REACT_APP_BASE_URL = "https://filmabend-backend.fly.dev/"
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
