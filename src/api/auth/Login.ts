@@ -1,5 +1,4 @@
-//const baseUrl = "https://filmabend-backend.fly.dev";
-const baseUrl = "";
+const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL || '';
 
 export async function loginRequest<T>(
     url: string,
