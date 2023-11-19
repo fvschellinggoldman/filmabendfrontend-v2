@@ -15,7 +15,7 @@ interface EventImageProps {
 const EventImage: FC<EventImageProps> = ({ event }) => {
   const closeVoting = async () => {
     await postRequest(`/api/event/${event.id}`, {});
-    mutate("/api/event/");
+    mutate("/api/event");
   };
 
   const [showEventCreationModal, setShowEventCreationModal] = useState(false);

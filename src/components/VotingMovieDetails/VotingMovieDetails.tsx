@@ -36,7 +36,6 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({ movie }) => {
       <Table>
         <TableBody>
           <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-            <TableCell>Name:</TableCell>
             <TableCell>{movie.name}</TableCell>
           </TableRow>
         </TableBody>

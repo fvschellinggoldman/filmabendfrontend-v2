@@ -5,8 +5,9 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import React, { FC } from "react";
-import { Controller, FieldValues, useForm } from "react-hook-form";
+import React, { FC, useState } from "react";
+import { Controller, FieldValues, set, useForm } from "react-hook-form";
+import { mutate } from "swr";
 import { postRequest } from "../../api/api";
 import { RatingQueueElement } from "../../types/rating";
 import styles from "./RatingInterface.module.scss";
@@ -29,10 +30,15 @@ const RatingInterface: FC<RatingInterfaceProps> = ({ ratingQueueElement }) => {
     />
   ));
 
+  const [userHasRated, setUserHasRated] = useState<boolean>(
+    ratingQueueElement.currentUserHasRated
+  );
+
   const { control, handleSubmit } = useForm<IRatingFormInput>();
 
   const onSubmit = async (data: IRatingFormInput) => {
     const { rating } = data;
+    setUserHasRated(true);
     await postRequest(`/api/movie/${ratingQueueElement.movie.id}/rate`, {
       rating,
     });
@@ -40,7 +46,7 @@ const RatingInterface: FC<RatingInterfaceProps> = ({ ratingQueueElement }) => {
 
   return (
     <div className={styles.RatingInterface}>
-      {ratingQueueElement.currentUserHasRated ? (
+      {!userHasRated ? (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.RatingForm}>
           <FormControl>
             <FormLabel id="demo-radio-buttons-group-label" color="secondary">
