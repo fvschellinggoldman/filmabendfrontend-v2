@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Login from "./components/Login/Login";
 import { AuthProvider } from "./components/AuthProvider/AuthProvider";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Toaster } from "sonner";
 
 // Create a custom theme
 const theme = createTheme({
@@ -18,6 +19,7 @@ const theme = createTheme({
 function App() {
   return (
     <AuthProvider>
+      <Toaster position="bottom-right" />
       <ThemeProvider theme={theme}>
         <div className="App">
           <BrowserRouter>

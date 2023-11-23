@@ -1,34 +1,31 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import styles from "./SearchBar.module.scss";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton } from "@mui/material";
 import { MovieSearchResult } from "../../types/movie";
 import { getRequest } from "../../api/api";
+import { useDebouncedCallback } from "use-debounce";
 
 interface SearchBarProps {
   onSearch: (searchResults: MovieSearchResult[]) => void;
 }
 
 const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleSearch = async () => {
+  const handleSearch = async (value: string) => {
     // search using input
     const searchResult: MovieSearchResult[] = await getRequest("/api/search", {
-      search_string: searchQuery,
+      search_string: value,
     });
     onSearch(searchResult);
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      handleSearch();
-    }
-  };
+  const debounced = useDebouncedCallback((value) => {
+    handleSearch(value);
+  }, 1000);
 
   const handleSearchChange = (event: { target: { value: any } }) => {
-    setSearchQuery(event.target.value);
+    debounced(event.target.value);
   };
 
   return (
@@ -37,8 +34,6 @@ const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
         fullWidth
         variant="outlined"
         placeholder="Search..."
-        value={searchQuery}
-        onKeyPress={handleKeyPress}
         onChange={handleSearchChange}
         InputProps={{
           startAdornment: (

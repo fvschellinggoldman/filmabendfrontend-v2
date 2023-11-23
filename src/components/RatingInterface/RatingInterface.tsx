@@ -6,8 +6,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 import React, { FC, useState } from "react";
-import { Controller, FieldValues, set, useForm } from "react-hook-form";
-import { mutate } from "swr";
+import { Controller, FieldValues, useForm } from "react-hook-form";
 import { postRequest } from "../../api/api";
 import { RatingQueueElement } from "../../types/rating";
 import styles from "./RatingInterface.module.scss";

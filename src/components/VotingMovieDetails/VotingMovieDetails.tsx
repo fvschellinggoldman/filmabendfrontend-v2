@@ -15,6 +15,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import { Movie } from "../../types/movie";
 import { postRequest } from "../../api/api";
 import { mutate } from "swr";
+import { toast } from "sonner";
 
 interface VotingMovieDetailsProps {
   movie: Movie;
@@ -24,6 +25,8 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({ movie }) => {
   const handleRatingChange = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
+    const ratingState = movie.rateable ? "closed" : "opened";
+    toast.success(`${movie.name} has been ${ratingState} for rating!`);
     postRequest(`/api/movie/${movie.id}/modify_rating_state`, {
       rateable: movie.rateable,
     });
@@ -37,6 +40,11 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({ movie }) => {
         <TableBody>
           <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
             <TableCell>{movie.name}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className={styles.cursiveFont}>
+              {movie.genres.join(", ")}
+            </TableCell>
           </TableRow>
         </TableBody>
       </Table>

@@ -41,6 +41,9 @@ const VotingPage: FC<VotingPageProps> = () => {
 
   const columnAmount = screenWidth <= 600 ? 1 : 3;
   const movies = event ? event.movies : [];
+  if (event && event.closed) {
+    movies.sort((a, b) => b.votes.length - a.votes.length);
+  }
 
   return (
     <div>
@@ -48,6 +51,7 @@ const VotingPage: FC<VotingPageProps> = () => {
       {ratingQueue.map((ratingQueueElement, index) =>
         ratingQueueElement.state === RatingState.OPEN ? (
           <RatingInterface
+            key={`Rating${ratingQueueElement.movie.id}`}
             ratingQueueElement={ratingQueueElement}
           ></RatingInterface>
         ) : (

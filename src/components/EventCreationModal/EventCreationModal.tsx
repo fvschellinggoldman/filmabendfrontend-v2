@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { useForm } from "react-hook-form";
 import { mutate } from "swr";
 import { postFile } from "../../api/api";
+import { toast } from "sonner";
 
 type IEventCreationFormInput = {
   name: string;
@@ -19,7 +20,7 @@ const EventCreationModal: FC<EventCreationModalProps> = () => {
     formData.append("event_image", data.eventImage[0]);
     formData.append("name", data.name);
     formData.append("date", data.date.toString());
-
+    toast.success(`Event ${data.name} has been created!`);
     await postFile("/api/event", formData);
     mutate("/api/event");
   };

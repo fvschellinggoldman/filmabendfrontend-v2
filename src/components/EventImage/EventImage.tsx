@@ -7,6 +7,7 @@ import { AddCircle } from "@mui/icons-material";
 import EventCreationModal from "../EventCreationModal/EventCreationModal";
 import { postRequest } from "../../api/api";
 import { mutate } from "swr";
+import { toast } from "sonner";
 
 interface EventImageProps {
   event: Event;
@@ -14,6 +15,7 @@ interface EventImageProps {
 
 const EventImage: FC<EventImageProps> = ({ event }) => {
   const closeVoting = async () => {
+    toast.success(`${event.name} has been closed for voting!`);
     await postRequest(`/api/event/${event.id}`, {});
     mutate("/api/event");
   };
