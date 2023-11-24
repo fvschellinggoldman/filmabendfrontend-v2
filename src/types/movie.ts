@@ -7,6 +7,7 @@ export type Movie = {
     votedForByCurrentUser: boolean
     averageRating?: number
     genres: string[]
+    tmdbId: number
 }
 
 export type MovieSearchResult = {

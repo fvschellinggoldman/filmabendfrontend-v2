@@ -3,12 +3,13 @@ import { MovieSearchResult } from "../../types/movie";
 import SearchBar from "../SearchBar/SearchBar";
 import SearchResults from "../SearchResults/SearchResults";
 import styles from "./SearchInterface.module.scss";
+import { Event } from "../../types/event";
 
 interface SearchInterfaceProps {
-  eventId: number;
+  event: Event;
 }
 
-const SearchInterface: FC<SearchInterfaceProps> = ({ eventId }) => {
+const SearchInterface: FC<SearchInterfaceProps> = ({ event }) => {
   const [searchResults, setSearchResults] = useState<MovieSearchResult[]>([]);
 
   return (
@@ -16,7 +17,7 @@ const SearchInterface: FC<SearchInterfaceProps> = ({ eventId }) => {
       <SearchBar onSearch={setSearchResults}></SearchBar>
       <SearchResults
         searchResults={searchResults}
-        eventId={eventId}
+        event={event}
       ></SearchResults>
     </div>
   );

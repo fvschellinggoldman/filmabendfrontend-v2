@@ -65,7 +65,7 @@ const VotingPage: FC<VotingPageProps> = () => {
           ))}
         </ImageList>
         <Divider orientation="vertical" flexItem={true}></Divider>
-        <SearchInterface eventId={event.id}></SearchInterface>
+        <SearchInterface event={event}></SearchInterface>
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ import { Movie } from "../../types/movie";
 import { postRequest } from "../../api/api";
 import { mutate } from "swr";
 import { toast } from "sonner";
+import cn from "classnames";
 
 interface VotingMovieDetailsProps {
   movie: Movie;
@@ -38,11 +39,11 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({ movie }) => {
     <div>
       <Table>
         <TableBody>
-          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-            <TableCell>{movie.name}</TableCell>
+          <TableRow>
+            <TableCell className={styles.inheritColor}>{movie.name}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className={styles.cursiveFont}>
+            <TableCell className={cn(styles.cursiveFont, styles.inheritColor)}>
               {movie.genres.join(", ")}
             </TableCell>
           </TableRow>

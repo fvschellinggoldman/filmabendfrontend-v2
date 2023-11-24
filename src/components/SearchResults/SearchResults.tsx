@@ -3,13 +3,14 @@ import React, { FC } from "react";
 import { MovieSearchResult } from "../../types/movie";
 import SearchResult from "../SearchResult/SearchResult";
 import styles from "./SearchResults.module.scss";
+import { Event } from "../../types/event";
 
 interface SearchResultsProps {
   searchResults: MovieSearchResult[];
-  eventId: number;
+  event: Event;
 }
 
-const SearchResults: FC<SearchResultsProps> = ({ searchResults, eventId }) => {
+const SearchResults: FC<SearchResultsProps> = ({ searchResults, event }) => {
   return (
     <div className={styles.SearchResults}>
       <List>
@@ -17,7 +18,7 @@ const SearchResults: FC<SearchResultsProps> = ({ searchResults, eventId }) => {
           <ListItem key={searchResult.title}>
             <SearchResult
               searchResult={searchResult}
-              eventId={eventId}
+              event={event}
             ></SearchResult>
           </ListItem>
         ))}

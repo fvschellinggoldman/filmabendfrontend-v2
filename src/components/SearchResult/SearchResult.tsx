@@ -5,19 +5,22 @@ import { addMovie } from "../../api/movies/Movies";
 import { MovieSearchResult } from "../../types/movie";
 import styles from "./SearchResult.module.scss";
 import { toast } from "sonner";
+import { Event } from "../../types/event";
 
 interface SearchResultProps {
   searchResult: MovieSearchResult;
-  eventId: number;
+  event: Event;
 }
 
-const SearchResult: FC<SearchResultProps> = ({ searchResult, eventId }) => {
-  const [searchResultAdded, setSearchResultAdded] = useState(false);
+const SearchResult: FC<SearchResultProps> = ({ searchResult, event }) => {
+  const [searchResultAdded, setSearchResultAdded] = useState(
+    event.movies.some((movie) => movie.tmdbId === searchResult.tmdbId)
+  );
 
   const handleAddMovie = () => {
     toast.success(`${searchResult.title} has been added!`);
     setSearchResultAdded(true);
-    addMovie(searchResult, eventId);
+    addMovie(searchResult, event.id);
   };
 
   return (
