@@ -1,11 +1,9 @@
-import { Movie } from "./movie"
-
-export type RatingQueueElement = {
+export type RatingStatus = {
     state: RatingState
     breakdown: UserBasedRating[]
-    movie: Movie
     currentUserHasRated: boolean
 }
+
 
 type UserBasedRating = {
     userId: string

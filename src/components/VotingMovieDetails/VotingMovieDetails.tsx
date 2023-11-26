@@ -17,22 +17,28 @@ import { postRequest } from "../../api/api";
 import { mutate } from "swr";
 import { toast } from "sonner";
 import cn from "classnames";
+import Button from "@mui/material/Button";
 
 interface VotingMovieDetailsProps {
   movie: Movie;
+  handleClick: () => void;
+  selected: boolean;
+  eventClosed: boolean;
 }
 
-const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({ movie }) => {
-  const handleRatingChange = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
+  movie,
+  handleClick,
+  selected,
+  eventClosed,
+}) => {
+  const handleRatingChange = async () => {
     const ratingState = movie.rateable ? "closed" : "opened";
     toast.success(`${movie.name} has been ${ratingState} for rating!`);
-    postRequest(`/api/movie/${movie.id}/modify_rating_state`, {
+    await postRequest(`/api/movie/${movie.id}/modify_rating_state`, {
       rateable: movie.rateable,
     });
     mutate("/api/event");
-    event.stopPropagation();
   };
 
   return (
@@ -77,6 +83,23 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({ movie }) => {
           </IconButton>
         </Tooltip>
       </Toolbar>
+      {selected ? (
+        <Button
+          variant="contained"
+          onClick={handleClick}
+          disabled={eventClosed}
+        >
+          Remove Vote
+        </Button>
+      ) : (
+        <Button
+          variant="contained"
+          onClick={handleClick}
+          disabled={eventClosed}
+        >
+          Add Vote
+        </Button>
+      )}
     </div>
   );
 };

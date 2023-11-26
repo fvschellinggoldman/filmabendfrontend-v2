@@ -21,7 +21,6 @@ const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   const debounced = useDebouncedCallback((value) => {
-    onSearch([]);
     handleSearch(value);
   }, 1000);
 

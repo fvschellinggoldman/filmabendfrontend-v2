@@ -5,6 +5,7 @@ import VotingMovieDetails from "../VotingMovieDetails/VotingMovieDetails";
 import cn from "classnames";
 import { Movie } from "../../types/movie";
 import { postRequest } from "../../api/api";
+import RatingInterface from "../RatingInterface/RatingInterface";
 
 function getContrastTextColor(rgbColor?: number[]) {
   // If backgroundColor is undefined, provide a default value (e.g., white)
@@ -24,20 +25,27 @@ function getContrastTextColor(rgbColor?: number[]) {
 
 interface VotingElementProps {
   movie: Movie;
+  eventClosed: boolean;
 }
 
-const VotingElement: FC<VotingElementProps> = ({ movie }) => {
-  const [selected, setSelected] = useState(movie.votedForByCurrentUser);
+const VotingElement: FC<VotingElementProps> = ({ movie, eventClosed }) => {
+  const [selected, setSelected] = useState(
+    eventClosed ? false : movie.votedForByCurrentUser
+  );
   const bg = movie.moviePosterData.averageImageColors
     ? movie.moviePosterData.averageImageColors.join(",")
     : ["255,255,255"];
   const textColor = getContrastTextColor(
     movie.moviePosterData.averageImageColors
   );
+  const recentlyRated =
+    movie.ratingClosedOn &&
+    new Date().getTime() - new Date(movie.ratingClosedOn).getTime() >
+      24 * 60 * 60 * 1000;
 
-  const handleClick = async () => {
+  const handleClick = () => {
     setSelected(!selected);
-    await postRequest(`/api/movie/${movie.id}/modify_voting_state`, {
+    postRequest(`/api/movie/${movie.id}/modify_voting_state`, {
       vote: !selected,
     });
   };
@@ -47,15 +55,24 @@ const VotingElement: FC<VotingElementProps> = ({ movie }) => {
       className={cn(styles.VotingElementWrapper, {
         [styles.selected]: selected,
       })}
-      onClick={handleClick}
     >
       <ImageListItem sx={{ flexDirection: "row" }}>
         <div className={styles.ImageContainer}>
+          <div className={styles.Ribbon}>
+            {selected ? (
+              <span className={styles.SpanBox}>Voted</span>
+            ) : (
+              <span className={styles.SpanBox}>
+                Votes: {movie.votes.length.toString()}
+              </span>
+            )}
+          </div>
           <img
             className={styles.image}
             src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
             alt="Movie poster"
             loading="lazy"
+            onClick={eventClosed ? () => {} : handleClick}
           ></img>
           <div className={styles.ItemBarContainer}>
             <ImageListItemBar title={movie.name} />
@@ -67,7 +84,16 @@ const VotingElement: FC<VotingElementProps> = ({ movie }) => {
             }}
             className={styles.VotingMovieDetails}
           >
-            <VotingMovieDetails movie={movie}></VotingMovieDetails>
+            {movie.rateable || recentlyRated ? (
+              <RatingInterface movie={movie} />
+            ) : (
+              <VotingMovieDetails
+                movie={movie}
+                handleClick={handleClick}
+                selected={selected}
+                eventClosed={eventClosed}
+              ></VotingMovieDetails>
+            )}
           </div>
         </div>
       </ImageListItem>

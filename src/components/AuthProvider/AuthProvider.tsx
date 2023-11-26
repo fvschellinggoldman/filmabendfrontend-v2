@@ -1,6 +1,7 @@
 // AuthContext.tsx
 import { createContext, useContext, useState, ReactNode } from "react";
 import { jwtDecode } from "jwt-decode";
+import { redirect } from "react-router-dom";
 
 interface AuthContextType {
   isLoggedIn: boolean;

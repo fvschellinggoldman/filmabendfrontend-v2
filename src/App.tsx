@@ -27,8 +27,6 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/" element={<Navbar />}>
                 <Route path="home" element={<VotingPage />} />
-                {/* <Route path="Archive" element={<Archive />} />
-            <Route path="Ranking" element={<Ranking />} /> */}
                 <Route path="*" element={<Navigate to="home" />} />
               </Route>
             </Routes>

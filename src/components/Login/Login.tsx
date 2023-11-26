@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { loginRequest } from "../../api/auth/Login";
@@ -12,6 +12,7 @@ type ILoginFormInput = {
 
 const Login = () => {
   const { isLoggedIn, login } = useAuth();
+  const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm<ILoginFormInput>();
 
@@ -22,41 +23,47 @@ const Login = () => {
       password,
     });
 
-    tokenDetails.detail
-      ? alert(tokenDetails.detail)
-      : login(tokenDetails.access_token);
+    if (!tokenDetails.detail) {
+      login(tokenDetails.access_token);
+      navigate("/home");
+    } else {
+      alert(tokenDetails.detail);
+    }
+    // tokenDetails.detail
+    //   ? alert(tokenDetails.detail)
+    //   : login(tokenDetails.access_token);
   };
+
+  // if (isLoggedIn) {
+  //   // Redirect to the login page if the user is not logged in
+  //   return <Navigate to="/home" />;
+  // }
 
   return (
     <div className={styles.BackgroundContainer}>
       <div className={styles.LoginContainer}>
         <h2 className={styles.LoginTitle}>Login</h2>
-        {isLoggedIn ? (
-          <div>
-            <Navigate to="/home" />
-          </div>
-        ) : (
-          <form className={styles.LoginForm} onSubmit={handleSubmit(onSubmit)}>
-            <label className={styles.LoginLabel}>Username</label>
-            <input
-              className={styles.LoginInput}
-              {...register("username", { required: true })}
-              defaultValue=""
-            />
-            <label className={styles.label}>Password</label>
-            <input
-              className={styles.LoginInput}
-              {...register("password", { required: true })}
-              type="password"
-              defaultValue=""
-            />
-            <input
-              className={styles.LoginSubmitButton}
-              type="submit"
-              value="Login"
-            />
-          </form>
-        )}
+
+        <form className={styles.LoginForm} onSubmit={handleSubmit(onSubmit)}>
+          <label className={styles.LoginLabel}>Username</label>
+          <input
+            className={styles.LoginInput}
+            {...register("username", { required: true })}
+            defaultValue=""
+          />
+          <label className={styles.label}>Password</label>
+          <input
+            className={styles.LoginInput}
+            {...register("password", { required: true })}
+            type="password"
+            defaultValue=""
+          />
+          <input
+            className={styles.LoginSubmitButton}
+            type="submit"
+            value="Login"
+          />
+        </form>
       </div>
     </div>
   );

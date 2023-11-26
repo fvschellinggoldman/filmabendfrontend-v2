@@ -1,77 +1,29 @@
-import {
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
-import React, { FC, useState } from "react";
-import { Controller, FieldValues, useForm } from "react-hook-form";
-import { postRequest } from "../../api/api";
-import { RatingQueueElement } from "../../types/rating";
-import styles from "./RatingInterface.module.scss";
-
-type IRatingFormInput = {
-  rating: number;
-};
+import React, { FC } from "react";
+import { useFetchRatingStatus } from "../../api/movies/RatingQueue";
+import { Movie } from "../../types/movie";
+import { RatingState } from "../../types/rating";
+import RatingElement from "../RatingElement/RatingElement";
+import RatingResult from "../RatingResult/RatingResult";
 
 interface RatingInterfaceProps {
-  ratingQueueElement: RatingQueueElement;
+  movie: Movie;
 }
 
-const RatingInterface: FC<RatingInterfaceProps> = ({ ratingQueueElement }) => {
-  const formControlLabels = Array.from({ length: 10 }, (_, index) => (
-    <FormControlLabel
-      value={index + 1}
-      control={<Radio color="secondary" />}
-      label={index + 1}
-      key={index}
-    />
-  ));
+const RatingInterface: FC<RatingInterfaceProps> = ({ movie }) => {
+  const { ratingStatus } = useFetchRatingStatus(movie.id);
 
-  const [userHasRated, setUserHasRated] = useState<boolean>(
-    ratingQueueElement.currentUserHasRated
-  );
-
-  const { control, handleSubmit } = useForm<IRatingFormInput>();
-
-  const onSubmit = async (data: IRatingFormInput) => {
-    const { rating } = data;
-    setUserHasRated(true);
-    await postRequest(`/api/movie/${ratingQueueElement.movie.id}/rate`, {
-      rating,
-    });
-  };
+  if (!ratingStatus) {
+    return <></>;
+  }
 
   return (
-    <div className={styles.RatingInterface}>
-      {!userHasRated ? (
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.RatingForm}>
-          <FormControl>
-            <FormLabel id="demo-radio-buttons-group-label" color="secondary">
-              Rating for {ratingQueueElement.movie.name}
-            </FormLabel>
-            <Controller
-              name="rating"
-              control={control}
-              render={({ field }: { field: FieldValues["rating"] }) => (
-                <RadioGroup
-                  row
-                  {...field}
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  name="radio-buttons-group"
-                >
-                  {formControlLabels}
-                </RadioGroup>
-              )}
-            />
-          </FormControl>
-          <input type="submit" className={styles.RatingSubmitButton} />
-        </form>
+    <>
+      {ratingStatus.state === RatingState.OPEN ? (
+        <RatingElement movie={movie} ratingStatus={ratingStatus} />
       ) : (
-        <p>Waiting for results to be tallied.</p>
+        <RatingResult movie={movie} ratingStatus={ratingStatus} />
       )}
-    </div>
+    </>
   );
 };
 

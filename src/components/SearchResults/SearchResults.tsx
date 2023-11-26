@@ -15,7 +15,7 @@ const SearchResults: FC<SearchResultsProps> = ({ searchResults, event }) => {
     <div className={styles.SearchResults}>
       <List>
         {searchResults.map((searchResult) => (
-          <ListItem key={searchResult.title}>
+          <ListItem key={searchResult.tmdbId}>
             <SearchResult
               searchResult={searchResult}
               event={event}
