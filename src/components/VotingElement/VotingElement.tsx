@@ -6,6 +6,7 @@ import cn from "classnames";
 import { Movie } from "../../types/movie";
 import { postRequest } from "../../api/api";
 import RatingInterface from "../RatingInterface/RatingInterface";
+import { toast } from "sonner";
 
 function getContrastTextColor(rgbColor?: number[]) {
   // If backgroundColor is undefined, provide a default value (e.g., white)
@@ -45,6 +46,9 @@ const VotingElement: FC<VotingElementProps> = ({ movie, eventClosed }) => {
 
   const handleClick = () => {
     setSelected(!selected);
+    selected
+      ? toast.success(`You have removed your vote for ${movie.name}!`)
+      : toast.success(`You have added your vote for ${movie.name}!`);
     postRequest(`/api/movie/${movie.id}/modify_voting_state`, {
       vote: !selected,
     });
@@ -59,9 +63,10 @@ const VotingElement: FC<VotingElementProps> = ({ movie, eventClosed }) => {
       <ImageListItem sx={{ flexDirection: "row" }}>
         <div className={styles.ImageContainer}>
           <div className={styles.Ribbon}>
-            {selected ? (
+            {selected && !eventClosed && (
               <span className={styles.SpanBox}>Voted</span>
-            ) : (
+            )}
+            {eventClosed && (
               <span className={styles.SpanBox}>
                 Votes: {movie.votes.length.toString()}
               </span>

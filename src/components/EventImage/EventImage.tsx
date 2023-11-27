@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import styles from "./EventImage.module.scss";
 import LockIcon from "@mui/icons-material/Lock";
-import { IconButton, Toolbar, Tooltip } from "@mui/material";
+import { Dialog, IconButton, Toolbar, Tooltip } from "@mui/material";
 import { Event } from "../../types/event";
 import { AddCircle } from "@mui/icons-material";
 import EventCreationModal from "../EventCreationModal/EventCreationModal";
@@ -20,11 +20,18 @@ const EventImage: FC<EventImageProps> = ({ event }) => {
     mutate("/api/event");
   };
 
+  const handleClose = () => {
+    setShowEventCreationModal(false);
+  };
+
   const [showEventCreationModal, setShowEventCreationModal] = useState(false);
 
   return (
     <>
-      {showEventCreationModal && <EventCreationModal></EventCreationModal>}
+      <Dialog open={showEventCreationModal} onClose={handleClose}>
+        <EventCreationModal></EventCreationModal>
+      </Dialog>
+
       <div className={styles.EventImageContainer}>
         <img
           src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${event?.imageUrl}`}
