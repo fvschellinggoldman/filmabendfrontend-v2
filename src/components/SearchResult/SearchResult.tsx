@@ -1,7 +1,7 @@
 import { AddCircle } from "@mui/icons-material";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import React, { FC, useState } from "react";
-import { addMovie } from "../../api/movies/Movies";
+import { addSearchedMovie } from "../../api/movies/Movies";
 import { MovieSearchResult } from "../../types/movie";
 import styles from "./SearchResult.module.scss";
 import { toast } from "sonner";
@@ -20,7 +20,7 @@ const SearchResult: FC<SearchResultProps> = ({ searchResult, event }) => {
   const handleAddMovie = () => {
     toast.success(`${searchResult.title} has been added!`);
     setSearchResultAdded(true);
-    addMovie(searchResult, event.id);
+    addSearchedMovie(searchResult, event.id);
   };
 
   return (

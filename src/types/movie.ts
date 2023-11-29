@@ -18,6 +18,12 @@ export type MovieSearchResult = {
     tmdbId: number
 }
 
+export type MovieSuggestion = MovieSearchResult &
+ {
+    moviePosterData: MovieImageMetaData
+    eventId: number
+ }
+
 export type MovieImageMetaData = {
     filepath?: string
     averageImageColors?: number[]
