@@ -20,8 +20,9 @@ export type MovieSearchResult = {
 
 export type MovieSuggestion = MovieSearchResult &
  {
-    moviePosterData: MovieImageMetaData
+    moviePosterPath: string
     eventId: number
+    id: number
  }
 
 export type MovieImageMetaData = {

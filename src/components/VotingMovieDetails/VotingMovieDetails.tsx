@@ -36,7 +36,7 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
     const ratingState = movie.rateable ? "closed" : "opened";
     toast.success(`${movie.name} has been ${ratingState} for rating!`);
     await postRequest(`/api/movie/${movie.id}/modify_rating_state`, {
-      rateable: movie.rateable,
+      newRateableState: movie.rateable,
     });
     mutate("/api/event");
   };

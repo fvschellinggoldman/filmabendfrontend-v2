@@ -1,1 +1,30 @@
-.MovieSuggestion {}
+.MovieSuggestionElement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .SuggestionImage {
+    max-width: 80vw; /* Limit image size to 80% of the viewport width */
+    max-height: 80vh; /* Limit image size to 80% of the viewport height */
+    border: 2px solid #000; /* Add a border around the image */
+    box-sizing: border-box; /* Include border in the sizing */
+  }
+  
+  .TextContainer {
+    display: flex;
+      position: absolute;
+        bottom: 0.5vw;
+        left: 0;
+        right: 0;
+        background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background for better readability */
+        justify-content: center;
+        align-items: center;
+    height: 8%;
+
+
+
+  }
+

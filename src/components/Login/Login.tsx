@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { loginRequest } from "../../api/auth/Login";
@@ -11,7 +11,7 @@ type ILoginFormInput = {
 };
 
 const Login = () => {
-  const { isLoggedIn, login } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm<ILoginFormInput>();
@@ -29,15 +29,7 @@ const Login = () => {
     } else {
       alert(tokenDetails.detail);
     }
-    // tokenDetails.detail
-    //   ? alert(tokenDetails.detail)
-    //   : login(tokenDetails.access_token);
   };
-
-  // if (isLoggedIn) {
-  //   // Redirect to the login page if the user is not logged in
-  //   return <Navigate to="/home" />;
-  // }
 
   return (
     <div className={styles.BackgroundContainer}>

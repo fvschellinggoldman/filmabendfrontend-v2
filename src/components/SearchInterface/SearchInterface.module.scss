@@ -1,5 +1,26 @@
 .SearchInterfaceWrapper{
     width: 25%;
+
+    .SearchBarWrapper {
+        display: grid;
+        grid-template-columns: 5fr 1fr;
+
+        .SuggestionButton{
+            height: 56px;
+            margin: 0.7rem 0.7rem 0.7rem 0;
+            color: rgba(0,0,0,0.23);
+            border-color: rgba(0,0,0,0.23);
+            &:hover{
+                border-color: rgba(0,0,0,0.54);
+                border-width: 2px;
+                background-color: white;
+            }
+
+            span {
+                margin: 0;
+            }
+        }
+    }
 }
 
 @media (max-width: 600px) {

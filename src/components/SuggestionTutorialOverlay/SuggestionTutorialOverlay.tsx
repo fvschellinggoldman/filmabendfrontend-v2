@@ -1,30 +1,37 @@
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  TextField,
-} from "@mui/material";
+import { DialogContent } from "@mui/material";
 import React, { FC } from "react";
+import TutorialAcceptance from "../TutorialAcceptance/TutorialAcceptance";
 import styles from "./SuggestionTutorialOverlay.module.scss";
 
-interface SuggestionTutorialOverlayProps {}
+interface SuggestionTutorialOverlayProps {
+  closeDialog: () => void;
+}
 
-const SuggestionTutorialOverlay: FC<SuggestionTutorialOverlayProps> = () => {
+const SuggestionTutorialOverlay: FC<SuggestionTutorialOverlayProps> = ({
+  closeDialog,
+}) => {
   return (
-    <div className={styles.SuggestionTutorialOverlay}>
-      <img className={styles.TutorialBaseImage}></img>
-      <img className={styles.TutorialApproveImage}></img>
-      <img className={styles.TutorialDeclineImage}></img>
-      <div>Explanation here</div>
-      <FormGroup>
-        <FormControlLabel
-          control={<Checkbox defaultChecked />}
-          label="Don't show this tutorial again."
-        />
-      </FormGroup>
-      <Button>Understood!</Button>
-    </div>
+    <DialogContent className={styles.SuggestionTutorialOverlay}>
+      <div className={styles.ImageContainer}>
+        <div className={styles.ImageOverlay}>
+          <img
+            className={styles.ImageTutorial}
+            src="https://filmabend-bucket.s3.eu-central-1.amazonaws.com/posters/tt0371746.jpg"
+          ></img>
+          <i className="fa-solid fa-circle-check"></i>
+          <i className="fa-solid fa-circle-xmark"></i>
+        </div>
+      </div>
+
+      <div>
+        To add the movie to the current event, swipe <b>right</b>. <br />
+        To decline adding the movie to the current event, swipe <b>
+          left
+        </b>. <br />
+        To close the window, swipe <b>down</b>.
+      </div>
+      <TutorialAcceptance closeDialog={closeDialog}></TutorialAcceptance>
+    </DialogContent>
   );
 };
 

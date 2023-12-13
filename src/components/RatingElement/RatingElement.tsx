@@ -13,11 +13,10 @@ interface RatingElementProps {
 
 const RatingElement: FC<RatingElementProps> = ({ movie, ratingStatus }) => {
   const handleRectangleClick = (index: number) => {
-    // You can perform any action with the index here
-    toast.success(`Rated ${movie.name} with ${index + 1}`);
+    toast.success(`Rated ${movie.name} with ${index}`);
     setUserHasRated(true);
     postRequest(`/api/movie/${movie.id}/rate`, {
-      rating: (index + 1).toString(),
+      rating: index.toString(),
     });
   };
 
@@ -40,16 +39,16 @@ const RatingElement: FC<RatingElementProps> = ({ movie, ratingStatus }) => {
 
   return (
     <>
-      {!userHasRated ? (
+      {userHasRated ? (
         <p>Waiting for results to be tallied.</p>
       ) : (
         <div className={styles.RatingElement}>
           {Array.from({ length: 10 }).map((_, index) => (
             <div
-              key={index}
+              key={`${movie.id}_rating_${index}`}
               className={styles.rectangle}
               style={{ backgroundColor: colorScale[index] }}
-              onClick={() => handleRectangleClick(index)}
+              onClick={() => handleRectangleClick(10 - index)}
             >
               {10 - index}
             </div>

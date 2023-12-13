@@ -1,8 +1,8 @@
 import { mutate } from "swr";
 import { MovieSearchResult, MovieSuggestion } from "../../types/movie";
-import { postRequest } from "../api";
+import { postRequest, putRequest } from "../api";
   
-  export async function _addMovie(
+ async function _addMovie(
     movieToAdd: MovieSearchResult | MovieSuggestion,
     eventId: number
   ) {
@@ -25,23 +25,32 @@ import { postRequest } from "../api";
   }
   
   export function addSuggestedMovie(
-    suggestedMovie: MovieSuggestion,
+    suggestedMovie?: MovieSuggestion,
   ) {
-    _addMovie(
-      suggestedMovie,
-      suggestedMovie.eventId
-    )
+    if (suggestedMovie){
+      _addMovie(
+        suggestedMovie,
+        suggestedMovie.eventId
+      )
+      _updateSuggestionState(
+        suggestedMovie,
+        "ACCEPTED"
+      )
+    }
   }
 
-  // export function declineSuggestMovie(
-  //   suggestedMovie: MovieSuggestion
-  // ) {
-  //   const url = "/api/movie";
-  
-  //   postRequest(url, {
-  //     title: movieToAdd.title,
-  //     releaseDate: movieToAdd.releaseDate,
-  //     tmdbId: movieToAdd.tmdbId,
-  //     eventId: eventId,
-  //   });
-  // }
+  export function declineSuggestedMovie(
+    suggestedMovie?: MovieSuggestion
+  ) {
+    if(suggestedMovie) _updateSuggestionState(suggestedMovie, 'DECLINED')
+  }
+
+ async function _updateSuggestionState(
+    suggestedMovie: MovieSuggestion, newState: string
+  ) {
+    const url = `/api/event/${suggestedMovie.eventId}/${suggestedMovie.id}/update_suggestion_state`;
+    await putRequest(url, {
+      newState
+    });
+    mutate(`/api/event/${suggestedMovie.eventId}/suggestion`);
+  }
