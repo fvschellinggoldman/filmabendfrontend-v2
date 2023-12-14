@@ -6,19 +6,20 @@ import styles from "./SearchInterface.module.scss";
 import { Event } from "../../types/event";
 import { Button } from "@mui/material";
 import AssistantIcon from "@mui/icons-material/Assistant";
-import { useFetchUser } from "../../api/users/Users";
+import { User } from "../../types/user";
 
 interface SearchInterfaceProps {
   event: Event;
+  user: User;
   suggestionModalHandler: () => void;
 }
 
 const SearchInterface: FC<SearchInterfaceProps> = ({
   event,
+  user,
   suggestionModalHandler,
 }) => {
   const [searchResults, setSearchResults] = useState<MovieSearchResult[]>([]);
-  const { user } = useFetchUser();
   return (
     <div className={styles.SearchInterfaceWrapper}>
       <div className={styles.SearchBarWrapper}>

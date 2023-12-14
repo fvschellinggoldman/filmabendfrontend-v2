@@ -26,14 +26,8 @@ const Navbar: FC<NavbarProps> = () => {
 
   let navigate = useNavigate();
 
-  const { isLoggedIn } = useAuth();
-
   const { user } = useFetchUser();
 
-  if (!isLoggedIn) {
-    // Redirect to the login page if the user is not logged in
-    return <Navigate to="/login" /> //prettier-ignore
-  }
   const routeChange = (pageName: { page: any }) => {
     navigate(pageName.page.toLowerCase());
   };

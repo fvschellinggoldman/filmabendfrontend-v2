@@ -1,6 +1,8 @@
 // RatingElement.js
+import { Button } from "@mui/material";
 import React, { FC, useState } from "react";
 import { toast } from "sonner";
+import { mutate } from "swr";
 import { postRequest } from "../../api/api";
 import { Movie } from "../../types/movie";
 import { RatingStatus } from "../../types/rating";
@@ -9,15 +11,29 @@ import styles from "./RatingElement.module.scss";
 interface RatingElementProps {
   movie: Movie;
   ratingStatus: RatingStatus;
+  isUserAdmin: boolean;
 }
 
-const RatingElement: FC<RatingElementProps> = ({ movie, ratingStatus }) => {
+const RatingElement: FC<RatingElementProps> = ({
+  movie,
+  ratingStatus,
+  isUserAdmin,
+}) => {
   const handleRectangleClick = (index: number) => {
     toast.success(`Rated ${movie.name} with ${index}`);
     setUserHasRated(true);
     postRequest(`/api/movie/${movie.id}/rate`, {
       rating: index.toString(),
     });
+  };
+
+  const handleRatingChange = async () => {
+    const ratingState = movie.rateable ? "closed" : "opened";
+    toast.success(`${movie.name} has been ${ratingState} for rating!`);
+    await postRequest(`/api/movie/${movie.id}/modify_rating_state`, {
+      newRateableState: movie.rateable,
+    });
+    mutate("/api/event");
   };
 
   const [userHasRated, setUserHasRated] = useState<boolean>(
@@ -40,7 +56,14 @@ const RatingElement: FC<RatingElementProps> = ({ movie, ratingStatus }) => {
   return (
     <>
       {userHasRated ? (
-        <p>Waiting for results to be tallied.</p>
+        <>
+          <p>Waiting for results to be tallied.</p>
+          {isUserAdmin && (
+            <Button variant="contained" onClick={handleRatingChange}>
+              Close Rating
+            </Button>
+          )}
+        </>
       ) : (
         <div className={styles.RatingElement}>
           {Array.from({ length: 10 }).map((_, index) => (

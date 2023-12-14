@@ -3,6 +3,7 @@ export type User = {
     profilePicturePath: string
     showMobileSuggestionTutorial: boolean
     id: string;
+    moderator: boolean;
 }
 
 export type UserPreference = {

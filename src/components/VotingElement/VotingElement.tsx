@@ -27,9 +27,14 @@ function getContrastTextColor(rgbColor?: number[]) {
 interface VotingElementProps {
   movie: Movie;
   eventClosed: boolean;
+  isUserAdmin: boolean;
 }
 
-const VotingElement: FC<VotingElementProps> = ({ movie, eventClosed }) => {
+const VotingElement: FC<VotingElementProps> = ({
+  movie,
+  eventClosed,
+  isUserAdmin,
+}) => {
   const [selected, setSelected] = useState(
     eventClosed ? false : movie.votedForByCurrentUser
   );
@@ -41,7 +46,7 @@ const VotingElement: FC<VotingElementProps> = ({ movie, eventClosed }) => {
   );
   const recentlyRated =
     movie.ratingClosedOn &&
-    new Date().getTime() - new Date(movie.ratingClosedOn).getTime() >
+    new Date().getTime() - new Date(movie.ratingClosedOn).getTime() <=
       24 * 60 * 60 * 1000;
 
   const handleClick = () => {
@@ -90,7 +95,7 @@ const VotingElement: FC<VotingElementProps> = ({ movie, eventClosed }) => {
             className={styles.VotingMovieDetails}
           >
             {movie.rateable || recentlyRated ? (
-              <RatingInterface movie={movie} />
+              <RatingInterface movie={movie} isUserAdmin={isUserAdmin} />
             ) : (
               <VotingMovieDetails
                 movie={movie}

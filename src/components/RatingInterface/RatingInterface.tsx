@@ -7,9 +7,10 @@ import RatingResult from "../RatingResult/RatingResult";
 
 interface RatingInterfaceProps {
   movie: Movie;
+  isUserAdmin: boolean;
 }
 
-const RatingInterface: FC<RatingInterfaceProps> = ({ movie }) => {
+const RatingInterface: FC<RatingInterfaceProps> = ({ movie, isUserAdmin }) => {
   const { ratingStatus } = useFetchRatingStatus(movie.id);
 
   if (!ratingStatus) {
@@ -19,7 +20,11 @@ const RatingInterface: FC<RatingInterfaceProps> = ({ movie }) => {
   return (
     <>
       {ratingStatus.state === RatingState.OPEN ? (
-        <RatingElement movie={movie} ratingStatus={ratingStatus} />
+        <RatingElement
+          movie={movie}
+          ratingStatus={ratingStatus}
+          isUserAdmin={isUserAdmin}
+        />
       ) : (
         <RatingResult movie={movie} ratingStatus={ratingStatus} />
       )}

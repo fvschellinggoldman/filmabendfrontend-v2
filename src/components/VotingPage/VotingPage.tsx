@@ -8,13 +8,14 @@ import { useAuth } from "../AuthProvider/AuthProvider";
 import { Navigate } from "react-router-dom";
 import { useEvent } from "../../api/events/Events";
 import MovieSuggestionElement from "../MovieSuggestion/MovieSuggestionElement";
+import { useFetchUser } from "../../api/users/Users";
 
 interface VotingPageProps {}
 
 const VotingPage: FC<VotingPageProps> = () => {
-  const { isLoggedIn } = useAuth();
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const { event } = useEvent();
+  const { user } = useFetchUser();
   const [showMovieSuggestionModal, setShowMovieSuggestionModal] =
     useState(false);
 
@@ -29,9 +30,8 @@ const VotingPage: FC<VotingPageProps> = () => {
     };
   }, []);
 
-  if (!isLoggedIn) {
-    // Redirect to the login page if the user is not logged in
-    return <Navigate to="/login" />;
+  if (!user) {
+    return <></>;
   }
 
   const columnAmount = screenWidth <= 600 ? 1 : 3;
@@ -79,12 +79,14 @@ const VotingPage: FC<VotingPageProps> = () => {
                   movie={movie}
                   key={movie.id}
                   eventClosed={event.closed}
+                  isUserAdmin={user.moderator}
                 ></VotingElement>
               ))}
             </ImageList>
             <Divider orientation="vertical" flexItem={true}></Divider>
             <SearchInterface
               event={event}
+              user={user}
               suggestionModalHandler={handleOpenSuggestionModal}
             ></SearchInterface>
           </div>
