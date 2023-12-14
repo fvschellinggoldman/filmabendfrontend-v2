@@ -4,8 +4,6 @@ import VotingElement from "../VotingElement/VotingElement";
 import styles from "./VotingPage.module.scss";
 import SearchInterface from "../SearchInterface/SearchInterface";
 import EventImage from "../EventImage/EventImage";
-import { useAuth } from "../AuthProvider/AuthProvider";
-import { Navigate } from "react-router-dom";
 import { useEvent } from "../../api/events/Events";
 import MovieSuggestionElement from "../MovieSuggestion/MovieSuggestionElement";
 import { useFetchUser } from "../../api/users/Users";

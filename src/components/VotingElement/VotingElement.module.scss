@@ -1,7 +1,10 @@
 .VotingElementWrapper {
     width: 100%;
     perspective: 1000px; // Perspective for the 3D effect
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
 .VotingElementWrapper:hover .ImageContainer {
     transform: rotateY(180deg);
@@ -11,8 +14,9 @@
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.5s; // Animation duration
+    width: 100%;
 
-    .image {
+    .elementImage {
         width: 100%;// Make the image take up the full width of the container
         height: 100%; // Maintain the aspect ratio by setting the height to 100%
     }
@@ -92,7 +96,7 @@
 @media (max-width: 600px) {
     .ImageContainer {
 
-        .image {
+        .elementImage {
             width: 60%;// Make the image take up the full width of the container
             float: left
         }

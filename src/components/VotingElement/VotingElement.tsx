@@ -60,12 +60,10 @@ const VotingElement: FC<VotingElementProps> = ({
   };
 
   return (
-    <div
-      className={cn(styles.VotingElementWrapper, {
-        [styles.selected]: selected,
-      })}
-    >
-      <ImageListItem sx={{ flexDirection: "row" }}>
+    <div className={styles.VotingElementWrapper}>
+      <ImageListItem
+        sx={{ flexDirection: "row", width: "100%", height: "100% !important" }}
+      >
         <div className={styles.ImageContainer}>
           <div className={styles.Ribbon}>
             {selected && !eventClosed && (
@@ -78,13 +76,17 @@ const VotingElement: FC<VotingElementProps> = ({
             )}
           </div>
           <img
-            className={styles.image}
+            className={cn(styles.elementImage, { [styles.selected]: selected })}
             src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
             alt="Movie poster"
             loading="lazy"
             onClick={eventClosed ? () => {} : handleClick}
           ></img>
-          <div className={styles.ItemBarContainer}>
+          <div
+            className={cn(styles.ItemBarContainer, {
+              [styles.selected]: selected,
+            })}
+          >
             <ImageListItemBar title={movie.name} />
           </div>
           <div
