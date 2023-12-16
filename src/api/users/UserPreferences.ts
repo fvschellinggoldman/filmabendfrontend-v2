@@ -10,7 +10,6 @@ export function useFetchUserPreference() {
     );
 
     const userPreference: UserPreference = data || { showMobileTutorial: false, showWebTutorial: false };
-
     return {
       userPreference,
       isLoading,

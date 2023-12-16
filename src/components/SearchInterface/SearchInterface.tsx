@@ -4,36 +4,53 @@ import SearchBar from "../SearchBar/SearchBar";
 import SearchResults from "../SearchResults/SearchResults";
 import styles from "./SearchInterface.module.scss";
 import { Event } from "../../types/event";
-import { Button } from "@mui/material";
+import { Button, Dialog, Tooltip } from "@mui/material";
 import AssistantIcon from "@mui/icons-material/Assistant";
 import { User } from "../../types/user";
+import MovieSuggestionElement from "../MovieSuggestion/MovieSuggestionElement";
+import { useFetchMovieEventSuggestions } from "../../api/events/MovieEventSuggestion";
 
 interface SearchInterfaceProps {
   event: Event;
   user: User;
-  suggestionModalHandler: () => void;
 }
 
-const SearchInterface: FC<SearchInterfaceProps> = ({
-  event,
-  user,
-  suggestionModalHandler,
-}) => {
+const SearchInterface: FC<SearchInterfaceProps> = ({ event, user }) => {
   const [searchResults, setSearchResults] = useState<MovieSearchResult[]>([]);
+  const [showMovieSuggestionModal, setShowMovieSuggestionModal] =
+    useState(false);
+  const handleOpenSuggestionModal = () => {
+    setShowMovieSuggestionModal(true);
+  };
+  const handleCloseSuggestionModal = () => {
+    setShowMovieSuggestionModal(false);
+  };
+  const { movieSuggestion } = useFetchMovieEventSuggestions(event.id);
+
   return (
     <div className={styles.SearchInterfaceWrapper}>
       <div className={styles.SearchBarWrapper}>
         <SearchBar onSearch={setSearchResults}></SearchBar>
-        {user?.displayName === "Fabio" && (
-          <Button
-            className={styles.SuggestionButton}
-            variant="outlined"
-            startIcon={<AssistantIcon />}
-            onClick={() => {
-              suggestionModalHandler();
-            }}
-          ></Button>
+        {movieSuggestion && (
+          <Tooltip title="AI Suggestion">
+            <Button
+              className={styles.SuggestionButton}
+              variant="outlined"
+              startIcon={<AssistantIcon />}
+              onClick={handleOpenSuggestionModal}
+            ></Button>
+          </Tooltip>
         )}
+        <Dialog
+          open={showMovieSuggestionModal}
+          onClose={handleCloseSuggestionModal}
+          maxWidth="lg"
+        >
+          <MovieSuggestionElement
+            handleCloseSuggestionModal={handleCloseSuggestionModal}
+            eventId={event.id}
+          ></MovieSuggestionElement>
+        </Dialog>
       </div>
       <SearchResults
         searchResults={searchResults}

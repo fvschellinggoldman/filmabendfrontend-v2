@@ -2,12 +2,13 @@
     width: 25%;
 
     .SearchBarWrapper {
-        display: grid;
-        grid-template-columns: 5fr 1fr;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
 
         .SuggestionButton{
             height: 56px;
-            margin: 0.7rem 0.7rem 0.7rem 0;
             color: rgba(0,0,0,0.23);
             border-color: rgba(0,0,0,0.23);
             &:hover{

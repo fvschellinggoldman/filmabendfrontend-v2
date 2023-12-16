@@ -77,11 +77,11 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
             </IconButton>
           </Tooltip>
         )}
-        <Tooltip title="More Information">
+        {/* <Tooltip title="More Information">
           <IconButton color="inherit" aria-label="close voting">
             <InfoIcon></InfoIcon>
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
       </Toolbar>
       {selected ? (
         <Button

@@ -11,6 +11,7 @@ import SuggestionTutorialOverlay from "../SuggestionTutorialOverlay/SuggestionTu
 import { useFetchUserPreference } from "../../api/users/UserPreferences";
 import { BrowserView, MobileView, isMobile } from "react-device-detect";
 import WebSuggestionTutorialOverlay from "../WebSuggestionTutorialOverlay/WebSuggestionTutorialOverlay";
+import { toast } from "sonner";
 
 interface MovieSuggestionElementProps {
   handleCloseSuggestionModal: () => void;
@@ -21,8 +22,8 @@ const MovieSuggestionElement: FC<MovieSuggestionElementProps> = ({
   handleCloseSuggestionModal,
   eventId,
 }) => {
-  const { movieSuggestion } = useFetchMovieEventSuggestions(eventId);
   const { userPreference } = useFetchUserPreference();
+  const { movieSuggestion } = useFetchMovieEventSuggestions(eventId);
   const [showTutorial, setShowTutorial] = useState(
     isMobile
       ? userPreference.showMobileTutorial
@@ -46,7 +47,17 @@ const MovieSuggestionElement: FC<MovieSuggestionElementProps> = ({
     };
   }, []);
 
+  useEffect(() => {
+    setShowTutorial(
+      isMobile
+        ? userPreference.showMobileTutorial
+        : userPreference.showWebTutorial
+    );
+  }, [userPreference, isMobile]);
+
   if (!movieSuggestion) {
+    handleCloseSuggestionModal();
+    toast.info("Out of suggestions for this event!");
     return <></>;
   }
 

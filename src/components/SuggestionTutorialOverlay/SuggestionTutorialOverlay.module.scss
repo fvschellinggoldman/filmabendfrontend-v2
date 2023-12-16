@@ -6,12 +6,9 @@
     text-align: center;
   
     .ImageOverlay {
-      top: 0;
-      left: 0;
-      width: 50vh;
-      height: 75vh;
       opacity: 0;
       animation: approve 4s ease-in-out infinite;
+      max-height: 60vh;   
   
       > i {
         position: absolute;
@@ -33,15 +30,12 @@
   }
   
   .ImageTutorial {
-    max-width: 100%;
-    height: 75vh;
+    max-height: 60vh;
     animation: fadeOut 4s ease-in-out infinite;
-    object-fit: contain;
+    object-fit: cover;
   }
 
   .ImageContainer {
-    width: 100vh;
-    height: 75vh;
     display: flex;
     justify-content: center;
 }

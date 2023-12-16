@@ -23,12 +23,10 @@ const SuggestionTutorialOverlay: FC<SuggestionTutorialOverlayProps> = ({
         </div>
       </div>
 
-      <div>
-        To add the movie to the current event, swipe <b>right</b>. <br />
-        To decline adding the movie to the current event, swipe <b>
-          left
-        </b>. <br />
-        To close the window, swipe <b>down</b>.
+      <div className={styles.InstructionsContainer}>
+        Swipe <b> right </b> to add. <br />
+        Swipe <b> left </b> to decline. <br />
+        Swipe <b> down </b> to close.
       </div>
       <TutorialAcceptance closeDialog={closeDialog}></TutorialAcceptance>
     </DialogContent>
