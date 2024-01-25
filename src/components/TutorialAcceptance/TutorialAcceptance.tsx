@@ -16,7 +16,6 @@ const TutorialAcceptance: FC<TutorialAcceptanceProps> = ({ closeDialog }) => {
   };
 
   const handleClick = () => {
-    console.log("etst");
     closeDialog();
     putRequest(`/api/user/update_user_preference`, {
       showWebTutorial: isMobile ? null : !control,
