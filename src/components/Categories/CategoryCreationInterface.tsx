@@ -11,11 +11,11 @@ import {
   Input,
   FormHelperText,
 } from "@mui/material";
-import styles from "./EventCreationModal.module.scss";
+import styles from "./CategoryCreationInterface.module.scss";
 
 type IEventCreationFormInput = {
   name: string;
-  eventImage: File[];
+  categoryImage: File[];
   date: Date;
 };
 
@@ -30,10 +30,9 @@ const EventCreationModal: FC<EventCreationModalProps> = () => {
 
   const onSubmit = async (data: IEventCreationFormInput) => {
     const formData = new FormData();
-    formData.append("event_image", data.eventImage[0]);
+    formData.append("category_image", data.categoryImage[0]);
     formData.append("name", data.name);
-    formData.append("date", data.date.toString());
-    toast.success(`Event ${data.name} has been created!`);
+    toast.success(`Category ${data.name} has been submitted!`);
     await postFile("/api/event", formData);
     mutate("/api/event");
   };
@@ -41,13 +40,13 @@ const EventCreationModal: FC<EventCreationModalProps> = () => {
   return (
     <Container>
       <Typography variant="h4" align="center" padding={5}>
-        Create Event
+        Create Category
       </Typography>
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
-            {...register("name", { required: "Event Name is required" })}
-            label="Event Name"
+            {...register("name", { required: "Category is required" })}
+            label="Category"
             variant="outlined"
             margin="normal"
             fullWidth
@@ -55,28 +54,19 @@ const EventCreationModal: FC<EventCreationModalProps> = () => {
             helperText={errors.name?.message}
             className={styles.formField}
           />
-          {/* Event Date */}
-          <TextField
-            {...register("date", { required: "Date is required" })}
-            type="date"
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            error={!!errors.date}
-            helperText={errors.date?.message}
-            className={styles.formField}
-          />
           {/* Event Image */}
           <Input
-            {...register("eventImage")}
+            {...register("categoryImage")}
             type="file"
             fullWidth
-            error={!!errors.eventImage}
+            error={!!errors.categoryImage}
             className={`${styles.formField} ${styles.fileInput}`}
           />
           {/* Validation Errors */}
-          {errors.eventImage && (
-            <FormHelperText error>{errors.eventImage.message}</FormHelperText>
+          {errors.categoryImage && (
+            <FormHelperText error>
+              {errors.categoryImage.message}
+            </FormHelperText>
           )}
           {/* Submit Button */}
           <Button
@@ -85,7 +75,7 @@ const EventCreationModal: FC<EventCreationModalProps> = () => {
             color="primary"
             className={`${styles.formField} ${styles.submitButton}`}
           >
-            Create Event
+            Submit Category
           </Button>
         </form>
       </div>

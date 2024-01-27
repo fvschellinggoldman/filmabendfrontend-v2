@@ -4,7 +4,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import { Dialog, IconButton, Toolbar, Tooltip } from "@mui/material";
 import { Event } from "../../types/event";
 import { AddCircle } from "@mui/icons-material";
-import EventCreationModal from "../EventCreationModal/EventCreationModal";
+import EventCreationModal from "../Categories/CategoryCreationInterface";
 import { postRequest } from "../../api/api";
 import { mutate } from "swr";
 import { toast } from "sonner";

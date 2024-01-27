@@ -23,7 +23,6 @@ interface NavbarProps {}
 const Navbar: FC<NavbarProps> = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
   let navigate = useNavigate();
 
   const { user } = useFetchUser();

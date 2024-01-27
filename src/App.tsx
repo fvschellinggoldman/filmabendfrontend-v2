@@ -1,5 +1,4 @@
 import "./App.css";
-import VotingPage from "./components/VotingPage/VotingPage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Login from "./components/Login/Login";
@@ -7,7 +6,7 @@ import { AuthProvider } from "./components/AuthProvider/AuthProvider";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Toaster } from "sonner";
 import ApplicationContainer from "./components/ApplicationContainer/ApplicationContainer";
-import { CategoryCreationContainer } from "./components/CategoryCreationContainer/CategoryCreationContainer";
+import { CategoryCreationContainer } from "./components/Categories/CategoryCreationContainer";
 
 // Create a custom theme
 const theme = createTheme({
