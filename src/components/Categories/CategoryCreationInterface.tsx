@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { useForm } from "react-hook-form";
-import { mutate } from "swr";
 import { postFile } from "../../api/api";
 import { toast } from "sonner";
 import {
@@ -12,29 +11,30 @@ import {
   FormHelperText,
 } from "@mui/material";
 import styles from "./CategoryCreationInterface.module.scss";
+import { mutate } from "swr";
 
-type IEventCreationFormInput = {
+type ICategoryCreationFormInput = {
   name: string;
   categoryImage: File[];
   date: Date;
 };
 
-interface EventCreationModalProps {}
+interface CategoryCreationInterfaceProps {}
 
-const EventCreationModal: FC<EventCreationModalProps> = () => {
+const CategoryCreationInterface: FC<CategoryCreationInterfaceProps> = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IEventCreationFormInput>();
+  } = useForm<ICategoryCreationFormInput>();
 
-  const onSubmit = async (data: IEventCreationFormInput) => {
+  const onSubmit = async (data: ICategoryCreationFormInput) => {
     const formData = new FormData();
     formData.append("category_image", data.categoryImage[0]);
     formData.append("name", data.name);
     toast.success(`Category ${data.name} has been submitted!`);
-    await postFile("/api/event", formData);
-    mutate("/api/event");
+    mutate("/api/remaining_categories");
+    await postFile("/api/category", formData);
   };
 
   return (
@@ -54,7 +54,7 @@ const EventCreationModal: FC<EventCreationModalProps> = () => {
             helperText={errors.name?.message}
             className={styles.formField}
           />
-          {/* Event Image */}
+          {/* Category Image */}
           <Input
             {...register("categoryImage")}
             type="file"
@@ -83,4 +83,4 @@ const EventCreationModal: FC<EventCreationModalProps> = () => {
   );
 };
 
-export default EventCreationModal;
+export default CategoryCreationInterface;
