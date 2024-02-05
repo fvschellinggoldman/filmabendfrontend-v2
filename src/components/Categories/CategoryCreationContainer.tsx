@@ -9,9 +9,9 @@ export const CategoryCreationContainer = () => {
   return (
     <>
       <Typography variant="h4">
-        You have {remainingCategories} left to write this season.
+        You have {remainingCategories} categories left to write this season.
       </Typography>
-      {remainingCategories && remainingCategories > 0 && (
+      {remainingCategories !== undefined && remainingCategories > 0 && (
         <CategoryCreationInterface></CategoryCreationInterface>
       )}
       <Typography variant="h2"> Your past categories </Typography>

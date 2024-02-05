@@ -25,7 +25,11 @@ const Navbar: FC<NavbarProps> = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   let navigate = useNavigate();
 
-  const { user } = useFetchUser();
+  const { user, isError } = useFetchUser();
+
+  if (isError !== undefined) {
+    return null;
+  }
 
   const routeChange = (pageName: { page: any }) => {
     navigate("/" + _.camelCase(pageName.page));
