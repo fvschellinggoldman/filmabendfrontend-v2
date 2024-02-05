@@ -1,10 +1,9 @@
 import React, { FC, useState } from "react";
 import styles from "./EventImage.module.scss";
 import LockIcon from "@mui/icons-material/Lock";
-import { Dialog, IconButton, Toolbar, Tooltip } from "@mui/material";
+import { IconButton, Toolbar, Tooltip } from "@mui/material";
 import { Event } from "../../types/event";
 import { AddCircle } from "@mui/icons-material";
-import EventCreationModal from "../EventCreationModal/EventCreationModal";
 import { postRequest } from "../../api/api";
 import { mutate } from "swr";
 import { toast } from "sonner";
@@ -20,18 +19,14 @@ const EventImage: FC<EventImageProps> = ({ event }) => {
     mutate("/api/event");
   };
 
-  const handleClose = () => {
-    setShowEventCreationModal(false);
+  const startNewEvent = async () => {
+    toast.success(`New event is being started!`);
+    await postRequest(`/api/event`, {});
+    mutate("/api/event");
   };
-
-  const [showEventCreationModal, setShowEventCreationModal] = useState(false);
 
   return (
     <>
-      <Dialog open={showEventCreationModal} onClose={handleClose}>
-        <EventCreationModal></EventCreationModal>
-      </Dialog>
-
       <div className={styles.EventImageContainer}>
         <img
           src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${event?.imageUrl}`}
@@ -52,7 +47,7 @@ const EventImage: FC<EventImageProps> = ({ event }) => {
           </Tooltip>
           <Tooltip title="Create new Event">
             <IconButton
-              onClick={() => setShowEventCreationModal(true)}
+              onClick={startNewEvent}
               color="inherit"
               aria-label="create event"
             >

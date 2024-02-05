@@ -11,11 +11,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthProvider/AuthProvider";
+import { Outlet, useNavigate } from "react-router-dom";
+import _ from "lodash";
 import { useFetchUser } from "../../api/users/Users";
 
-const pages = ["Home", "Archive", "Statistics"];
+const pages = ["Home", "Archive", "Statistics", "Create Categories"];
 const settings = ["Profile", "Admin", "Logout"];
 
 interface NavbarProps {}
@@ -23,13 +23,12 @@ interface NavbarProps {}
 const Navbar: FC<NavbarProps> = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
   let navigate = useNavigate();
 
   const { user } = useFetchUser();
 
   const routeChange = (pageName: { page: any }) => {
-    navigate(pageName.page.toLowerCase());
+    navigate("/" + _.camelCase(pageName.page));
   };
 
   const handleOpenNavMenu = (event: { currentTarget: any }) => {
@@ -93,6 +92,7 @@ const Navbar: FC<NavbarProps> = () => {
                 key={page}
                 onClick={() => routeChange({ page })}
                 sx={{ my: 2, color: "white", display: "block" }}
+                variant="outlined"
               >
                 {page}
               </Button>
