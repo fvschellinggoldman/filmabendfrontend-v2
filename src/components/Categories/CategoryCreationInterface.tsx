@@ -33,8 +33,8 @@ const CategoryCreationInterface: FC<CategoryCreationInterfaceProps> = () => {
     formData.append("category_image", data.categoryImage[0]);
     formData.append("name", data.name);
     toast.success(`Category ${data.name} has been submitted!`);
-    mutate("/api/remaining_categories");
     await postFile("/api/category", formData);
+    mutate("/api/remaining_categories");
   };
 
   return (

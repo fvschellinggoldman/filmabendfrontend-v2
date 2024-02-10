@@ -25,10 +25,14 @@ const Navbar: FC<NavbarProps> = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   let navigate = useNavigate();
 
-  const { user } = useFetchUser();
+  const { user, isError } = useFetchUser();
 
-  const routeChange = (pageName: { page: any }) => {
-    navigate("/" + _.camelCase(pageName.page));
+  if (user === undefined || isError !== undefined) {
+    return null;
+  }
+
+  const routeChange = (page: string) => {
+    navigate("/" + _.camelCase(page));
   };
 
   const handleOpenNavMenu = (event: { currentTarget: any }) => {
@@ -39,6 +43,11 @@ const Navbar: FC<NavbarProps> = () => {
   };
 
   const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleHamburgerClick = (page: string) => {
+    routeChange(page);
     setAnchorElNav(null);
   };
 
@@ -80,7 +89,7 @@ const Navbar: FC<NavbarProps> = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handleHamburgerClick(page)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -90,7 +99,7 @@ const Navbar: FC<NavbarProps> = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={() => routeChange({ page })}
+                onClick={() => routeChange(page)}
                 sx={{ my: 2, color: "white", display: "block" }}
                 variant="outlined"
               >

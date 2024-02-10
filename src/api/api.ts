@@ -74,5 +74,15 @@ const options = {
     },
 };
 
-return fetch(`${baseUrl}${url}`, options).then((res) => res.json());
-}
+return fetch(`${baseUrl}${url}`, options)
+  .then((res) => {
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    return res.json();
+  })
+  .catch((error) => {
+    console.error('Error during fetch:', error);
+    // Handle the error or throw it again based on your requirements
+    throw error;
+  });}

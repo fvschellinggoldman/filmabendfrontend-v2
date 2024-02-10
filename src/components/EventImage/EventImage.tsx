@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import styles from "./EventImage.module.scss";
 import LockIcon from "@mui/icons-material/Lock";
 import { IconButton, Toolbar, Tooltip } from "@mui/material";
