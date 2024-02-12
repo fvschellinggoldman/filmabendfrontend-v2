@@ -6,4 +6,5 @@ export type Event = {
     id: number
     closed: boolean
     movies: Movie[]
+    submitterId: string
 }

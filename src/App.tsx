@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Toaster } from "sonner";
 import ApplicationContainer from "./components/ApplicationContainer/ApplicationContainer";
 import { CategoryCreationContainer } from "./components/Categories/CategoryCreationContainer";
+import ArchiveTabs from "./components/Archive/ArchiveTabs";
 
 // Create a custom theme
 const theme = createTheme({
@@ -29,6 +30,7 @@ function App() {
             <Routes>
               <Route path="/home" element={<ApplicationContainer />}></Route>
               <Route path="/login" element={<Login />} />
+              <Route path="/archive" element={<ArchiveTabs />} />
               <Route
                 path="/createCategories"
                 element={<CategoryCreationContainer />}

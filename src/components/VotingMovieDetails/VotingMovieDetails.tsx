@@ -33,10 +33,9 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
   eventClosed,
 }) => {
   const handleRatingChange = async () => {
-    const ratingState = movie.rateable ? "closed" : "opened";
-    toast.success(`${movie.name} has been ${ratingState} for rating!`);
+    toast.success(`${movie.name} has been opened for rating!`);
     await postRequest(`/api/movie/${movie.id}/modify_rating_state`, {
-      newRateableState: movie.rateable,
+      newRateableState: true,
     });
     mutate("/api/event");
   };
@@ -56,27 +55,16 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
         </TableBody>
       </Table>
       <Toolbar className={styles.OverlayToolbar}>
-        {movie.rateable ? (
-          <Tooltip title="Lock Rating">
-            <IconButton
-              onClick={handleRatingChange}
-              color="inherit"
-              aria-label="lock rating"
-            >
-              <LockIcon></LockIcon>
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Unlock Rating">
-            <IconButton
-              onClick={handleRatingChange}
-              color="inherit"
-              aria-label="unlock rating"
-            >
-              <LockOpenIcon></LockOpenIcon>
-            </IconButton>
-          </Tooltip>
-        )}
+        <Tooltip title="Unlock Rating">
+          <IconButton
+            onClick={handleRatingChange}
+            color="inherit"
+            aria-label="unlock rating"
+          >
+            <LockOpenIcon></LockOpenIcon>
+          </IconButton>
+        </Tooltip>
+
         {/* <Tooltip title="More Information">
           <IconButton color="inherit" aria-label="close voting">
             <InfoIcon></InfoIcon>

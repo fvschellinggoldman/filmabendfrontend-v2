@@ -53,7 +53,7 @@ const MovieSuggestionElement: FC<MovieSuggestionElementProps> = ({
         ? userPreference.showMobileTutorial
         : userPreference.showWebTutorial
     );
-  }, [userPreference, isMobile]);
+  }, [userPreference]);
 
   if (!movieSuggestion) {
     handleCloseSuggestionModal();

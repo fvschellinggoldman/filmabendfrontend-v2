@@ -1,14 +1,6 @@
-import { Movie } from "./movie"
-import { User } from "./user"
-
 export type Category = { 
+    id: number
     name: string
     imageUrl: string
-    id: number
-    creator: User
-    creationDate: Date
-    season: number
-    selected: boolean
-    averageRating?: number
-    watchedMovies?: Movie[]
+    submitterId: string
 }

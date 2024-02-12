@@ -28,12 +28,11 @@ const RatingElement: FC<RatingElementProps> = ({
   };
 
   const handleRatingChange = async () => {
-    const ratingState = movie.rateable ? "closed" : "opened";
-    toast.success(`${movie.name} has been ${ratingState} for rating!`);
+    toast.success(`${movie.name} has been closed for rating!`);
     await postRequest(`/api/movie/${movie.id}/modify_rating_state`, {
-      newRateableState: movie.rateable,
+      newRateableState: false,
     });
-    mutate("/api/event");
+    mutate(`/api/movie/${movie.id}/rating_status`);
   };
 
   const [userHasRated, setUserHasRated] = useState<boolean>(
