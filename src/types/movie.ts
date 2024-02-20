@@ -1,3 +1,5 @@
+import { UserBasedRating } from "./rating"
+
 export type Movie = {
     id: number
     name: string
@@ -9,6 +11,16 @@ export type Movie = {
     averageRating?: number
     genres: string[]
     tmdbId: number
+}
+
+export type MovieDetail = Movie & {
+    description: string
+    runtime: number
+    releaseDate: Date
+    season: number
+    eventName?: string
+    imdbRating?: number
+    ratingBreakdown?: UserBasedRating[]
 }
 
 export type MovieSearchResult = {

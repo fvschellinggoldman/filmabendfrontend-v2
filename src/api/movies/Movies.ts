@@ -1,5 +1,5 @@
 import useSWR, { mutate } from "swr";
-import { Movie, MovieSearchResult, MovieSuggestion } from "../../types/movie";
+import { Movie, MovieDetail, MovieSearchResult, MovieSuggestion } from "../../types/movie";
 import { getRequest, postRequest, putRequest } from "../api";
   
  async function _addMovie(
@@ -48,7 +48,7 @@ import { getRequest, postRequest, putRequest } from "../api";
   export function useFetchMovie(movieId: number) {
     const api_url = `/api/movie/${movieId}`;
 
-    const { data, error, isLoading } = useSWR<Movie, Error>(
+    const { data, error, isLoading } = useSWR<MovieDetail, Error>(
       api_url,
       (url) => getRequest(url, null),
       { revalidateOnFocus: false }

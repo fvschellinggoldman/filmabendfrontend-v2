@@ -25,6 +25,7 @@ const CategoryCreationInterface: FC<CategoryCreationInterfaceProps> = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ICategoryCreationFormInput>();
 
@@ -34,6 +35,7 @@ const CategoryCreationInterface: FC<CategoryCreationInterfaceProps> = () => {
     formData.append("name", data.name);
     toast.success(`Category ${data.name} has been submitted!`);
     await postFile("/api/category", formData);
+    reset();
     mutate("/api/remaining_categories");
   };
 
