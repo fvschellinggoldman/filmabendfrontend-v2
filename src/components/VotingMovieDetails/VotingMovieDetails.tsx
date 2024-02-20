@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import React, { FC } from "react";
 import styles from "./VotingMovieDetails.module.scss";
-import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import InfoIcon from "@mui/icons-material/Info";
 import { Movie } from "../../types/movie";
