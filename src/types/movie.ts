@@ -18,9 +18,9 @@ export type MovieDetail = Movie & {
     runtime: number
     releaseDate: Date
     season: number
-    eventName?: string
+    categoryName?: string
     imdbRating?: number
-    ratingBreakdown?: UserBasedRating[]
+    breakdown?: UserBasedRating[]
 }
 
 export type MovieSearchResult = {

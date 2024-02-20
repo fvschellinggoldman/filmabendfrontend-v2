@@ -24,7 +24,7 @@ const MovieDetailData: FC<MovieDetailDataProps> = ({ movie }) => {
       <Table className={styles.table}>
         <TableBody>
           <TableRow key="movieId" className={styles.stripedRow}>
-            <TableCell></TableCell>
+            <TableCell sx={{ width: "1rem" }}></TableCell>
             <TableCell className={styles.boldCell}>Name</TableCell>
             <TableCell>{movie.name}</TableCell>
           </TableRow>
@@ -46,7 +46,7 @@ const MovieDetailData: FC<MovieDetailDataProps> = ({ movie }) => {
             <TableCell></TableCell>
             <TableCell className={styles.boldCell}>Release Date</TableCell>
             <TableCell>
-              {movie.runtime ? movie.runtime + " minutes" : "N/A"}
+              {movie.releaseDate ? movie.releaseDate.toString() : "N/A"}
             </TableCell>
           </TableRow>
           <TableRow key="genres" className={styles.stripedRow}>
@@ -61,11 +61,11 @@ const MovieDetailData: FC<MovieDetailDataProps> = ({ movie }) => {
             <TableCell className={styles.boldCell}>Season</TableCell>
             <TableCell>{movie.season}</TableCell>
           </TableRow>
-          {movie.eventName && (
+          {movie.categoryName && (
             <TableRow key="event" className={styles.stripedRow}>
               <TableCell></TableCell>
               <TableCell className={styles.boldCell}>Event</TableCell>
-              <TableCell>{movie.eventName}</TableCell>
+              <TableCell>{movie.categoryName}</TableCell>
             </TableRow>
           )}
           {movie.imdbRating && (
@@ -86,7 +86,7 @@ const MovieDetailData: FC<MovieDetailDataProps> = ({ movie }) => {
               )}
             </TableRow>
           )}
-          {movie.averageRating && movie.ratingBreakdown && (
+          {movie.averageRating && movie.breakdown && (
             <>
               <TableRow key="average Rating" className={styles.stripedRow}>
                 <TableCell>
@@ -123,7 +123,7 @@ const MovieDetailData: FC<MovieDetailDataProps> = ({ movie }) => {
                       </Typography>
                       <Table size="small" aria-label="purchases">
                         <TableBody>
-                          {movie.ratingBreakdown.map((rating) => (
+                          {movie.breakdown.map((rating) => (
                             <TableRow key={rating.displayName}>
                               <TableCell component="th" scope="row">
                                 {rating.displayName}
