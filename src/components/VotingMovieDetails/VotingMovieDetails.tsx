@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import React, { FC } from "react";
 import styles from "./VotingMovieDetails.module.scss";
-import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import InfoIcon from "@mui/icons-material/Info";
 import { Movie } from "../../types/movie";
@@ -18,6 +17,7 @@ import { mutate } from "swr";
 import { toast } from "sonner";
 import cn from "classnames";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 interface VotingMovieDetailsProps {
   movie: Movie;
@@ -38,6 +38,11 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
       newRateableState: true,
     });
     mutate("/api/event");
+  };
+
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate(`/movie/${movie.id}`);
   };
 
   return (
@@ -64,12 +69,15 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
             <LockOpenIcon></LockOpenIcon>
           </IconButton>
         </Tooltip>
-
-        {/* <Tooltip title="More Information">
-          <IconButton color="inherit" aria-label="close voting">
+        <Tooltip title="More Information">
+          <IconButton
+            onClick={handleNavigate}
+            color="inherit"
+            aria-label="get movie details"
+          >
             <InfoIcon></InfoIcon>
           </IconButton>
-        </Tooltip> */}
+        </Tooltip>
       </Toolbar>
       {selected ? (
         <Button

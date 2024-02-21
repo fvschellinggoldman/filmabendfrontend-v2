@@ -5,7 +5,7 @@ export type RatingStatus = {
 }
 
 
-type UserBasedRating = {
+export type UserBasedRating = {
     userId: string
     displayName: string
     rating: number

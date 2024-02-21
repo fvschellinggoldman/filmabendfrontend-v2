@@ -1,6 +1,6 @@
-import { mutate } from "swr";
-import { MovieSearchResult, MovieSuggestion } from "../../types/movie";
-import { postRequest, putRequest } from "../api";
+import useSWR, { mutate } from "swr";
+import { Movie, MovieDetail, MovieSearchResult, MovieSuggestion } from "../../types/movie";
+import { getRequest, postRequest, putRequest } from "../api";
   
  async function _addMovie(
     movieToAdd: MovieSearchResult | MovieSuggestion,
@@ -43,6 +43,22 @@ import { postRequest, putRequest } from "../api";
     suggestedMovie?: MovieSuggestion
   ) {
     if(suggestedMovie) _updateSuggestionState(suggestedMovie, 'DECLINED')
+  }
+  
+  export function useFetchMovie(movieId: number) {
+    const api_url = `/api/movie/${movieId}`;
+
+    const { data, error, isLoading } = useSWR<MovieDetail, Error>(
+      api_url,
+      (url) => getRequest(url, null),
+      { revalidateOnFocus: false }
+    );
+  
+    return {
+      movie: data,
+      isLoading,
+      isError: error,
+    };
   }
 
  async function _updateSuggestionState(

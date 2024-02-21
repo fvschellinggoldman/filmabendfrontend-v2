@@ -1,0 +1,24 @@
+.ImageContainer {
+    width: 75%;
+    height: fit-content;
+    align-items: center; /* Vertically center the content */
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.MovieDetailContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+@media (max-width: 600px) {
+    .ImageContainer {
+        width: 100%;
+    }
+
+    .MovieDetailContainer {
+        flex-direction: column;
+    }
+}

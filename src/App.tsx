@@ -8,6 +8,7 @@ import { Toaster } from "sonner";
 import ApplicationContainer from "./components/ApplicationContainer/ApplicationContainer";
 import { CategoryCreationContainer } from "./components/Categories/CategoryCreationContainer";
 import ArchiveTabs from "./components/Archive/ArchiveTabs";
+import { MovieDetail } from "./components/MovieDetail/MovieDetail";
 
 // Create a custom theme
 const theme = createTheme({
@@ -31,6 +32,7 @@ function App() {
               <Route path="/home" element={<ApplicationContainer />}></Route>
               <Route path="/login" element={<Login />} />
               <Route path="/archive" element={<ArchiveTabs />} />
+              <Route path="/movie/:slug" element={<MovieDetail />} />
               <Route
                 path="/createCategories"
                 element={<CategoryCreationContainer />}
