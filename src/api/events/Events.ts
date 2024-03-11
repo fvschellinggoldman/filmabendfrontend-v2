@@ -16,3 +16,20 @@ export function useEvent(id?: number) {
       isError: error,
     };
   }
+
+
+  export function useFetchPastEvents(index: number) {
+    const api_url = `/api/past_events?page_number=${index}`;
+  
+    const { data, error, isLoading } = useSWR<Event[], Error>(
+      api_url, 
+      (url) => getRequest(url, null), 
+    );
+
+  
+    return {
+      events: data,
+      isLoading,
+      isError: error,
+    };
+  }
