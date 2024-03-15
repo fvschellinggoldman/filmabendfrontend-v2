@@ -5,7 +5,7 @@ export type Movie = {
     name: string
     moviePosterData: MovieImageMetaData
     rateable?: boolean
-    ratingClosedOn?: Date
+    ratingClosedOn?: string
     votes: string[]
     votedForByCurrentUser: boolean
     averageRating?: number

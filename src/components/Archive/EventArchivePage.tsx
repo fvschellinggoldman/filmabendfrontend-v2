@@ -19,8 +19,8 @@ export const EventArchivePage: FC<EventArchivePageProps> = ({
 
   return (
     <>
-      {events.map((event) => (
-        <EventArchiveTile event={event} />
+      {events.map((event, index) => (
+        <EventArchiveTile key={event.name} event={event} index={index} />
       ))}
     </>
   );

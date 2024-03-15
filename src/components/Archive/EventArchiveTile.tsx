@@ -4,21 +4,48 @@ import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import styles from "./EventArchiveTile.module.scss";
 import { useNavigate } from "react-router-dom";
+import { isMobile } from "react-device-detect";
 
 interface EventArchiveTileProps {
   event: Event;
+  index: number;
 }
 
-export const EventArchiveTile: FC<EventArchiveTileProps> = ({ event }) => {
+export const EventArchiveTile: FC<EventArchiveTileProps> = ({
+  event,
+  index,
+}) => {
   const navigate = useNavigate();
 
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero indexed
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
+
   return (
-    <Card>
+    <Card
+      sx={{
+        marginBottom: "2rem",
+        backgroundColor: index % 2 === 0 ? "#A9D6E5" : "#2C7DA0",
+      }}
+    >
       <CardHeader title={event.name}></CardHeader>
       <CardContent key="Watched movies">
-        <Stack direction="row" justifyContent="space-between" flexGrow="true">
+        <Stack
+          direction={isMobile ? "column" : "row"}
+          justifyContent="left"
+          flexGrow="true"
+        >
           {event.movies.map((movie) => (
-            <Stack direction="row" key={movie.id}>
+            <Stack
+              direction="row"
+              key={movie.name}
+              className={styles.movieTile}
+            >
               <img
                 className={styles.movieImage}
                 onClick={() => navigate(`/movie/${movie.id}`)}
@@ -30,6 +57,9 @@ export const EventArchiveTile: FC<EventArchiveTileProps> = ({ event }) => {
               <Stack justifyContent="center">
                 <Typography>{movie.name}</Typography>
                 <Typography>{movie.averageRating}</Typography>
+                <Typography variant="subtitle2">
+                  {movie.ratingClosedOn ? formatDate(movie.ratingClosedOn) : ""}
+                </Typography>
               </Stack>
             </Stack>
           ))}
