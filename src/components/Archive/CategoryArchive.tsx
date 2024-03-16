@@ -16,7 +16,7 @@ import { Typography } from "@mui/material";
 import { mutate } from "swr";
 import { Category } from "../../types/category";
 
-const EventArchiveOverview = () => {
+const CategoryArchive = () => {
   const { categories } = useFetchArchivedCategories();
 
   const claimHandler = (category: Category) => {
@@ -72,4 +72,4 @@ const EventArchiveOverview = () => {
   );
 };
 
-export default EventArchiveOverview;
+export default CategoryArchive;

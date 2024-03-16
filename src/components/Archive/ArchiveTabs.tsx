@@ -2,8 +2,9 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import EventArchiveOverview from "./EventArchiveOverview";
+import CategoryArchive from "./CategoryArchive";
 import { MovieArchive } from "./MovieArchive";
+import { EventArchive } from "./EventArchive";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -33,6 +34,7 @@ const ArchiveTabs = () => {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange} centered>
           <Tab label="Movie Archive" />
+          <Tab label="Event Archive" />
           <Tab label="Category Archive" />
         </Tabs>
       </Box>
@@ -40,7 +42,10 @@ const ArchiveTabs = () => {
         <MovieArchive />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <EventArchiveOverview />
+        <EventArchive />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <CategoryArchive />
       </TabPanel>
     </Box>
   );

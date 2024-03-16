@@ -60,15 +60,17 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
         </TableBody>
       </Table>
       <Toolbar className={styles.OverlayToolbar}>
-        <Tooltip title="Unlock Rating">
-          <IconButton
-            onClick={handleRatingChange}
-            color="inherit"
-            aria-label="unlock rating"
-          >
-            <LockOpenIcon></LockOpenIcon>
-          </IconButton>
-        </Tooltip>
+        {eventClosed && (
+          <Tooltip title="Unlock Rating">
+            <IconButton
+              onClick={handleRatingChange}
+              color="inherit"
+              aria-label="unlock rating"
+            >
+              <LockOpenIcon></LockOpenIcon>
+            </IconButton>
+          </Tooltip>
+        )}
         <Tooltip title="More Information">
           <IconButton
             onClick={handleNavigate}
