@@ -1,51 +1,68 @@
 // Define your colors or any other global styles here
-$primaryColor: #3498db;
-$primaryHoverColor: #2980b9;
-$fontColor: #333;
+$primaryColor: #e92f6c;
+$primaryHoverColor: #e68fac;
+$fontColor: #FF4D6D;
 $inputBorderColor: #ccc;
 $inputBgColor: #f5f5f5;
 $inputFocusBorderColor: #3498db;
+
+input {
+  background-color: rgba(255, 255, 255, 1); /* Set full opacity for form fields */
+}
+
 
 .BackgroundContainer {
   margin: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: right;
   height: 100vh;
-  background-image: url('https://filmabend-bucket.s3.eu-central-1.amazonaws.com/cinema.png'); // Replace with the actual path to your image
+  background-image: url('../../assets/loginPage.jpeg');
   background-size: cover;
-  background-position: center;
+  background-position: right;
+  width: 100%;
+}
+
+.ItalicText {
+  font-style: italic;
 }
 
 .LoginContainer {
-  width: 400px;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: white;
+  margin-right: 2%;
+  margin-top: 15%;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .LoginTitle {
   text-align: center;
   color: $fontColor;
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: calc(0.15 * 100vh); /* Default font size for desktop */
+  margin-bottom: 0;
+  margin-top: 0;
+  font-family: MarqueeMoon, Arial, serif;
+}
+
+@media screen and (max-width: 600px) {
+  .LoginTitle {
+    font-size: calc(0.05 * 100vh); /* Font size for mobile */
+  }
+
+  .BackgroundContainer {
+    background-position: top;
+  }
 }
 
 .LoginForm {
   display: flex;
   flex-direction: column;
+  margin-bottom: 0.5rem;
 }
 
-.LoginLabel {
-  margin-bottom: 8px;
-  color: $fontColor;
-  font-size: 14px;
-}
-
-.LoginInput {
+.FormInput {
   padding: 10px;
-  margin-bottom: 15px;
   border: 1px solid $inputBorderColor;
   border-radius: 4px;
   outline: none;
@@ -57,8 +74,14 @@ $inputFocusBorderColor: #3498db;
   }
 }
 
+.LoginInput {
+  @extend .FormInput;
+  margin-bottom: 15px;
+}
+
 .LoginSubmitButton {
   background-color: $primaryColor;
+  align-self: center;
   color: #fff;
   padding: 12px;
   border: none;
