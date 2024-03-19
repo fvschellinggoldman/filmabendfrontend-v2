@@ -4,11 +4,17 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { loginRequest } from "../../api/auth/Login";
 import styles from "./LoginPage.module.scss"; // Import the styles
 import { Button as DefaultButton } from "@mui/base";
-import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import {
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Typography,
+} from "@mui/material";
 
 type ILoginFormInput = {
   username: string;
   password: string;
+  remember: boolean;
 };
 
 const LoginForm = () => {
@@ -18,10 +24,11 @@ const LoginForm = () => {
   const { register, handleSubmit } = useForm<ILoginFormInput>();
 
   const onSubmit: SubmitHandler<ILoginFormInput> = async (data) => {
-    const { username, password } = data;
+    const { username, password, remember } = data;
     const tokenDetails: Record<string, string> = await loginRequest("/token", {
       username,
       password,
+      remember,
     });
 
     if (!tokenDetails.detail) {
@@ -42,15 +49,23 @@ const LoginForm = () => {
       />
       <input
         placeholder="Password"
-        className={styles.LoginInput}
+        className={styles.FormInput}
         {...register("password", { required: true })}
         type="password"
         defaultValue=""
       />
       <FormGroup>
         <FormControlLabel
-          control={<Checkbox defaultChecked color="primary" />}
-          label="Keep me logged in?"
+          control={
+            <Checkbox
+              defaultChecked
+              color="primary"
+              {...register("remember")}
+            />
+          }
+          label={
+            <Typography variant="subtitle2">Keep me logged in?</Typography>
+          }
         />
       </FormGroup>
       <DefaultButton className={styles.LoginSubmitButton} type="submit">

@@ -28,7 +28,6 @@ input {
 }
 
 .LoginContainer {
-  width: 30%;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -40,10 +39,20 @@ input {
 .LoginTitle {
   text-align: center;
   color: $fontColor;
-  font-size: 7rem;
+  font-size: calc(0.15 * 100vh); /* Default font size for desktop */
   margin-bottom: 0;
   margin-top: 0;
   font-family: MarqueeMoon, Arial, serif;
+}
+
+@media screen and (max-width: 600px) {
+  .LoginTitle {
+    font-size: calc(0.05 * 100vh); /* Font size for mobile */
+  }
+
+  .BackgroundContainer {
+    background-position: top;
+  }
 }
 
 .LoginForm {
@@ -52,25 +61,27 @@ input {
   margin-bottom: 0.5rem;
 }
 
-.LoginInput {
+.FormInput {
   padding: 10px;
-  margin-bottom: 15px;
   border: 1px solid $inputBorderColor;
   border-radius: 4px;
   outline: none;
   background-color: $inputBgColor;
   transition: border-color 0.3s ease;
-  opacity: 1;
 
   &:focus {
     border-color: $inputFocusBorderColor;
   }
 }
 
+.LoginInput {
+  @extend .FormInput;
+  margin-bottom: 15px;
+}
+
 .LoginSubmitButton {
   background-color: $primaryColor;
   align-self: center;
-  width: 30%;
   color: #fff;
   padding: 12px;
   border: none;

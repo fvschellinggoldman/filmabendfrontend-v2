@@ -59,7 +59,7 @@ const RegisterForm = () => {
       />
       <input
         placeholder="Confirm Password"
-        className={styles.LoginInput}
+        className={styles.FormInput}
         {...register("confirmPassword", {
           required: true,
           validate: (val: string) => {
