@@ -43,7 +43,7 @@ const VotingPage: FC<VotingPageProps> = () => {
     <>
       {event && (
         <div>
-          <EventImage event={event}></EventImage>
+          <EventImage event={event} user={user}></EventImage>
           <div className={styles.VotingPageContainer}>
             <ImageList
               sx={{ overflowY: "visible !important" }}

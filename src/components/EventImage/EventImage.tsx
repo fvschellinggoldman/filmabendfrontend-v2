@@ -7,12 +7,14 @@ import { AddCircle } from "@mui/icons-material";
 import { postRequest } from "../../api/api";
 import { mutate } from "swr";
 import { toast } from "sonner";
+import { User } from "../../types/user";
 
 interface EventImageProps {
   event: Event;
+  user: User;
 }
 
-const EventImage: FC<EventImageProps> = ({ event }) => {
+const EventImage: FC<EventImageProps> = ({ event, user }) => {
   const closeVoting = async () => {
     toast.success(`${event.name} has been closed for voting!`);
     await postRequest(`/api/event/${event.id}`, {});
@@ -35,26 +37,28 @@ const EventImage: FC<EventImageProps> = ({ event }) => {
           alt="Event"
         ></img>
         <div className={styles.OverlayText}>{event?.name}</div>
-        <Toolbar className={styles.OverlayToolbar}>
-          <Tooltip title="Close Voting">
-            <IconButton
-              onClick={closeVoting}
-              color="inherit"
-              aria-label="close voting"
-            >
-              <LockIcon style={{ fontSize: "36px" }}></LockIcon>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Create new Event">
-            <IconButton
-              onClick={startNewEvent}
-              color="inherit"
-              aria-label="create event"
-            >
-              <AddCircle style={{ fontSize: "36px" }}></AddCircle>
-            </IconButton>
-          </Tooltip>
-        </Toolbar>
+        {user.moderator && (
+          <Toolbar className={styles.OverlayToolbar}>
+            <Tooltip title="Close Voting">
+              <IconButton
+                onClick={closeVoting}
+                color="inherit"
+                aria-label="close voting"
+              >
+                <LockIcon style={{ fontSize: "36px" }}></LockIcon>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Create new Event">
+              <IconButton
+                onClick={startNewEvent}
+                color="inherit"
+                aria-label="create event"
+              >
+                <AddCircle style={{ fontSize: "36px" }}></AddCircle>
+              </IconButton>
+            </Tooltip>
+          </Toolbar>
+        )}
       </div>
     </>
   );
