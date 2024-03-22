@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,9 +14,9 @@ import MenuItem from "@mui/material/MenuItem";
 import { Outlet, useNavigate } from "react-router-dom";
 import _ from "lodash";
 import { useFetchUser } from "../../api/users/Users";
+import { ProfileSettings } from "../Profile/ProfileSettings";
 
 const pages = ["Home", "Archive", "Statistics", "Create Categories"];
-const settings = ["Profile", "Admin", "Logout"];
 
 interface NavbarProps {}
 
@@ -24,6 +24,9 @@ const Navbar: FC<NavbarProps> = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   let navigate = useNavigate();
+
+  const [openEditProfileModal, setOpenEditProfileModal] =
+    useState<boolean>(false);
 
   const { user, isError } = useFetchUser();
 
@@ -56,101 +59,116 @@ const Navbar: FC<NavbarProps> = () => {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={() => handleHamburgerClick(page)}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={() => routeChange(page)}
-                sx={{ my: 2, color: "white", display: "block" }}
-                variant="outlined"
+    <>
+      {openEditProfileModal && (
+        <ProfileSettings
+          open={openEditProfileModal}
+          onClose={() => setOpenEditProfileModal(false)}
+        />
+      )}
+      <AppBar position="static">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
               >
-                {page}
-              </Button>
-            ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open user settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {user ? (
-                  <Avatar
-                    alt={user?.displayName}
-                    src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${user?.profilePicturePath}`}
-                  />
-                ) : (
-                  <Avatar
-                    alt="Guest"
-                    src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/no_movie.png`}
-                  />
-                )}
+                <MenuIcon />
               </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: "block", md: "none" },
+                }}
+              >
+                {pages.map((page) => (
+                  <MenuItem
+                    key={page}
+                    onClick={() => handleHamburgerClick(page)}
+                  >
+                    <Typography textAlign="center">{page}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {pages.map((page) => (
+                <Button
+                  key={page}
+                  onClick={() => routeChange(page)}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                  variant="outlined"
+                >
+                  {page}
+                </Button>
               ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-      <Outlet />
-    </AppBar>
+            </Box>
+
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open user settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  {user ? (
+                    <Avatar
+                      alt={user?.displayName}
+                      src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${user?.profilePicturePath}`}
+                    />
+                  ) : (
+                    <Avatar
+                      alt="Guest"
+                      src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/no_movie.png`}
+                    />
+                  )}
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem
+                  key="Edit Profile"
+                  onClick={() => setOpenEditProfileModal(true)}
+                >
+                  <Typography textAlign="center">Edit Profile</Typography>
+                </MenuItem>
+                <MenuItem key="Logout">
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Toolbar>
+        </Container>
+        <Outlet />
+      </AppBar>
+    </>
   );
 };
 export default Navbar;
