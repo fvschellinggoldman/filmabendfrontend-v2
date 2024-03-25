@@ -4,6 +4,7 @@ export type User = {
     showMobileSuggestionTutorial: boolean
     id: string;
     moderator: boolean;
+    userPreference?: UserPreference
 }
 
 export type UserPreference = {

@@ -64,6 +64,7 @@ const Navbar: FC<NavbarProps> = () => {
         <ProfileSettings
           open={openEditProfileModal}
           onClose={() => setOpenEditProfileModal(false)}
+          user={user}
         />
       )}
       <AppBar position="static">
