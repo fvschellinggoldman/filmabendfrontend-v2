@@ -56,7 +56,7 @@ const VotingPage: FC<VotingPageProps> = () => {
                   movie={movie}
                   key={movie.id}
                   eventClosed={event.closed}
-                  isUserAdmin={user.moderator}
+                  user={user}
                 ></VotingElement>
               ))}
             </ImageList>

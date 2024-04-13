@@ -4,22 +4,38 @@ import React, { FC, useState } from "react";
 import { toast } from "sonner";
 import { mutate } from "swr";
 import { postRequest } from "../../api/api";
+import { Action } from "../../types/action";
 import { Movie } from "../../types/movie";
 import { RatingStatus } from "../../types/rating";
+import { User } from "../../types/user";
+import { ConfirmationModal } from "../ConfirmationModal/ConfirmationModal";
 import styles from "./RatingElement.module.scss";
 
 interface RatingElementProps {
   movie: Movie;
   ratingStatus: RatingStatus;
-  isUserAdmin: boolean;
+  user: User;
 }
 
 const RatingElement: FC<RatingElementProps> = ({
   movie,
   ratingStatus,
-  isUserAdmin,
+  user,
 }) => {
+  const [selectedRating, setSelectedRating] = useState(0);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
   const handleRectangleClick = (index: number) => {
+    setSelectedRating(index);
+    user.userPreference && user.userPreference.safeMode
+      ? setShowConfirmationModal(true)
+      : handleConfirmedRating(index);
+  };
+
+  const handleConfirmedRating = (index?: number) => {
+    if (!index) {
+      return null;
+    }
     toast.success(`Rated ${movie.name} with ${index}`);
     setUserHasRated(true);
     postRequest(`/api/movie/${movie.id}/rate`, {
@@ -54,10 +70,21 @@ const RatingElement: FC<RatingElementProps> = ({
 
   return (
     <>
+      {showConfirmationModal && (
+        <ConfirmationModal
+          open={true}
+          action={Action.rating}
+          descriptionText={`This will rate the movie ${movie.name} with a value of ${selectedRating}`}
+          setModalState={setShowConfirmationModal}
+          confirmationFunction={handleConfirmedRating}
+          confirmationFunctionInput={selectedRating}
+        />
+      )}
+
       {userHasRated ? (
         <>
           <p>Waiting for results to be tallied.</p>
-          {isUserAdmin && (
+          {user.moderator && (
             <Button variant="contained" onClick={handleRatingChange}>
               Close Rating
             </Button>

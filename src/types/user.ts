@@ -9,5 +9,6 @@ export type User = {
 
 export type UserPreference = {
     showMobileTutorial: boolean,
-    showWebTutorial: boolean
+    showWebTutorial: boolean,
+    safeMode?: boolean
 }
