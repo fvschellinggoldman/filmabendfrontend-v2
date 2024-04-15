@@ -39,7 +39,7 @@ export const ConfirmationModal: FC<ConfirmationModalProps> = ({
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Confirm {action}?</DialogTitle>
       <DialogContent>
-        <DialogContentText>{descriptionText}.</DialogContentText>
+        <DialogContentText>{descriptionText}</DialogContentText>
       </DialogContent>
       <DialogActions style={{ justifyContent: "space-between" }}>
         <Button variant="contained" onClick={handleClose}>

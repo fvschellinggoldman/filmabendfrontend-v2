@@ -1,6 +1,5 @@
 import {
   Alert,
-  Avatar,
   Button,
   Checkbox,
   Dialog,
@@ -9,7 +8,6 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import styles from "./ProfileSettings.module.scss"; // Import the styles
 
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -17,6 +15,7 @@ import React, { FC } from "react";
 import { User } from "../../types/user";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { editUserSettings } from "../../api/users/ProfileSettings";
+import { CustomAvatar } from "./CustomAvatar";
 
 interface ProfileSettingsProps {
   onClose: () => void;
@@ -53,26 +52,19 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({
     Object.keys(modifiedData).length && editUserSettings(modifiedData);
   };
 
+  // TODO:
+  // change picture on edit click
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogContent sx={{ padding: "8px" }}>
         <form
-          style={{ display: "flex", flexDirection: "column" }}
+          style={{ display: "flex", flexDirection: "column", padding: "10px" }}
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Grid container>
-            <Grid
-              xs={6}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              flexDirection="column"
-            >
-              <Avatar
-                alt="Profile picture"
-                src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${user.profilePicturePath}`}
-                sx={{ width: "15vh", height: "15vh" }}
-              />
+          <Stack direction={"row"} gap={5}>
+            <Stack justifyContent="center" alignItems="center">
+              <CustomAvatar user={user} />
               <Stack direction="row">
                 <Checkbox defaultChecked disabled />
                 <Stack direction="row" alignItems="center">
@@ -82,13 +74,11 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({
                   </Tooltip>
                 </Stack>
               </Stack>
-            </Grid>
-            <Grid
-              xs={6}
+            </Stack>
+            <Stack
               justifyContent="center"
               alignItems="center"
-              display="flex"
-              flexDirection="column"
+              direction="column"
             >
               <input
                 {...register("displayName")}
@@ -115,19 +105,18 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({
                 type="password"
                 defaultValue=""
               />
-              <Stack spacing={2} marginBottom={2}>
+              <Stack spacing={2}>
                 {errors.confirmPassword && (
                   <Alert severity="error">Your passwords don't match</Alert>
                 )}
               </Stack>
-            </Grid>
-          </Grid>
+            </Stack>
+          </Stack>
           <Stack
             direction="row"
             justifyContent="center"
             alignItems="center"
             spacing={2}
-            padding={2}
           >
             <Button variant="contained" onClick={onClose}>
               Cancel

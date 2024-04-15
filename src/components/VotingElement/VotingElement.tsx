@@ -105,6 +105,7 @@ const VotingElement: FC<VotingElementProps> = ({
                 handleClick={handleClick}
                 selected={selected}
                 eventClosed={eventClosed}
+                user={user}
               ></VotingMovieDetails>
             )}
           </div>

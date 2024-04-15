@@ -51,6 +51,12 @@ const RatingElement: FC<RatingElementProps> = ({
     mutate(`/api/movie/${movie.id}/rating_status`);
   };
 
+  const handleRatingChangeClick = () => {
+    user.userPreference && user.userPreference.safeMode
+      ? setShowConfirmationModal(true)
+      : handleRatingChange();
+  };
+
   const [userHasRated, setUserHasRated] = useState<boolean>(
     ratingStatus.currentUserHasRated
   );
@@ -73,11 +79,17 @@ const RatingElement: FC<RatingElementProps> = ({
       {showConfirmationModal && (
         <ConfirmationModal
           open={true}
-          action={Action.rating}
-          descriptionText={`This will rate the movie ${movie.name} with a value of ${selectedRating}`}
+          action={userHasRated ? Action.closeRating : Action.rating}
+          descriptionText={
+            userHasRated
+              ? `This will close the rating for the movie ${movie.name}.`
+              : `This will rate the movie ${movie.name} with a value of ${selectedRating}.`
+          }
           setModalState={setShowConfirmationModal}
-          confirmationFunction={handleConfirmedRating}
-          confirmationFunctionInput={selectedRating}
+          confirmationFunction={
+            userHasRated ? handleRatingChange : handleConfirmedRating
+          }
+          confirmationFunctionInput={userHasRated ? undefined : selectedRating}
         />
       )}
 
@@ -85,7 +97,7 @@ const RatingElement: FC<RatingElementProps> = ({
         <>
           <p>Waiting for results to be tallied.</p>
           {user.moderator && (
-            <Button variant="contained" onClick={handleRatingChange}>
+            <Button variant="contained" onClick={handleRatingChangeClick}>
               Close Rating
             </Button>
           )}

@@ -7,7 +7,7 @@ import {
   Toolbar,
   Tooltip,
 } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styles from "./VotingMovieDetails.module.scss";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import InfoIcon from "@mui/icons-material/Info";
@@ -18,12 +18,16 @@ import { toast } from "sonner";
 import cn from "classnames";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { ConfirmationModal } from "../ConfirmationModal/ConfirmationModal";
+import { Action } from "../../types/action";
+import { User } from "../../types/user";
 
 interface VotingMovieDetailsProps {
   movie: Movie;
   handleClick: () => void;
   selected: boolean;
   eventClosed: boolean;
+  user: User;
 }
 
 const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
@@ -31,13 +35,22 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
   handleClick,
   selected,
   eventClosed,
+  user,
 }) => {
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
   const handleRatingChange = async () => {
     toast.success(`${movie.name} has been opened for rating!`);
     await postRequest(`/api/movie/${movie.id}/modify_rating_state`, {
       newRateableState: true,
     });
     mutate("/api/event");
+  };
+
+  const handleRatingChangeClick = () => {
+    user.userPreference && user.userPreference.safeMode
+      ? setShowConfirmationModal(true)
+      : handleRatingChange();
   };
 
   const navigate = useNavigate();
@@ -47,6 +60,15 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
 
   return (
     <div>
+      {showConfirmationModal && (
+        <ConfirmationModal
+          open={true}
+          action={Action.enableRating}
+          descriptionText={`This will open the movie ${movie.name} for rating.`}
+          setModalState={setShowConfirmationModal}
+          confirmationFunction={handleRatingChange}
+        />
+      )}
       <Table>
         <TableBody>
           <TableRow>
@@ -63,7 +85,7 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
         {eventClosed && (
           <Tooltip title="Unlock Rating">
             <IconButton
-              onClick={handleRatingChange}
+              onClick={handleRatingChangeClick}
               color="inherit"
               aria-label="unlock rating"
             >

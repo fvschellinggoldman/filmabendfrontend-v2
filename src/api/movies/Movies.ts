@@ -1,5 +1,5 @@
 import useSWR, { mutate } from "swr";
-import { Movie, MovieDetail, MovieSearchResult, MovieSuggestion } from "../../types/movie";
+import {  MovieDetail, MovieSearchResult, MovieSuggestion } from "../../types/movie";
 import { getRequest, postRequest, putRequest } from "../api";
   
  async function _addMovie(
