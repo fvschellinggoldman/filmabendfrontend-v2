@@ -1,8 +1,8 @@
-import { Avatar } from "@mui/material";
+import { Avatar, Badge } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { User } from "../../types/user";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 
 interface FilePreview extends File {
   preview: string;
@@ -13,8 +13,6 @@ interface CustomAvatarProps {
 }
 
 export const CustomAvatar: FC<CustomAvatarProps> = ({ user }) => {
-  const [hovered, setHovered] = useState(false);
-
   const [previewImage, setPreviewImage] = useState<FilePreview>();
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -39,8 +37,6 @@ export const CustomAvatar: FC<CustomAvatarProps> = ({ user }) => {
     <>
       <div
         {...getRootProps({ className: "dropzone" })}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
         style={{
           display: "flex",
           alignItems: "center",
@@ -48,24 +44,40 @@ export const CustomAvatar: FC<CustomAvatarProps> = ({ user }) => {
         }}
       >
         <input {...getInputProps()} />
-
-        {previewImage ? (
-          <Avatar
-            alt="Profile picture preview"
-            onLoad={() => {
-              URL.revokeObjectURL(previewImage.preview);
-            }}
-            src={previewImage.preview}
-            sx={{ width: "15vh", height: "15vh" }}
-          />
-        ) : (
-          <Avatar
-            alt="Profile picture"
-            src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${user.profilePicturePath}`}
-            sx={{ width: "15vh", height: "15vh", ":hover": { opacity: 0.4 } }}
-          ></Avatar>
-        )}
-        {hovered && <ModeEditIcon sx={{ position: "absolute" }} />}
+        <Badge
+          overlap="circular"
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          badgeContent={
+            <AddAPhotoIcon
+              style={{
+                border: `3px solid white`,
+                width: "2.5vh",
+                height: "2.5vh",
+                backgroundColor: "black",
+                color: "white",
+                padding: "2px",
+                borderRadius: "30%",
+              }}
+            />
+          }
+        >
+          {previewImage ? (
+            <Avatar
+              alt="Profile picture preview"
+              onLoad={() => {
+                URL.revokeObjectURL(previewImage.preview);
+              }}
+              src={previewImage.preview}
+              sx={{ width: "15vh", height: "15vh" }}
+            />
+          ) : (
+            <Avatar
+              alt="Profile picture"
+              src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${user.profilePicturePath}`}
+              sx={{ width: "15vh", height: "15vh", ":hover": { opacity: 0.4 } }}
+            ></Avatar>
+          )}
+        </Badge>
       </div>
     </>
   );
