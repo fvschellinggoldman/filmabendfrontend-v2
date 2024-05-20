@@ -16,6 +16,7 @@ const SuggestionTutorialOverlay: FC<SuggestionTutorialOverlayProps> = ({
         <div className={styles.ImageOverlay}>
           <img
             className={styles.ImageTutorial}
+            alt="Example movie poster for the Tutorial"
             src="https://filmabend-bucket.s3.eu-central-1.amazonaws.com/posters/tt0371746.jpg"
           ></img>
           <i className="fa-solid fa-circle-check"></i>

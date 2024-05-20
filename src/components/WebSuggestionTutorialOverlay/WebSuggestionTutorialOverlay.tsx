@@ -16,6 +16,7 @@ const WebSuggestionTutorialOverlay: FC<WebSuggestionTutorialOverlayProps> = ({
       <div className={styles.WebSuggestionTutorialOverlay}>
         <img
           className={styles.TutorialImage}
+          alt="Example to show tutorial workings"
           src="https://filmabend-bucket.s3.eu-central-1.amazonaws.com/posters/tt0371746.jpg"
         ></img>
         <div

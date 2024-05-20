@@ -7,6 +7,7 @@ import { Movie } from "../../types/movie";
 import { postRequest } from "../../api/api";
 import RatingInterface from "../RatingInterface/RatingInterface";
 import { toast } from "sonner";
+import { User } from "../../types/user";
 
 function getContrastTextColor(rgbColor?: number[]) {
   // If backgroundColor is undefined, provide a default value (e.g., white)
@@ -27,13 +28,13 @@ function getContrastTextColor(rgbColor?: number[]) {
 interface VotingElementProps {
   movie: Movie;
   eventClosed: boolean;
-  isUserAdmin: boolean;
+  user: User;
 }
 
 const VotingElement: FC<VotingElementProps> = ({
   movie,
   eventClosed,
-  isUserAdmin,
+  user,
 }) => {
   const [selected, setSelected] = useState(
     eventClosed ? false : movie.votedForByCurrentUser
@@ -97,13 +98,14 @@ const VotingElement: FC<VotingElementProps> = ({
             className={styles.VotingMovieDetails}
           >
             {movie.rateable || recentlyRated ? (
-              <RatingInterface movie={movie} isUserAdmin={isUserAdmin} />
+              <RatingInterface movie={movie} user={user} />
             ) : (
               <VotingMovieDetails
                 movie={movie}
                 handleClick={handleClick}
                 selected={selected}
                 eventClosed={eventClosed}
+                user={user}
               ></VotingMovieDetails>
             )}
           </div>

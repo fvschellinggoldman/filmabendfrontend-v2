@@ -80,6 +80,7 @@ const MovieSuggestionElement: FC<MovieSuggestionElementProps> = ({
       <img
         className={styles.SuggestionImage}
         onMouseDown={mouseDownHandler}
+        alt={`Movie poster for ${movieSuggestion.originalTitle}`}
         src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movieSuggestion.moviePosterPath}`}
       ></img>
       <div className={styles.TextContainer}>

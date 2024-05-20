@@ -4,22 +4,38 @@ import React, { FC, useState } from "react";
 import { toast } from "sonner";
 import { mutate } from "swr";
 import { postRequest } from "../../api/api";
+import { Action } from "../../types/action";
 import { Movie } from "../../types/movie";
 import { RatingStatus } from "../../types/rating";
+import { User } from "../../types/user";
+import { ConfirmationModal } from "../ConfirmationModal/ConfirmationModal";
 import styles from "./RatingElement.module.scss";
 
 interface RatingElementProps {
   movie: Movie;
   ratingStatus: RatingStatus;
-  isUserAdmin: boolean;
+  user: User;
 }
 
 const RatingElement: FC<RatingElementProps> = ({
   movie,
   ratingStatus,
-  isUserAdmin,
+  user,
 }) => {
+  const [selectedRating, setSelectedRating] = useState(0);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
   const handleRectangleClick = (index: number) => {
+    setSelectedRating(index);
+    user.userPreference && user.userPreference.enableSafeMode
+      ? setShowConfirmationModal(true)
+      : handleConfirmedRating(index);
+  };
+
+  const handleConfirmedRating = (index?: number) => {
+    if (!index) {
+      return null;
+    }
     toast.success(`Rated ${movie.name} with ${index}`);
     setUserHasRated(true);
     postRequest(`/api/movie/${movie.id}/rate`, {
@@ -33,6 +49,12 @@ const RatingElement: FC<RatingElementProps> = ({
       newRateableState: false,
     });
     mutate(`/api/movie/${movie.id}/rating_status`);
+  };
+
+  const handleRatingStateChangeClick = () => {
+    user.userPreference && user.userPreference.enableSafeMode
+      ? setShowConfirmationModal(true)
+      : handleRatingChange();
   };
 
   const [userHasRated, setUserHasRated] = useState<boolean>(
@@ -54,11 +76,28 @@ const RatingElement: FC<RatingElementProps> = ({
 
   return (
     <>
+      {showConfirmationModal && (
+        <ConfirmationModal
+          open={true}
+          action={userHasRated ? Action.closeRating : Action.rating}
+          descriptionText={
+            userHasRated
+              ? `This will close the rating for the movie ${movie.name}.`
+              : `This will rate the movie ${movie.name} with a value of ${selectedRating}.`
+          }
+          setModalState={setShowConfirmationModal}
+          confirmationFunction={
+            userHasRated ? handleRatingChange : handleConfirmedRating
+          }
+          confirmationFunctionInput={userHasRated ? undefined : selectedRating}
+        />
+      )}
+
       {userHasRated ? (
         <>
           <p>Waiting for results to be tallied.</p>
-          {isUserAdmin && (
-            <Button variant="contained" onClick={handleRatingChange}>
+          {user.moderator && (
+            <Button variant="contained" onClick={handleRatingStateChangeClick}>
               Close Rating
             </Button>
           )}

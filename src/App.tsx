@@ -9,6 +9,7 @@ import { CategoryCreationContainer } from "./components/Categories/CategoryCreat
 import ArchiveTabs from "./components/Archive/ArchiveTabs";
 import { MovieDetail } from "./components/MovieDetail/MovieDetail";
 import LoginPage from "./components/Login/LoginPage";
+import { PersonalStatistics } from "./components/Statistics/PersonalStatistics";
 
 // Create a custom theme
 const theme = createTheme({
@@ -29,12 +30,13 @@ function App() {
       <ThemeProvider theme={theme}>
         <div className="App">
           <BrowserRouter>
-            <Navbar></Navbar>
+            <Navbar />
 
             <Routes>
               <Route path="/home" element={<ApplicationContainer />}></Route>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/archive" element={<ArchiveTabs />} />
+              <Route path="/statistics" element={<PersonalStatistics />} />
               <Route path="/movie/:slug" element={<MovieDetail />} />
               <Route
                 path="/createCategories"

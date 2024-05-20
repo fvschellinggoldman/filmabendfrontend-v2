@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styles from "./EventImage.module.scss";
 import LockIcon from "@mui/icons-material/Lock";
 import { IconButton, Toolbar, Tooltip } from "@mui/material";
@@ -8,6 +8,8 @@ import { postRequest } from "../../api/api";
 import { mutate } from "swr";
 import { toast } from "sonner";
 import { User } from "../../types/user";
+import { ConfirmationModal } from "../ConfirmationModal/ConfirmationModal";
+import { Action } from "../../types/action";
 
 interface EventImageProps {
   event: Event;
@@ -15,6 +17,9 @@ interface EventImageProps {
 }
 
 const EventImage: FC<EventImageProps> = ({ event, user }) => {
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [startingEvent, setStartingEvent] = useState(false);
+
   const closeVoting = async () => {
     toast.success(`${event.name} has been closed for voting!`);
     await postRequest(`/api/event/${event.id}`, {});
@@ -27,8 +32,35 @@ const EventImage: FC<EventImageProps> = ({ event, user }) => {
     mutate("/api/event");
   };
 
+  const handleNewEventClick = () => {
+    setStartingEvent(true);
+    user.userPreference && user.userPreference.enableSafeMode
+      ? setShowConfirmationModal(true)
+      : startNewEvent();
+  };
+
+  const handleCloseEventClick = () => {
+    setStartingEvent(false);
+    user.userPreference && user.userPreference.enableSafeMode
+      ? setShowConfirmationModal(true)
+      : closeVoting();
+  };
+
   return (
     <>
+      {showConfirmationModal && (
+        <ConfirmationModal
+          open={true}
+          action={startingEvent ? Action.event : Action.closeVoting}
+          descriptionText={
+            startingEvent
+              ? "This will start a new event."
+              : `This will close the event ${event.name} for voting.`
+          }
+          setModalState={setShowConfirmationModal}
+          confirmationFunction={startingEvent ? startNewEvent : closeVoting}
+        />
+      )}
       <div className={styles.EventImageContainer}>
         <img
           src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${event?.imageUrl}`}
@@ -41,7 +73,7 @@ const EventImage: FC<EventImageProps> = ({ event, user }) => {
           <Toolbar className={styles.OverlayToolbar}>
             <Tooltip title="Close Voting">
               <IconButton
-                onClick={closeVoting}
+                onClick={handleCloseEventClick}
                 color="inherit"
                 aria-label="close voting"
               >
@@ -50,7 +82,7 @@ const EventImage: FC<EventImageProps> = ({ event, user }) => {
             </Tooltip>
             <Tooltip title="Create new Event">
               <IconButton
-                onClick={startNewEvent}
+                onClick={handleNewEventClick}
                 color="inherit"
                 aria-label="create event"
               >
