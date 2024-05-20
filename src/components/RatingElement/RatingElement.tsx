@@ -27,7 +27,7 @@ const RatingElement: FC<RatingElementProps> = ({
 
   const handleRectangleClick = (index: number) => {
     setSelectedRating(index);
-    user.userPreference && user.userPreference.safeMode
+    user.userPreference && user.userPreference.enableSafeMode
       ? setShowConfirmationModal(true)
       : handleConfirmedRating(index);
   };
@@ -52,7 +52,7 @@ const RatingElement: FC<RatingElementProps> = ({
   };
 
   const handleRatingChangeClick = () => {
-    user.userPreference && user.userPreference.safeMode
+    user.userPreference && user.userPreference.enableSafeMode
       ? setShowConfirmationModal(true)
       : handleRatingChange();
   };

@@ -3,6 +3,8 @@ import React, { FC, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { User } from "../../types/user";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import { UseFormSetValue } from "react-hook-form";
+import { IEditProfileFormInput } from "./ProfileSettings";
 
 interface FilePreview extends File {
   preview: string;
@@ -10,9 +12,10 @@ interface FilePreview extends File {
 
 interface CustomAvatarProps {
   user: User;
+  setValue: UseFormSetValue<IEditProfileFormInput>;
 }
 
-export const CustomAvatar: FC<CustomAvatarProps> = ({ user }) => {
+export const CustomAvatar: FC<CustomAvatarProps> = ({ user, setValue }) => {
   const [previewImage, setPreviewImage] = useState<FilePreview>();
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -25,6 +28,7 @@ export const CustomAvatar: FC<CustomAvatarProps> = ({ user }) => {
         preview: URL.createObjectURL(acceptedFiles[0]),
       };
       setPreviewImage(file);
+      setValue("profilePicture", acceptedFiles[0]);
     },
   });
 
@@ -64,9 +68,6 @@ export const CustomAvatar: FC<CustomAvatarProps> = ({ user }) => {
           {previewImage ? (
             <Avatar
               alt="Profile picture preview"
-              onLoad={() => {
-                URL.revokeObjectURL(previewImage.preview);
-              }}
               src={previewImage.preview}
               sx={{ width: "15vh", height: "15vh" }}
             />

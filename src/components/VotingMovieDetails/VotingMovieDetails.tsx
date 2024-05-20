@@ -48,7 +48,7 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
   };
 
   const handleRatingChangeClick = () => {
-    user.userPreference && user.userPreference.safeMode
+    user.userPreference && user.userPreference.enableSafeMode
       ? setShowConfirmationModal(true)
       : handleRatingChange();
   };

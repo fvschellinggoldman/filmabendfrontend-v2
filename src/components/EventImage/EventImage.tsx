@@ -34,14 +34,14 @@ const EventImage: FC<EventImageProps> = ({ event, user }) => {
 
   const handleNewEventClick = () => {
     setStartingEvent(true);
-    user.userPreference && user.userPreference.safeMode
+    user.userPreference && user.userPreference.enableSafeMode
       ? setShowConfirmationModal(true)
       : startNewEvent();
   };
 
   const handleCloseEventClick = () => {
     setStartingEvent(false);
-    user.userPreference && user.userPreference.safeMode
+    user.userPreference && user.userPreference.enableSafeMode
       ? setShowConfirmationModal(true)
       : closeVoting();
   };

@@ -1,21 +1,23 @@
 import {
   Alert,
   Button,
-  Checkbox,
   Dialog,
   DialogContent,
   Stack,
+  Switch,
   Tooltip,
   Typography,
 } from "@mui/material";
 import styles from "./ProfileSettings.module.scss"; // Import the styles
 
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { User } from "../../types/user";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { editUserSettings } from "../../api/users/ProfileSettings";
 import { CustomAvatar } from "./CustomAvatar";
+import { mutate } from "swr";
+import { putRequestFile } from "../../api/api";
+import { toast } from "sonner";
 
 interface ProfileSettingsProps {
   onClose: () => void;
@@ -27,6 +29,8 @@ export type IEditProfileFormInput = {
   displayName: string;
   password: string;
   confirmPassword: string;
+  enableSafeMode: boolean;
+  profilePicture: File;
 };
 
 export const ProfileSettings: FC<ProfileSettingsProps> = ({
@@ -38,22 +42,35 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({
     register,
     handleSubmit,
     watch,
-    formState: { errors, dirtyFields },
+    setValue,
+    formState: { errors },
   } = useForm<IEditProfileFormInput>();
 
   const onSubmit: SubmitHandler<IEditProfileFormInput> = async (data) => {
-    const modifiedData: Partial<IEditProfileFormInput> = {};
-    Object.keys(data).forEach((key) => {
-      if (dirtyFields[key as keyof IEditProfileFormInput]) {
-        modifiedData[key as keyof IEditProfileFormInput] =
-          data[key as keyof IEditProfileFormInput];
-      }
-    });
-    Object.keys(modifiedData).length && editUserSettings(modifiedData);
+    const formData = new FormData();
+    data.password && formData.append("password", data.password);
+    data.displayName && formData.append("display_name", data.displayName);
+    data.enableSafeMode &&
+      formData.append("enable_safe_mode", data.enableSafeMode.toString());
+    data.profilePicture &&
+      formData.append("profile_picture", data.profilePicture);
+    await putRequestFile("/api/user/edit_user_settings", formData);
+    mutate("/api/users/me");
+    toast.success("You have succesfully updated your settings.");
+    onClose();
   };
 
-  // TODO:
-  // change picture on edit click
+  const [enableSafeMode, setEnableSafeMode] = useState<boolean>(
+    user.userPreference?.enableSafeMode !== undefined
+      ? user.userPreference?.enableSafeMode
+      : true
+  );
+  console.log(user);
+
+  const handleCheckboxChange = () => {
+    setValue("enableSafeMode", !enableSafeMode);
+    setEnableSafeMode(!enableSafeMode);
+  };
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -64,12 +81,15 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({
         >
           <Stack direction={"row"} gap={5}>
             <Stack justifyContent="center" alignItems="center">
-              <CustomAvatar user={user} />
+              <CustomAvatar user={user} setValue={setValue} />
               <Stack direction="row">
-                <Checkbox defaultChecked disabled />
+                <Switch
+                  checked={enableSafeMode}
+                  onChange={handleCheckboxChange}
+                />
                 <Stack direction="row" alignItems="center">
                   <Typography>Safe Mode</Typography>
-                  <Tooltip title="Coming Soon">
+                  <Tooltip title="Get asked for confirmation before irrevertible actions">
                     <InfoOutlinedIcon />
                   </Tooltip>
                 </Stack>
