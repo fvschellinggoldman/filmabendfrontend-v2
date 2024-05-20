@@ -50,7 +50,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({
     const formData = new FormData();
     data.password && formData.append("password", data.password);
     data.displayName && formData.append("display_name", data.displayName);
-    data.enableSafeMode &&
+    data.enableSafeMode !== undefined &&
       formData.append("enable_safe_mode", data.enableSafeMode.toString());
     data.profilePicture &&
       formData.append("profile_picture", data.profilePicture);

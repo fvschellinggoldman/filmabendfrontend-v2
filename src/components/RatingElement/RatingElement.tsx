@@ -51,7 +51,7 @@ const RatingElement: FC<RatingElementProps> = ({
     mutate(`/api/movie/${movie.id}/rating_status`);
   };
 
-  const handleRatingChangeClick = () => {
+  const handleRatingStateChangeClick = () => {
     user.userPreference && user.userPreference.enableSafeMode
       ? setShowConfirmationModal(true)
       : handleRatingChange();
@@ -97,7 +97,7 @@ const RatingElement: FC<RatingElementProps> = ({
         <>
           <p>Waiting for results to be tallied.</p>
           {user.moderator && (
-            <Button variant="contained" onClick={handleRatingChangeClick}>
+            <Button variant="contained" onClick={handleRatingStateChangeClick}>
               Close Rating
             </Button>
           )}
