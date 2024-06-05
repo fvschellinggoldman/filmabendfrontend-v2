@@ -1,0 +1,13 @@
+.PersonalStatisticCardContainer {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.PersonalStatisticCard {
+    width: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }

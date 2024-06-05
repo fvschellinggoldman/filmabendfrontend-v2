@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -6,10 +7,11 @@ import {
   TableRow,
   TableSortLabel,
 } from "@mui/material";
-import { useState } from "react";
 import { useFetchPersonalRanking } from "../../api/movies/PersonalRanking";
 import { useFetchUser } from "../../api/users/Users";
 import { UserRatedMovie } from "../../types/movie";
+
+import styles from "./PersonalRanking.module.scss";
 
 const sortData = (
   data: UserRatedMovie[],
@@ -64,11 +66,11 @@ export const PersonalRanking = () => {
     : personalRankings;
 
   return (
-    <Table>
+    <Table stickyHeader>
       <TableHead>
         <TableRow>
-          <TableCell>Movie</TableCell>
-          <TableCell align="center">
+          <TableCell className={styles.TableHeadCell}>Movie</TableCell>
+          <TableCell align="center" className={styles.TableHeadCell}>
             <TableSortLabel
               active={orderBy === "rating"}
               direction={orderBy === "rating" ? order : "asc"}
@@ -77,8 +79,10 @@ export const PersonalRanking = () => {
               Rating
             </TableSortLabel>
           </TableCell>
-          <TableCell align="center">Season</TableCell>
-          <TableCell align="center">
+          <TableCell className={styles.TableHeadCell} align="center">
+            Season
+          </TableCell>
+          <TableCell className={styles.TableHeadCell} align="center">
             <TableSortLabel
               active={orderBy === "movie.averageRating"}
               direction={orderBy === "movie.averageRating" ? order : "asc"}
@@ -93,6 +97,7 @@ export const PersonalRanking = () => {
         {sortedData.map((personalRanking) => (
           <TableRow
             key={`${personalRanking.userId}_${personalRanking.movie.id}`}
+            className={styles.TableRow}
           >
             <TableCell component="th" scope="row">
               {personalRanking.movie.name}
