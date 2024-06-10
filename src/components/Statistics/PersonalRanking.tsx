@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import {
   Table,
   TableBody,
@@ -8,10 +8,10 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import { useFetchPersonalRanking } from "../../api/movies/PersonalRanking";
-import { useFetchUser } from "../../api/users/Users";
 import { UserRatedMovie } from "../../types/movie";
 
 import styles from "./PersonalRanking.module.scss";
+import { User } from "../../types/user";
 
 const sortData = (
   data: UserRatedMovie[],
@@ -36,8 +36,11 @@ const sortData = (
   });
 };
 
-export const PersonalRanking = () => {
-  const { user, isError } = useFetchUser();
+interface PersonalRankingProps {
+  user: User;
+}
+
+export const PersonalRanking: FC<PersonalRankingProps> = ({ user }) => {
   const { personalRankings } = useFetchPersonalRanking(user?.id);
 
   const [order, setOrder] = useState<"asc" | "desc">("asc");
@@ -45,11 +48,7 @@ export const PersonalRanking = () => {
     keyof UserRatedMovie | "movie.averageRating"
   >("movie.averageRating");
 
-  if (
-    user === undefined ||
-    isError !== undefined ||
-    personalRankings === undefined
-  ) {
+  if (personalRankings === undefined) {
     return null;
   }
 

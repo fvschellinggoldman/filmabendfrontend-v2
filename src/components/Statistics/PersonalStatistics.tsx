@@ -1,29 +1,22 @@
 import { Typography } from "@mui/material";
 import React from "react";
+import { useFetchUser } from "../../api/users/Users";
 import { PersonalRanking } from "./PersonalRanking";
-import { PersonalStatisticCard } from "./PersonalStatisticCard";
 
-import styles from "./PersonalStatisticsCard.module.scss";
+import { PersonalStatisticsContainer } from "./PersonalStatisticsContainer";
 
 export const PersonalStatistics = () => {
+  const { user, isError } = useFetchUser();
+
+  if (user === undefined || isError !== undefined) {
+    return null;
+  }
+
   return (
     <>
       <Typography variant="h3">Personal Ranking & Statistics</Typography>
-      <div className={styles.PersonalStatisticCardContainer}>
-        <div className={styles.PersonalStatisticCard}>
-          <PersonalStatisticCard title="Test" content="This is a test" />
-        </div>
-        <div className={styles.PersonalStatisticCard}>
-          <PersonalStatisticCard
-            title="Test"
-            content="This is a tedwqdwqdwqst"
-          />
-        </div>
-        <div className={styles.PersonalStatisticCard}>
-          <PersonalStatisticCard title="Test" content="This is a fqwfqwftest" />
-        </div>
-      </div>
-      <PersonalRanking />
+      <PersonalStatisticsContainer user={user} />
+      <PersonalRanking user={user} />
     </>
   );
 };
