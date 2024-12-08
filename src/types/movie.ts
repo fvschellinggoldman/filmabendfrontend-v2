@@ -11,6 +11,7 @@ export type Movie = {
     averageRating?: number
     genres: string[]
     tmdbId: number
+    season: number
 }
 
 export type MovieDetail = Movie & {
@@ -40,4 +41,10 @@ export type MovieSuggestion = MovieSearchResult &
 export type MovieImageMetaData = {
     filepath?: string
     averageImageColors?: number[]
+}
+
+export type UserRatedMovie = {
+    movie: Movie,
+    userId: string,
+    rating: number
 }
