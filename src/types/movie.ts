@@ -1,50 +1,50 @@
-import { UserBasedRating } from "./rating"
+import { UserBasedRating } from "./rating";
 
 export type Movie = {
-    id: number
-    name: string
-    moviePosterData: MovieImageMetaData
-    rateable?: boolean
-    ratingClosedOn?: string
-    votes: string[]
-    votedForByCurrentUser: boolean
-    averageRating?: number
-    genres: string[]
-    tmdbId: number
-    season: number
-}
+  id: number;
+  name: string;
+  moviePosterData: MovieImageMetaData;
+  rateable?: boolean;
+  ratingClosedOn?: string;
+  votes: string[];
+  votedForByCurrentUser: boolean;
+  averageRating?: number;
+  genres: string[];
+  tmdbId: number;
+  season: number;
+};
 
 export type MovieDetail = Movie & {
-    description: string
-    runtime: number
-    releaseDate: Date
-    season: number
-    categoryName?: string
-    imdbRating?: number
-    breakdown?: UserBasedRating[]
-}
+  description: string;
+  runtime: number;
+  releaseDate: Date;
+  season: number;
+  categoryName?: string;
+  imdbRating?: number;
+  breakdown?: UserBasedRating[];
+};
 
 export type MovieSearchResult = {
-    title: string
-    originalTitle?: string
-    releaseDate: Date
-    tmdbId: number
-}
+  title: string;
+  originalTitle?: string;
+  releaseDate: Date;
+  tmdbId: number;
+  addable: boolean;
+};
 
-export type MovieSuggestion = MovieSearchResult &
- {
-    moviePosterPath: string
-    eventId: number
-    id: number
- }
+export type MovieSuggestion = MovieSearchResult & {
+  moviePosterPath: string;
+  eventId: number;
+  id: number;
+};
 
 export type MovieImageMetaData = {
-    filepath?: string
-    averageImageColors?: number[]
-}
+  filepath?: string;
+  averageImageColors?: number[];
+};
 
 export type UserRatedMovie = {
-    movie: Movie,
-    userId: string,
-    rating: number
-}
+  movie: Movie;
+  userId: string;
+  rating: number;
+};

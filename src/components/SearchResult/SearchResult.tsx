@@ -25,12 +25,12 @@ const SearchResult: FC<SearchResultProps> = ({ searchResult, event }) => {
 
   return (
     <div className={styles.SearchResult}>
-      <ListItemButton disabled={searchResultAdded}>
+      <ListItemButton disabled={searchResultAdded || !searchResult.addable}>
         <ListItemText
           primary={searchResult.title}
           secondary={searchResult.releaseDate?.toString()}
         />
-        {!searchResultAdded && (
+        {!searchResultAdded && searchResult.addable && (
           <ListItemIcon
             onClick={handleAddMovie}
             style={{ justifyContent: "right" }}
