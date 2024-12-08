@@ -65,7 +65,6 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({
       ? user.userPreference?.enableSafeMode
       : true
   );
-  console.log(user);
 
   const handleCheckboxChange = () => {
     setValue("enableSafeMode", !enableSafeMode);
