@@ -9,7 +9,7 @@ swap_size_mb = 1024
 
 [env]
   PORT = "80"
-  REACT_APP_BASE_URL = "https://filmabend-backend.fly.dev/"
+  VITE_BASE_URL = "https://filmabend-backend.fly.dev/"
 
 [http_service]
   internal_port = 80

@@ -1,4 +1,4 @@
-const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL || "";
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL || "";
 
 export async function postRequest<T>(url: string, data: any): Promise<T> {
   const options = {
