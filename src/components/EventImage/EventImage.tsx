@@ -1,15 +1,13 @@
-import React, { FC, useState } from "react";
-import styles from "./EventImage.module.scss";
-import LockIcon from "@mui/icons-material/Lock";
-import { IconButton, Toolbar, Tooltip } from "@mui/material";
+import { FC, useState } from "react";
 import { Event } from "../../types/event";
-import { AddCircle } from "@mui/icons-material";
 import { postRequest } from "../../api/api";
 import { mutate } from "swr";
 import { toast } from "sonner";
 import { User } from "../../types/user";
 import { ConfirmationModal } from "../ConfirmationModal/ConfirmationModal";
 import { Action } from "../../types/action";
+import { Button } from "../ui/button";
+import { CalendarPlus, Lock } from "lucide-react";
 
 interface EventImageProps {
   event: Event;
@@ -61,35 +59,36 @@ const EventImage: FC<EventImageProps> = ({ event, user }) => {
           confirmationFunction={startingEvent ? startNewEvent : closeVoting}
         />
       )}
-      <div className={styles.EventImageContainer}>
+      <div className={"relative w-full flex flex-col items-center bg-white "}>
         <img
           src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${event?.imageUrl}`}
           width="100%"
-          height={200}
           alt="Event"
+          className="object-cover rounded h-[200px]"
         ></img>
-        <div className={styles.OverlayText}>{event?.name}</div>
+        <div className="absolute top-1/3 text-2xl text-white">
+          {event?.name}
+        </div>
+
         {user.moderator && (
-          <Toolbar className={styles.OverlayToolbar}>
-            <Tooltip title="Close Voting">
-              <IconButton
-                onClick={handleCloseEventClick}
-                color="inherit"
-                aria-label="close voting"
-              >
-                <LockIcon style={{ fontSize: "36px" }}></LockIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Create new Event">
-              <IconButton
-                onClick={handleNewEventClick}
-                color="inherit"
-                aria-label="create event"
-              >
-                <AddCircle style={{ fontSize: "36px" }}></AddCircle>
-              </IconButton>
-            </Tooltip>
-          </Toolbar>
+          <div className="absolute top-2/3 text-white gap-2 flex flex-row">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleNewEventClick}
+              className="[&_svg]:size-6"
+            >
+              <Lock />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleCloseEventClick}
+              className="[&_svg]:size-6"
+            >
+              <CalendarPlus />
+            </Button>
+          </div>
         )}
       </div>
     </>
