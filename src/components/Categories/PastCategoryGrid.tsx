@@ -1,5 +1,4 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
-import React from "react";
 import { Category } from "../../types/category";
 
 export const PastCategoryGrid = () => {

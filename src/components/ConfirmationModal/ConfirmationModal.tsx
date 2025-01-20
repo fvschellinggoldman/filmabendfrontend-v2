@@ -6,7 +6,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import React, { FC } from "react";
+import { FC } from "react";
 import { Action } from "../../types/action";
 
 interface ConfirmationModalProps {
