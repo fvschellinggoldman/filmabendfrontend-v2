@@ -59,37 +59,42 @@ const EventImage: FC<EventImageProps> = ({ event, user }) => {
           confirmationFunction={startingEvent ? startNewEvent : closeVoting}
         />
       )}
-      <div className={"relative w-full flex flex-col items-center bg-white "}>
-        <img
-          src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${event?.imageUrl}`}
-          width="100%"
-          alt="Event"
-          className="object-cover rounded h-[200px]"
-        ></img>
-        <div className="absolute top-1/3 text-2xl text-white">
-          {event?.name}
-        </div>
 
-        {user.moderator && (
-          <div className="absolute top-2/3 text-white gap-2 flex flex-row">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleNewEventClick}
-              className="[&_svg]:size-6"
-            >
-              <Lock />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleCloseEventClick}
-              className="[&_svg]:size-6"
-            >
-              <CalendarPlus />
-            </Button>
+      <div className="flex flex-row">
+        <div className="relative w-full flex flex-col items-center">
+          <img
+            src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${event?.imageUrl}`}
+            width="100%"
+            alt="Event"
+            className="object-cover h-[200px]"
+          ></img>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/0 to-white/50"></div>
+          <div className="absolute top-1/2 text-2xl text-white">
+            {event?.name}
           </div>
-        )}
+          {user.moderator && (
+            <div className="absolute inset-y-0 right-4 flex flex-col text-white gap-2 items-center justify-evenly opacity-100">
+              <Button
+                variant={"textIcon"}
+                onClick={handleCloseEventClick}
+                className="[&_svg]:size-6 h-fit w-full opacity-100"
+                disabled={event.closed}
+              >
+                <Lock />
+                <span className="text-xs font-medium leading-none">Close</span>
+              </Button>
+              <Button
+                variant={"textIcon"}
+                onClick={handleNewEventClick}
+                className="[&_svg]:size-6 h-fit w-full"
+                disabled={!event.closed}
+              >
+                <CalendarPlus />
+                <span className="text-xs font-medium leading-none">New</span>
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

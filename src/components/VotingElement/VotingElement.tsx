@@ -1,5 +1,5 @@
 import { ImageListItem, ImageListItemBar } from "@mui/material";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import styles from "./VotingElement.module.scss";
 import VotingMovieDetails from "../VotingMovieDetails/VotingMovieDetails";
 import cn from "classnames";

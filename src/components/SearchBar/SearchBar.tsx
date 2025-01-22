@@ -1,5 +1,4 @@
-import React, { FC } from "react";
-import styles from "./SearchBar.module.scss";
+import { FC } from "react";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton } from "@mui/material";
@@ -29,7 +28,7 @@ const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className={styles.SearchBar}>
+    <div className="p-2 w-full">
       <TextField
         fullWidth
         variant="outlined"

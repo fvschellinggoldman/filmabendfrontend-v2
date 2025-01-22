@@ -1,26 +1,15 @@
-import {
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  Toolbar,
-  Tooltip,
-} from "@mui/material";
-import React, { FC, useState } from "react";
-import styles from "./VotingMovieDetails.module.scss";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import InfoIcon from "@mui/icons-material/Info";
+import { FC, useState } from "react";
 import { Movie } from "../../types/movie";
 import { postRequest } from "../../api/api";
 import { mutate } from "swr";
 import { toast } from "sonner";
-import cn from "classnames";
-import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { ConfirmationModal } from "../ConfirmationModal/ConfirmationModal";
 import { Action } from "../../types/action";
 import { User } from "../../types/user";
+import { Small } from "shadcn-typography";
+import { Button } from "../ui/button";
+import { Info, ListOrdered, LockOpen } from "lucide-react";
 
 interface VotingMovieDetailsProps {
   movie: Movie;
@@ -59,7 +48,7 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
   };
 
   return (
-    <div>
+    <>
       {showConfirmationModal && (
         <ConfirmationModal
           open={true}
@@ -69,58 +58,44 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
           confirmationFunction={handleRatingChange}
         />
       )}
-      <Table>
-        <TableBody>
-          <TableRow>
-            <TableCell className={styles.inheritColor}>{movie.name}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className={cn(styles.cursiveFont, styles.inheritColor)}>
-              {movie.genres.join(", ")}
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-      <Toolbar className={styles.OverlayToolbar}>
-        {eventClosed && (
-          <Tooltip title="Unlock Rating">
-            <IconButton
-              onClick={handleRatingChangeClick}
-              color="inherit"
-              aria-label="unlock rating"
+      <div className="flex flex-col justify-evenly h-full px-2">
+        <Small>{movie.name}</Small>
+        <hr />
+        <Small className="italic"> {movie.genres.join(", ")}</Small>
+        <hr />
+        <div className="w-full gap-4 flex-col flex justify-evenly">
+          <div className="flex flex-row justify-evenly">
+            {eventClosed && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleRatingChangeClick}
+                className={"[&_svg]:size-6 flex flex-col p-1 h-12 w-12"}
+              >
+                <ListOrdered />
+                <span className="text-xs font-medium leading-none">Rate</span>
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleNavigate}
+              className={"[&_svg]:size-6 flex flex-col p-1 h-12 w-12"}
             >
-              <LockOpenIcon></LockOpenIcon>
-            </IconButton>
-          </Tooltip>
-        )}
-        <Tooltip title="More Information">
-          <IconButton
-            onClick={handleNavigate}
-            color="inherit"
-            aria-label="get movie details"
+              <Info />
+              <span className="text-xs font-medium leading-none">Info</span>
+            </Button>
+          </div>
+          <Button
+            onClick={handleClick}
+            disabled={eventClosed}
+            className="w-full"
           >
-            <InfoIcon></InfoIcon>
-          </IconButton>
-        </Tooltip>
-      </Toolbar>
-      {selected ? (
-        <Button
-          variant="contained"
-          onClick={handleClick}
-          disabled={eventClosed}
-        >
-          Remove Vote
-        </Button>
-      ) : (
-        <Button
-          variant="contained"
-          onClick={handleClick}
-          disabled={eventClosed}
-        >
-          Add Vote
-        </Button>
-      )}
-    </div>
+            {selected ? "Remove" : "Add"} Vote
+          </Button>
+        </div>
+      </div>
+    </>
   );
 };
 

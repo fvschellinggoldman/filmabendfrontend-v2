@@ -1,119 +1,123 @@
 .VotingElementWrapper {
-    width: 100%;
-    perspective: 1000px; // Perspective for the 3D effect
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  width: 100%;
+  perspective: 1000px; // Perspective for the 3D effect
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .VotingElementWrapper:hover .ImageContainer {
-    transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+
+.ImageContainer {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s; // Animation duration
+  width: 100%;
+  height: 100%;
+
+  .elementImage {
+    width: 100%; // Make the image take up the full width of the container
+    height: 100%; // Maintain the aspect ratio by setting the height to 100%
   }
 
-.ImageContainer { 
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.5s; // Animation duration
-    width: 100%;
-
-    .elementImage {
-        width: 100%;// Make the image take up the full width of the container
-        height: 100%; // Maintain the aspect ratio by setting the height to 100%
-    }
-
-
-    .Ribbon {
-        position: absolute;
-        left: -5px; top: -5px;
-        z-index: 1;
-        overflow: hidden;
-        width: 75px; height: 75px;
-        text-align: right;
-        display: block;
-        backface-visibility: hidden;
-      }
-      .Ribbon .SpanBox {
-        font-size: 10px;
-        font-weight: bold;
-        color: #FFF;
-        text-transform: uppercase;
-        text-align: center;
-        line-height: 20px;
-        transform: rotate(-45deg);
-        -webkit-transform: rotate(-45deg);
-        width: 100px;
-        display: block;
-        background: #79A70A;
-        background: linear-gradient(#F79E05 0%, #8F5408 100%);
-        box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
-        position: absolute;
-        top: 19px; left: -21px;
-      }
-      .Ribbon .SpanBox::before {
-        content: "";
-        position: absolute; left: 0px; top: 100%;
-        z-index: -1;
-        border-left: 3px solid #8F5408;
-        border-right: 3px solid transparent;
-        border-bottom: 3px solid transparent;
-        border-top: 3px solid #8F5408;
-      }
-      .Ribbon .SpanBox::after {
-        content: "";
-        position: absolute; right: 0px; top: 100%;
-        z-index: -1;
-        border-left: 3px solid transparent;
-        border-right: 3px solid #8F5408;
-        border-bottom: 3px solid transparent;
-        border-top: 3px solid #8F5408;
-      }
-      
+  .Ribbon {
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    z-index: 1;
+    overflow: hidden;
+    width: 75px;
+    height: 75px;
+    text-align: right;
+    display: block;
+    backface-visibility: hidden;
+  }
+  .Ribbon .SpanBox {
+    font-size: 10px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 20px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    width: 100px;
+    display: block;
+    background: #79a70a;
+    background: linear-gradient(#f79e05 0%, #8f5408 100%);
+    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+    position: absolute;
+    top: 19px;
+    left: -21px;
+  }
+  .Ribbon .SpanBox::before {
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: 100%;
+    z-index: -1;
+    border-left: 3px solid #8f5408;
+    border-right: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    border-top: 3px solid #8f5408;
+  }
+  .Ribbon .SpanBox::after {
+    content: "";
+    position: absolute;
+    right: 0px;
+    top: 100%;
+    z-index: -1;
+    border-left: 3px solid transparent;
+    border-right: 3px solid #8f5408;
+    border-bottom: 3px solid transparent;
+    border-top: 3px solid #8f5408;
+  }
 }
 
 .selected {
-    border: rgb(11, 59, 154);
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5); /* Blue box shadow */
-    opacity: 0.3;
-
-  }
+  border: rgb(11, 59, 154);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5); /* Blue box shadow */
+  opacity: 0.3;
+}
 
 .VotingMovieDetails {
-    transform-style: preserve-3d;
-    color: white;
-    transform: rotateY(180deg);
-    width: 100%;
-    height: 100%;
-    display: 'flex';
-    justify-content: 'center';
-    align-items: 'center';
-    position: absolute;
-    top: 0;
-    left: 0;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+  transform-style: preserve-3d;
+  color: white;
+  transform: rotateY(180deg);
+  width: 100%;
+  height: 100%;
+  display: "flex";
+  justify-content: "center";
+  align-items: "center";
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 @media (max-width: 600px) {
-    .ImageContainer {
-
-        .elementImage {
-            width: 60%;// Make the image take up the full width of the container
-            float: left
-        }
+  .ImageContainer {
+    .elementImage {
+      width: 60%; // Make the image take up the full width of the container
+      float: left;
     }
+  }
 
-    .VotingMovieDetails{
-        position: relative;
-        transform: none;
-        float: right;
-        width: 40%;
-    }
+  .VotingMovieDetails {
+    position: relative;
+    transform: none;
+    float: right;
+    width: 40%;
+  }
 
-    .VotingElementWrapper:hover .ImageContainer {
-        transform: none;
-    }
+  .VotingElementWrapper:hover .ImageContainer {
+    transform: none;
+  }
 
-    .ItemBarContainer {
-        display: none;
-    }
+  .ItemBarContainer {
+    display: none;
+  }
 }
