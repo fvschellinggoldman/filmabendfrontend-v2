@@ -1,45 +1,52 @@
-import { AddCircle } from "@mui/icons-material";
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { addSearchedMovie } from "../../api/movies/Movies";
 import { MovieSearchResult } from "../../types/movie";
-import styles from "./SearchResult.module.scss";
 import { toast } from "sonner";
 import { Event } from "../../types/event";
+import { Large, Small } from "shadcn-typography";
+import { CirclePlus } from "lucide-react";
+import { mutate } from "swr";
 
 interface SearchResultProps {
-  searchResult: MovieSearchResult;
+  result: MovieSearchResult;
   event: Event;
 }
 
-const SearchResult: FC<SearchResultProps> = ({ searchResult, event }) => {
+const SearchResult: FC<SearchResultProps> = ({ result, event }) => {
   const [searchResultAdded, setSearchResultAdded] = useState(
-    event.movies.some((movie) => movie.tmdbId === searchResult.tmdbId)
+    event.movies.some((movie) => movie.tmdbId === result.tmdbId)
   );
 
+  const canBeAdded = !searchResultAdded && result.addable;
+
   const handleAddMovie = () => {
-    toast.success(`${searchResult.title} has been added!`);
+    const { title } = result;
+    toast.promise(addSearchedMovie(result, event.id), {
+      loading: `Adding ${title} ...`,
+      success: () => {
+        return `${title} has been added!`;
+      },
+      error: `Error while adding ${title}`,
+    });
     setSearchResultAdded(true);
-    addSearchedMovie(searchResult, event.id);
+    mutate("/api/event");
   };
 
   return (
-    <div className={styles.SearchResult}>
-      <ListItemButton disabled={searchResultAdded || !searchResult.addable}>
-        <ListItemText
-          primary={searchResult.title}
-          secondary={searchResult.releaseDate?.toString()}
-        />
-        {!searchResultAdded && searchResult.addable && (
-          <ListItemIcon
-            onClick={handleAddMovie}
-            style={{ justifyContent: "right" }}
-          >
-            <AddCircle style={{ fontSize: "36px" }} />
-          </ListItemIcon>
-        )}
-      </ListItemButton>
-    </div>
+    <li
+      onClick={handleAddMovie}
+      className={`px-4 py-2  flex flex-row items-center justify-between odd:bg-white even:bg-slate-100  ${
+        canBeAdded
+          ? "cursor-pointer hover:bg-accent"
+          : "opacity-40 cursor-not-allowed"
+      }`}
+    >
+      <div>
+        <Large>{result.title}</Large>
+        {result.releaseDate && <Small>{result.releaseDate.toString()}</Small>}
+      </div>
+      {canBeAdded && <CirclePlus className="min-w-6 min-h-6" />}
+    </li>
   );
 };
 export default SearchResult;

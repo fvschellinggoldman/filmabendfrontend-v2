@@ -24,8 +24,7 @@ export function addSearchedMovie(
   searchedMovie: MovieSearchResult,
   eventId: number
 ) {
-  _addMovie(searchedMovie, eventId);
-  mutate("/api/event");
+  return _addMovie(searchedMovie, eventId);
 }
 
 export function addSuggestedMovie(suggestedMovie?: MovieSuggestion) {

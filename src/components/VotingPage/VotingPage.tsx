@@ -4,12 +4,13 @@ import SearchInterface from "../SearchInterface/SearchInterface";
 import EventImage from "../EventImage/EventImage";
 import { useEvent } from "../../api/events/Events";
 import { useFetchUser } from "../../api/users/Users";
+import SkeletonPage from "../SkeletonPage/SkeletonPage";
 
 interface VotingPageProps {}
 
 const VotingPage: FC<VotingPageProps> = () => {
-  const { event } = useEvent();
-  const { user } = useFetchUser();
+  const { event, isLoading } = useEvent();
+  const { user, isLoading: userLoading } = useFetchUser();
 
   if (!user) {
     return <></>;
@@ -24,13 +25,18 @@ const VotingPage: FC<VotingPageProps> = () => {
     );
   }
 
+  if (isLoading || userLoading) {
+    return <SkeletonPage />;
+  }
+
   return (
     <>
       {event && (
-        <div>
+        <>
           <EventImage event={event} user={user}></EventImage>
+          <SearchInterface event={event}></SearchInterface>
           <div className="flex flex-col sm:flex-row pt-2">
-            <div className="w-full sm:w-3/4 grid grid-cols-1 sm:grid-cols-3 gap-2 px-2 h-fit">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-4 gap-2 px-2 h-fit">
               {movies.map((movie) => (
                 <VotingElement
                   movie={movie}
@@ -40,10 +46,8 @@ const VotingPage: FC<VotingPageProps> = () => {
                 ></VotingElement>
               ))}
             </div>
-            <div className="w-px bg-secondary"></div>
-            <SearchInterface event={event} user={user}></SearchInterface>
           </div>
-        </div>
+        </>
       )}
     </>
   );
