@@ -37,7 +37,7 @@ const SearchBar = ({ event }: SearchBarProps) => {
 
   const handleSearchChange = (searchValue: string) => {
     setSearch(searchValue);
-    setIsLoading(true);
+    setIsLoading(!!searchValue);
     debounced(searchValue);
   };
 
