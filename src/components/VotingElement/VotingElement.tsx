@@ -2,7 +2,6 @@ import { ImageListItem, ImageListItemBar } from "@mui/material";
 import { FC, useState } from "react";
 import styles from "./VotingElement.module.scss";
 import VotingMovieDetails from "../VotingMovieDetails/VotingMovieDetails";
-import cn from "classnames";
 import { Movie } from "../../types/movie";
 import { postRequest } from "../../api/api";
 import RatingInterface from "../RatingInterface/RatingInterface";
@@ -61,56 +60,48 @@ const VotingElement: FC<VotingElementProps> = ({
   };
 
   return (
-    <div className={styles.VotingElementWrapper}>
-      <ImageListItem
-        sx={{ flexDirection: "row", width: "100%", height: "100% !important" }}
-      >
-        <div className={styles.ImageContainer}>
-          <div className={styles.Ribbon}>
-            {selected && !eventClosed && (
-              <span className={styles.SpanBox}>Voted</span>
-            )}
-            {eventClosed && (
-              <span className={styles.SpanBox}>
-                Votes: {movie.votes.length.toString()}
-              </span>
-            )}
-          </div>
-          <img
-            className={cn(styles.elementImage, { [styles.selected]: selected })}
-            src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
-            alt="Movie poster"
-            loading="lazy"
-            onClick={eventClosed ? () => {} : handleClick}
-          ></img>
-          <div
-            className={cn(styles.ItemBarContainer, {
-              [styles.selected]: selected,
-            })}
-          >
-            <ImageListItemBar title={movie.name} />
-          </div>
-          <div
-            style={{
-              backgroundColor: `rgb(${bg})`,
-              color: textColor,
-            }}
-            className={styles.VotingMovieDetails}
-          >
-            {movie.rateable || recentlyRated ? (
-              <RatingInterface movie={movie} user={user} />
-            ) : (
-              <VotingMovieDetails
-                movie={movie}
-                handleClick={handleClick}
-                selected={selected}
-                eventClosed={eventClosed}
-                user={user}
-              ></VotingMovieDetails>
-            )}
-          </div>
+    <div className="flex flex-row h-full w-full perspective-[1000px] items-center justify-center hover:rotate-x-180">
+      <div className="relative hover:rotate-y-180 transform-gpu transition-transform duration-500">
+        <div className={styles.Ribbon}>
+          {selected && !eventClosed && (
+            <span className={styles.SpanBox}>Voted</span>
+          )}
+          {eventClosed && (
+            <span className={styles.SpanBox}>
+              Votes: {movie.votes.length.toString()}
+            </span>
+          )}
         </div>
-      </ImageListItem>
+        <img
+          className={`w-full h-full ${selected ? "opacity-30" : ""}`}
+          src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
+          alt="Movie poster"
+          loading="lazy"
+          onClick={eventClosed ? () => {} : handleClick}
+        ></img>
+        <div className={`hidden sm:block ${selected ? "opacity-30" : ""}`}>
+          <ImageListItemBar title={movie.name} />
+        </div>
+      </div>
+      <div
+        style={{
+          backgroundColor: `rgb(${bg})`,
+          color: textColor,
+        }}
+        className={styles.VotingMovieDetails}
+      >
+        {movie.rateable || recentlyRated ? (
+          <RatingInterface movie={movie} user={user} />
+        ) : (
+          <VotingMovieDetails
+            movie={movie}
+            handleClick={handleClick}
+            selected={selected}
+            eventClosed={eventClosed}
+            user={user}
+          ></VotingMovieDetails>
+        )}
+      </div>
     </div>
   );
 };
