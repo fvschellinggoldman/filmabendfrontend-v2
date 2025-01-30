@@ -52,28 +52,6 @@
     top: 19px;
     left: -21px;
   }
-  .Ribbon .SpanBox::before {
-    content: "";
-    position: absolute;
-    left: 0px;
-    top: 100%;
-    z-index: -1;
-    border-left: 3px solid #8f5408;
-    border-right: 3px solid transparent;
-    border-bottom: 3px solid transparent;
-    border-top: 3px solid #8f5408;
-  }
-  .Ribbon .SpanBox::after {
-    content: "";
-    position: absolute;
-    right: 0px;
-    top: 100%;
-    z-index: -1;
-    border-left: 3px solid transparent;
-    border-right: 3px solid #8f5408;
-    border-bottom: 3px solid transparent;
-    border-top: 3px solid #8f5408;
-  }
 }
 
 .selected {

@@ -66,16 +66,18 @@ const VotingElement: FC<VotingElementProps> = ({
         sx={{ flexDirection: "row", width: "100%", height: "100% !important" }}
       >
         <div className={styles.ImageContainer}>
-          <div className={styles.Ribbon}>
-            {selected && !eventClosed && (
-              <span className={styles.SpanBox}>Voted</span>
-            )}
-            {eventClosed && (
+          {(selected || eventClosed) && (
+            <div className={styles.Ribbon}>
               <span className={styles.SpanBox}>
-                Votes: {movie.votes.length.toString()}
+                <span className="absolute left-0 top-full border-l-[#8f5408] border-solid border-[3px] border-t-[#8f5408] border-r-transparent border-b-transparent"></span>
+
+                {eventClosed
+                  ? `Votes: ${movie.votes.length.toString()}`
+                  : "Voted"}
+                <span className="absolute right-0 top-full border-l-transparent border-solid border-[3px] border-t-[#8f5408] border-r-[#8f5408] border-b-transparent"></span>
               </span>
-            )}
-          </div>
+            </div>
+          )}
           <img
             className={cn(styles.elementImage, { [styles.selected]: selected })}
             src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
