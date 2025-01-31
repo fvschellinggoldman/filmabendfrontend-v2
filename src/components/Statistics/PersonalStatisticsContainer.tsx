@@ -22,7 +22,7 @@ export const PersonalStatisticsContainer: FC<
   }
 
   return isMobile ? (
-    <div className={styles.MobilePersonalStatisticCardContainer}>
+    <div className={"py-4 h-full"}>
       <Slider
         infinite={true}
         centerPadding="60px"
@@ -32,7 +32,10 @@ export const PersonalStatisticsContainer: FC<
         slidesToScroll={1}
       >
         {statistics.map((statistic) => (
-          <div className={styles.PersonalStatisticCard} key={statistic.title}>
+          <div
+            className={"w-1/3 flex justify-center items-center h-full"}
+            key={statistic.title}
+          >
             <PersonalStatisticCard
               title={statistic.title}
               content={statistic.content}
@@ -42,9 +45,12 @@ export const PersonalStatisticsContainer: FC<
       </Slider>
     </div>
   ) : (
-    <div className={styles.PersonalStatisticCardContainer}>
+    <div className={"flex justify-around w-full py-4 h-full"}>
       {statistics.map((statistic) => (
-        <div className={styles.PersonalStatisticCard} key={statistic.title}>
+        <div
+          className={"w-1/3 flex justify-center items-center h-full"}
+          key={statistic.title}
+        >
           <PersonalStatisticCard
             title={statistic.title}
             content={statistic.content}

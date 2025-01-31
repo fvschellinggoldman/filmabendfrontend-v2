@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { postFile } from "../../api/api";
 import { toast } from "sonner";
@@ -10,7 +10,6 @@ import {
   Input,
   FormHelperText,
 } from "@mui/material";
-import styles from "./CategoryCreationInterface.module.scss";
 import { mutate } from "swr";
 
 type ICategoryCreationFormInput = {
@@ -44,7 +43,7 @@ const CategoryCreationInterface: FC<CategoryCreationInterfaceProps> = () => {
       <Typography variant="h4" align="center" padding={5}>
         Create Category
       </Typography>
-      <div className={styles.formContainer}>
+      <div className={"flex flex-col items-center"}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             {...register("name", { required: "Category is required" })}
@@ -54,7 +53,7 @@ const CategoryCreationInterface: FC<CategoryCreationInterfaceProps> = () => {
             fullWidth
             error={!!errors.name}
             helperText={errors.name?.message}
-            className={styles.formField}
+            className={"w-full mb-4"}
           />
           {/* Category Image */}
           <Input
@@ -62,7 +61,7 @@ const CategoryCreationInterface: FC<CategoryCreationInterfaceProps> = () => {
             type="file"
             fullWidth
             error={!!errors.categoryImage}
-            className={`${styles.formField} ${styles.fileInput}`}
+            className={"w-full mb-4"}
           />
           {/* Validation Errors */}
           {errors.categoryImage && (
@@ -75,7 +74,7 @@ const CategoryCreationInterface: FC<CategoryCreationInterfaceProps> = () => {
             type="submit"
             variant="contained"
             color="primary"
-            className={`${styles.formField} ${styles.submitButton}`}
+            className={"w-full mb-4"}
           >
             Submit Category
           </Button>

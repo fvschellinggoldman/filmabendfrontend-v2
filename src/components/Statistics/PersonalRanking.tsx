@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import {
   Table,
   TableBody,
@@ -68,8 +68,13 @@ export const PersonalRanking: FC<PersonalRankingProps> = ({ user }) => {
     <Table stickyHeader>
       <TableHead>
         <TableRow>
-          <TableCell className={styles.TableHeadCell}>Movie</TableCell>
-          <TableCell align="center" className={styles.TableHeadCell}>
+          <TableCell className={"bg-[#e92f6c] text-white font-bold"}>
+            Movie
+          </TableCell>
+          <TableCell
+            align="center"
+            className={"bg-[#e92f6c] text-white font-bold"}
+          >
             <TableSortLabel
               active={orderBy === "rating"}
               direction={orderBy === "rating" ? order : "asc"}
@@ -78,10 +83,16 @@ export const PersonalRanking: FC<PersonalRankingProps> = ({ user }) => {
               Rating
             </TableSortLabel>
           </TableCell>
-          <TableCell className={styles.TableHeadCell} align="center">
+          <TableCell
+            className={"bg-[#e92f6c] text-white font-bold"}
+            align="center"
+          >
             Season
           </TableCell>
-          <TableCell className={styles.TableHeadCell} align="center">
+          <TableCell
+            className={"bg-[#e92f6c] text-white font-bold"}
+            align="center"
+          >
             <TableSortLabel
               active={orderBy === "movie.averageRating"}
               direction={orderBy === "movie.averageRating" ? order : "asc"}
@@ -96,7 +107,7 @@ export const PersonalRanking: FC<PersonalRankingProps> = ({ user }) => {
         {sortedData.map((personalRanking) => (
           <TableRow
             key={`${personalRanking.userId}_${personalRanking.movie.id}`}
-            className={styles.TableRow}
+            className={"bg-[#FFF0F3]"}
           >
             <TableCell component="th" scope="row">
               {personalRanking.movie.name}

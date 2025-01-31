@@ -9,7 +9,7 @@ import { Action } from "../../types/action";
 import { User } from "../../types/user";
 import { Small } from "shadcn-typography";
 import { Button } from "../ui/button";
-import { Info, ListOrdered, LockOpen } from "lucide-react";
+import { Info, ListOrdered } from "lucide-react";
 
 interface VotingMovieDetailsProps {
   movie: Movie;
@@ -76,6 +76,7 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
                 <span className="text-xs font-medium leading-none">Rate</span>
               </Button>
             )}
+
             <Button
               variant="ghost"
               size="icon"

@@ -1,8 +1,7 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Event } from "../../types/event";
 import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import styles from "./EventArchiveTile.module.scss";
 import { useNavigate } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 
@@ -44,10 +43,9 @@ export const EventArchiveTile: FC<EventArchiveTileProps> = ({
             <Stack
               direction="row"
               key={movie.name}
-              className={styles.movieTile}
+              className={"pr-1 hover:cursor-pointer"}
             >
               <img
-                className={styles.movieImage}
                 onClick={() => navigate(`/movie/${movie.id}`)}
                 src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
                 alt="Movie poster"

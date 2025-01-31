@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useFetchRatingStatus } from "../../api/movies/RatingQueue";
 import { Movie } from "../../types/movie";
 import { RatingState } from "../../types/rating";

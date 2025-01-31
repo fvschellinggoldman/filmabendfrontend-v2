@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from "react";
-import styles from "./MovieSuggestionElement.module.scss";
 import { useSwipeable } from "react-swipeable";
 import {
   addSuggestedMovie,
@@ -76,17 +75,24 @@ const MovieSuggestionElement: FC<MovieSuggestionElementProps> = ({
   };
 
   return (
-    <DialogContent {...swipeHandlers} className={styles.MovieSuggestionElement}>
+    <DialogContent
+      {...swipeHandlers}
+      className={"flex flex-col text-center justify-center items-center"}
+    >
       <img
-        className={styles.SuggestionImage}
+        className={
+          "max-w-[80vw] max-h-[80vh] border-2 border-solid border-black"
+        }
         onMouseDown={mouseDownHandler}
         alt={`Movie poster for ${movieSuggestion.originalTitle}`}
         src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movieSuggestion.moviePosterPath}`}
       ></img>
-      <div className={styles.TextContainer}>
-        <Typography variant="body2" className={styles.OverlayText}>
-          {movieSuggestion.title}
-        </Typography>
+      <div
+        className={
+          "flex absolute bottom-[0.5vw] left-0 right-0 align items-center justify-center bg-white/90 h-[9%]"
+        }
+      >
+        <Typography variant="body2">{movieSuggestion.title}</Typography>
       </div>
       {showTutorial && (
         <>

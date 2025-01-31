@@ -1,8 +1,6 @@
 import { DialogContent } from "@mui/material";
-import React, { FC } from "react";
+import { FC } from "react";
 import TutorialAcceptance from "../TutorialAcceptance/TutorialAcceptance";
-import styles from "./WebSuggestionTutorialOverlay.module.scss";
-import cn from "classnames";
 
 interface WebSuggestionTutorialOverlayProps {
   closeDialog: () => void;
@@ -13,23 +11,21 @@ const WebSuggestionTutorialOverlay: FC<WebSuggestionTutorialOverlayProps> = ({
 }) => {
   return (
     <DialogContent>
-      <div className={styles.WebSuggestionTutorialOverlay}>
+      <div className={"flex text-center items-center justify-center flex-col"}>
         <img
-          className={styles.TutorialImage}
+          className={"max-h-[60vh]"}
           alt="Example to show tutorial workings"
           src="https://filmabend-bucket.s3.eu-central-1.amazonaws.com/posters/tt0371746.jpg"
         ></img>
         <div
-          className={cn(
-            styles.WebTutorialOverlayContainer,
-            styles.LeftContainer
-          )}
+          className={
+            "h-[750px] max-h-[60vh] max-w-[20vh] opacity-40 absolute w-[248px]-translate-x-1/2 bg-red-500 border-r-dashed border-r-2 border-r-white"
+          }
         ></div>
         <div
-          className={cn(
-            styles.WebTutorialOverlayContainer,
-            styles.RightContainer
-          )}
+          className={
+            "h-[750px] max-h-[60vh] max-w-[20vh] opacity-40 absolute w-[250px] translate-x-1/2 bg-green-500"
+          }
         ></div>
       </div>
       <div>

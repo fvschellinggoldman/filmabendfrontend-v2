@@ -1,7 +1,5 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import { useFetchMovie } from "../../api/movies/Movies";
-import styles from "./MovieDetail.module.scss";
 import MovieDetailData from "./MovieDetailData";
 
 export const MovieDetail = () => {
@@ -16,8 +14,12 @@ export const MovieDetail = () => {
   }
 
   return (
-    <div className={styles.MovieDetailContainer}>
-      <div className={styles.ImageContainer}>
+    <div className={"flex flex-col sm:flex-row"}>
+      <div
+        className={
+          "flex w-full sm: w-3/4 h-fit items-center justify-center my-4"
+        }
+      >
         <img
           src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
           width="90%"

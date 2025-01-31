@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,7 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { MovieDetail } from "../../types/movie";
-import styles from "./MovieDetailData.module.scss";
 import { Box, Button, Collapse, IconButton, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -20,58 +19,58 @@ const MovieDetailData: FC<MovieDetailDataProps> = ({ movie }) => {
   const [showRatingBreakdown, setShowRatingBreakdown] = useState(false);
 
   return (
-    <TableContainer component={Paper} className={styles.MuiTableContainer}>
-      <Table className={styles.table}>
-        <TableBody>
-          <TableRow key="movieId" className={styles.stripedRow}>
+    <TableContainer component={Paper} className={"my-4 h-fit"}>
+      <Table className={"w-full"}>
+        <TableBody className={"odd:bg-slate-50"}>
+          <TableRow key="movieId">
             <TableCell sx={{ width: "1rem" }}></TableCell>
-            <TableCell className={styles.boldCell}>Name</TableCell>
+            <TableCell className={"font-bold"}>Name</TableCell>
             <TableCell>{movie.name}</TableCell>
           </TableRow>
-          <TableRow key="description" className={styles.stripedRow}>
+          <TableRow key="description">
             <TableCell></TableCell>
-            <TableCell className={styles.boldCell}>Description</TableCell>
+            <TableCell className={"font-bold"}>Description</TableCell>
             <TableCell>
               {movie.description ? movie.description : "N/A"}
             </TableCell>
           </TableRow>
-          <TableRow key="runtime" className={styles.stripedRow}>
+          <TableRow key="runtime">
             <TableCell></TableCell>
-            <TableCell className={styles.boldCell}>Runtime</TableCell>
+            <TableCell className={"font-bold"}>Runtime</TableCell>
             <TableCell>
               {movie.runtime ? movie.runtime + " minutes" : "N/A"}
             </TableCell>
           </TableRow>
-          <TableRow key="releaseDate" className={styles.stripedRow}>
+          <TableRow key="releaseDate">
             <TableCell></TableCell>
-            <TableCell className={styles.boldCell}>Release Date</TableCell>
+            <TableCell className={"font-bold"}>Release Date</TableCell>
             <TableCell>
               {movie.releaseDate ? movie.releaseDate.toString() : "N/A"}
             </TableCell>
           </TableRow>
-          <TableRow key="genres" className={styles.stripedRow}>
+          <TableRow key="genres">
             <TableCell></TableCell>
-            <TableCell className={styles.boldCell}>Genres</TableCell>
+            <TableCell className={"font-bold"}>Genres</TableCell>
             <TableCell>
               {movie.genres.join(", ") ? movie.genres.join(", ") : "N/A"}
             </TableCell>
           </TableRow>
-          <TableRow key="season" className={styles.stripedRow}>
+          <TableRow key="season">
             <TableCell></TableCell>
-            <TableCell className={styles.boldCell}>Season</TableCell>
+            <TableCell className={"font-bold"}>Season</TableCell>
             <TableCell>{movie.season}</TableCell>
           </TableRow>
           {movie.categoryName && (
-            <TableRow key="event" className={styles.stripedRow}>
+            <TableRow key="event">
               <TableCell></TableCell>
-              <TableCell className={styles.boldCell}>Event</TableCell>
+              <TableCell className={"font-bold"}>Event</TableCell>
               <TableCell>{movie.categoryName}</TableCell>
             </TableRow>
           )}
           {movie.imdbRating && (
-            <TableRow key="imdbRating" className={styles.stripedRow}>
+            <TableRow key="imdbRating">
               <TableCell></TableCell>
-              <TableCell className={styles.boldCell}>Imdb Rating</TableCell>
+              <TableCell className={"font-bold"}>Imdb Rating</TableCell>
               {showImdbRating ? (
                 <TableCell>{movie.imdbRating}</TableCell>
               ) : (
@@ -88,7 +87,7 @@ const MovieDetailData: FC<MovieDetailDataProps> = ({ movie }) => {
           )}
           {movie.averageRating && movie.breakdown && (
             <>
-              <TableRow key="average Rating" className={styles.stripedRow}>
+              <TableRow key="average Rating">
                 <TableCell>
                   <IconButton
                     aria-label="expand row"
@@ -102,9 +101,7 @@ const MovieDetailData: FC<MovieDetailDataProps> = ({ movie }) => {
                     )}
                   </IconButton>
                 </TableCell>
-                <TableCell className={styles.boldCell}>
-                  Average Rating
-                </TableCell>
+                <TableCell className={"font-bold"}>Average Rating</TableCell>
                 <TableCell>{movie.averageRating}</TableCell>
               </TableRow>
               <TableRow>

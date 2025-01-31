@@ -1,8 +1,5 @@
-import { ImageListItem, ImageListItemBar } from "@mui/material";
 import { FC, useState } from "react";
-import styles from "./VotingElement.module.scss";
 import VotingMovieDetails from "../VotingMovieDetails/VotingMovieDetails";
-import cn from "classnames";
 import { Movie } from "../../types/movie";
 import { postRequest } from "../../api/api";
 import RatingInterface from "../RatingInterface/RatingInterface";
@@ -61,58 +58,68 @@ const VotingElement: FC<VotingElementProps> = ({
   };
 
   return (
-    <div className={styles.VotingElementWrapper}>
-      <ImageListItem
-        sx={{ flexDirection: "row", width: "100%", height: "100% !important" }}
+    <div className="w-full perspective-1000 flex items-center justify-center flex-row h-full relative group">
+      <div
+        className="sm:group-hover:rotate-y-180 transition-all duration-500 flex"
+        style={{ transformStyle: "preserve-3d" }}
       >
-        <div className={styles.ImageContainer}>
-          {(selected || eventClosed) && (
-            <div className={styles.Ribbon}>
-              <span className={styles.SpanBox}>
-                <span className="absolute left-0 top-full border-l-[#8f5408] border-solid border-[3px] border-t-[#8f5408] border-r-transparent border-b-transparent"></span>
+        {(selected || eventClosed) && (
+          <div
+            className={
+              "absolute -left-[5px] -top-[5px] z-10 overflow-hidden w-[75px] h-[75px] text-right block backface-hidden"
+            }
+          >
+            <span
+              className={
+                "text-[10px] font-bold text-white uppercase text-center leading-5 -rotate-45 w-[100px] block bg-[linear-gradient(#f79e05_0%,_#8f5408_100%)] [box-shadow:0_3px_10px_-5px_rgba(0,_0,_0,_1)] absolute top-[19px] -left-[21px]"
+              }
+            >
+              <span className="absolute left-0 top-full border-l-[#8f5408] border-solid border-[3px] border-t-[#8f5408] border-r-transparent border-b-transparent"></span>
 
-                {eventClosed
-                  ? `Votes: ${movie.votes.length.toString()}`
-                  : "Voted"}
-                <span className="absolute right-0 top-full border-l-transparent border-solid border-[3px] border-t-[#8f5408] border-r-[#8f5408] border-b-transparent"></span>
-              </span>
-            </div>
-          )}
-          <img
-            className={cn(styles.elementImage, { [styles.selected]: selected })}
-            src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
-            alt="Movie poster"
-            loading="lazy"
-            onClick={eventClosed ? () => {} : handleClick}
-          ></img>
-          <div
-            className={cn(styles.ItemBarContainer, {
-              [styles.selected]: selected,
-            })}
-          >
-            <ImageListItemBar title={movie.name} />
+              {eventClosed
+                ? `Votes: ${movie.votes.length.toString()}`
+                : "Voted"}
+              <span className="absolute right-0 top-full border-l-transparent border-solid border-[3px] border-t-[#8f5408] border-r-[#8f5408] border-b-transparent"></span>
+            </span>
           </div>
-          <div
-            style={{
-              backgroundColor: `rgb(${bg})`,
-              color: textColor,
-            }}
-            className={styles.VotingMovieDetails}
-          >
-            {movie.rateable || recentlyRated ? (
-              <RatingInterface movie={movie} user={user} />
-            ) : (
-              <VotingMovieDetails
-                movie={movie}
-                handleClick={handleClick}
-                selected={selected}
-                eventClosed={eventClosed}
-                user={user}
-              ></VotingMovieDetails>
-            )}
-          </div>
+        )}
+        <img
+          className={`w-3/5 sm:w-full h-full ${selected ? "opacity-30" : ""} `}
+          src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
+          alt="Movie poster"
+          loading="lazy"
+          onClick={eventClosed ? () => {} : handleClick}
+        ></img>
+        <div
+          className={`hidden sm:block ${
+            selected ? "opacity-30" : ""
+          } absolute px-4 py-2 bottom-0 flex justify-center align-items grow w-full text-md bg-black/50 truncate text-white`}
+        >
+          {movie.name}
         </div>
-      </ImageListItem>
+        <div
+          style={{
+            backgroundColor: `rgb(${bg})`,
+            color: textColor,
+            transformStyle: "preserve-3d",
+          }}
+          className={
+            "w-2/5 sm:w-full top-0 left-0 flex justify-center items-center sm:absolute sm:h-full sm:rotate-y-180 transition-all duration-500 backface-hidden grow"
+          }
+        >
+          {movie.rateable || recentlyRated ? (
+            <RatingInterface movie={movie} user={user} />
+          ) : (
+            <VotingMovieDetails
+              movie={movie}
+              handleClick={handleClick}
+              selected={selected}
+              eventClosed={eventClosed}
+              user={user}
+            ></VotingMovieDetails>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

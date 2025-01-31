@@ -11,7 +11,7 @@ import {
 import styles from "./ProfileSettings.module.scss"; // Import the styles
 
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { User } from "../../types/user";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CustomAvatar } from "./CustomAvatar";
