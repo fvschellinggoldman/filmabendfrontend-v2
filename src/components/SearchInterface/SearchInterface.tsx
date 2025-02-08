@@ -23,7 +23,11 @@ const SearchInterface: FC<SearchInterfaceProps> = ({ event }) => {
   const { movieSuggestion } = useFetchMovieEventSuggestions(event.id);
 
   return (
-    <div className={"flex flex-row align-items justify-center gap-2 px-2 m-2"}>
+    <div
+      className={
+        "flex flex-row align-items justify-center gap-2 px-2 mx-2 mt-2"
+      }
+    >
       <SearchBar event={event} />
       {movieSuggestion && (
         <Button

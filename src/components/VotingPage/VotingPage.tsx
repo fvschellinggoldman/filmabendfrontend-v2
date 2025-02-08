@@ -12,10 +12,6 @@ const VotingPage: FC<VotingPageProps> = () => {
   const { event, isLoading } = useEvent();
   const { user, isLoading: userLoading } = useFetchUser();
 
-  if (!user) {
-    return <></>;
-  }
-
   const movies = event ? event.movies : [];
   if (event && event.closed) {
     movies.sort(
@@ -27,6 +23,10 @@ const VotingPage: FC<VotingPageProps> = () => {
 
   if (isLoading || userLoading) {
     return <SkeletonPage />;
+  }
+
+  if (!user) {
+    return <></>;
   }
 
   return (
