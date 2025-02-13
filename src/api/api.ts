@@ -84,3 +84,42 @@ export async function getRequest<T>(
       throw error;
     });
 }
+
+export async function deleteRequest<T>(
+  url: string,
+  data: Record<string, string> | null = {}
+): Promise<T | null> {
+  const queryString = data
+    ? Object.entries(data)
+        .map(
+          ([key, value]) =>
+            `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+        )
+        .join("&")
+    : null;
+  url = url.concat(queryString ? `?${queryString}` : "");
+  const options = {
+    method: "DELETE", // Specify the HTTP method (GET, POST, PATCH, DELETE, etc.)
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("bearerToken")}`,
+    },
+  };
+
+  return fetch(`${baseUrl}${url}`, options)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      if (res.status === 204) {
+        return null;
+      }
+      return res.json() as Promise<T>;
+    })
+    .catch((error) => {
+      console.error("Error during fetch:", error);
+      // Handle the error or throw it again based on your requirements
+      throw error;
+    });
+}

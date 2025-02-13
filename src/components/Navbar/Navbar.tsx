@@ -15,8 +15,17 @@ import { Outlet, useNavigate } from "react-router-dom";
 import _ from "lodash";
 import { useFetchUser } from "../../api/users/Users";
 import { ProfileSettings } from "../Profile/ProfileSettings";
+import DesktopNavbar from "./DesktopNavbar";
+import MobileNavbar from "./MobileNavbar";
 
 const pages = ["Home", "Archive", "Statistics", "Create Categories"];
+
+// const pages = [
+//   { label: "HOME", url: "/home" },
+//   { label: "ARCHIVE", url: "/archive" },
+//   { label: "STATISTICS", url: "/statistics" },
+//   { label: "CREATE CATEGORIES", url: "/createCategories" },
+// ];
 
 interface NavbarProps {}
 
@@ -67,6 +76,11 @@ const Navbar: FC<NavbarProps> = () => {
           user={user}
         />
       )}
+      {/* <div className="flex container h-14 items-center">
+        <DesktopNavbar navbarItems={pages} />
+        <MobileNavbar navbarItems={pages} />
+      </div> */}
+
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>

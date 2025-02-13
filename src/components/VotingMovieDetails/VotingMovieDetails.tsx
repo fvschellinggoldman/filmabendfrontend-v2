@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Movie } from "../../types/movie";
-import { postRequest } from "../../api/api";
+import { deleteRequest, postRequest } from "../../api/api";
 import { mutate } from "swr";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +30,9 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
   user,
 }) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showConfirmationDeletionModal, setShowConfirmationDeletionModal] =
+    useState(false);
+
   const [showPlot, setShowPlot] = useState(false);
 
   const handleRatingChange = async () => {
@@ -46,13 +49,27 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
       : handleRatingChange();
   };
 
+  const handleMovieDeletionClick = () => {
+    user.userPreference && user.userPreference.enableSafeMode
+      ? setShowConfirmationDeletionModal(true)
+      : handleDelete();
+  };
+
   const navigate = useNavigate();
   const handleNavigate = () => {
     navigate(`/movie/${movie.id}`);
   };
 
   const handleDelete = () => {
-    toast.warning("Coming soon!");
+    const { name, id } = movie;
+    toast.promise(deleteRequest(`/api/movie/${id}`), {
+      loading: `Deleting ${name}`,
+      success: () => {
+        return `${name} has been deleted!`;
+      },
+      error: `Error while deleting ${name}`,
+    });
+    mutate("/api/event");
   };
 
   return (
@@ -64,6 +81,15 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
           descriptionText={`This will open the movie ${movie.name} for rating.`}
           setModalState={setShowConfirmationModal}
           confirmationFunction={handleRatingChange}
+        />
+      )}
+      {showConfirmationDeletionModal && (
+        <ConfirmationModal
+          open={true}
+          action={Action.deleteMovie}
+          descriptionText={`This will remove the movie ${movie.name} from voting.`}
+          setModalState={setShowConfirmationDeletionModal}
+          confirmationFunction={handleDelete}
         />
       )}
       <div className="flex flex-col justify-evenly h-full w-full px-2">
@@ -99,17 +125,23 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
                   <Label className="text-xs">Plot</Label>
                 </PopoverTrigger>
                 <PopoverContent onPointerDownOutside={() => setShowPlot(false)}>
-                  Coming Soon
+                  {movie.description}
                 </PopoverContent>
               </Popover>
               <Button variant="ghost" size="cardIcon" onClick={handleNavigate}>
                 <Info />
                 <Label className="text-xs">Info</Label>
               </Button>
-              <Button variant="ghost" size="cardIcon" onClick={handleDelete}>
-                <Trash2 />
-                <Label className="text-xs">Delete</Label>
-              </Button>
+              {user.moderator && (
+                <Button
+                  variant="ghost"
+                  size="cardIcon"
+                  onClick={handleMovieDeletionClick}
+                >
+                  <Trash2 />
+                  <Label className="text-xs">Delete</Label>
+                </Button>
+              )}
             </div>
 
             <Button

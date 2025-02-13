@@ -3,5 +3,6 @@ export enum Action {
   event = "Event Creation",
   enableRating = "Open Rating",
   closeRating = "Close Rating",
-  closeVoting = "Close Voting"
+  closeVoting = "Close Voting",
+  deleteMovie = "Delete Movie",
 }

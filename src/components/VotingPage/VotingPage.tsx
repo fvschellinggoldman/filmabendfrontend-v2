@@ -5,6 +5,7 @@ import EventImage from "../EventImage/EventImage";
 import { useEvent } from "../../api/events/Events";
 import { useFetchUser } from "../../api/users/Users";
 import SkeletonPage from "../SkeletonPage/SkeletonPage";
+import EventImageV3 from "../EventImage/EventImageV3";
 
 interface VotingPageProps {}
 
