@@ -25,7 +25,7 @@ const EventImageDialog = ({
       setEventImageIsNew(true);
       setOpenDialog(true);
     }
-  }, [eventId]);
+  }, []);
 
   const handleCloseDialog = () => {
     localStorage.setItem("lastSeenImageEventID", eventId.toString());
@@ -48,7 +48,9 @@ const EventImageDialog = ({
             <Realistic onInit={({ conductor }) => conductor.shoot()} />
           )}
           <DialogHeader>
-            <DialogTitle>{eventName}</DialogTitle>
+            <DialogTitle>{`${
+              eventImageIsNew ? "New Event: " : ""
+            }${eventName}`}</DialogTitle>
           </DialogHeader>
           <img src={`${IMAGE_PREFIX}${imageUrl}`} alt={eventName} />
         </DialogContent>
