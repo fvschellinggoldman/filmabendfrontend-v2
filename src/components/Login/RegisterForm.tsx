@@ -106,7 +106,7 @@ const RegisterForm = () => {
             <FormItem>
               <FormControl>
                 <Input
-                  placeholder="Password"
+                  placeholder="Confirm Password"
                   type="password"
                   className="bg-slate-100"
                   {...field}

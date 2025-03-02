@@ -10,6 +10,7 @@ import ArchiveTabs from "./components/Archive/ArchiveTabs";
 import { MovieDetail } from "./components/MovieDetail/MovieDetail";
 import LoginPage from "./components/Login/LoginPage";
 import { PersonalStatistics } from "./components/Statistics/PersonalStatistics";
+import { TooltipProvider } from "./components/ui/tooltip";
 
 // Create a custom theme
 const theme = createTheme({
@@ -27,25 +28,27 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Toaster position="bottom-right" />
-        <ThemeProvider theme={theme}>
-          <div className="App">
-            <Navbar />
+        <TooltipProvider>
+          <Toaster position="bottom-right" />
+          <ThemeProvider theme={theme}>
+            <div className="App">
+              <Navbar />
 
-            <Routes>
-              <Route path="/home" element={<ApplicationContainer />}></Route>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/archive" element={<ArchiveTabs />} />
-              <Route path="/statistics" element={<PersonalStatistics />} />
-              <Route path="/movie/:slug" element={<MovieDetail />} />
-              <Route
-                path="/createCategories"
-                element={<CategoryCreationContainer />}
-              />
-              <Route path="*" element={<Navigate to="/home" />}></Route>
-            </Routes>
-          </div>
-        </ThemeProvider>
+              <Routes>
+                <Route path="/home" element={<ApplicationContainer />}></Route>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/archive" element={<ArchiveTabs />} />
+                <Route path="/statistics" element={<PersonalStatistics />} />
+                <Route path="/movie/:slug" element={<MovieDetail />} />
+                <Route
+                  path="/createCategories"
+                  element={<CategoryCreationContainer />}
+                />
+                <Route path="*" element={<Navigate to="/home" />}></Route>
+              </Routes>
+            </div>
+          </ThemeProvider>
+        </TooltipProvider>
       </AuthProvider>
     </BrowserRouter>
   );

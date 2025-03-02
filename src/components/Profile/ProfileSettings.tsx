@@ -1,151 +1,191 @@
-import {
-  Alert,
-  Button,
-  Dialog,
-  DialogContent,
-  Stack,
-  Switch,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import styles from "./ProfileSettings.module.scss"; // Import the styles
-
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 import { User } from "../../types/user";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { CustomAvatar } from "./CustomAvatar";
 import { mutate } from "swr";
 import { putRequestFile } from "../../api/api";
 import { toast } from "sonner";
+import { DialogContent, DialogTitle, DialogHeader } from "../ui/dialog";
+import { Small } from "shadcn-typography";
+import { Button } from "../ui/button";
+import { Info } from "lucide-react";
+import { TooltipContent, TooltipTrigger, Tooltip } from "../ui/tooltip";
+import { Switch } from "../ui/switch";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
 
 interface ProfileSettingsProps {
   onClose: () => void;
-  open: boolean;
   user: User;
 }
 
-export type IEditProfileFormInput = {
-  displayName: string;
-  password: string;
-  confirmPassword: string;
-  enableSafeMode: boolean;
-  profilePicture: File;
-};
+const formSchema = z
+  .object({
+    displayName: z
+      .string()
+      .min(2, "Display name must be at least 2 characters."),
+    password: z.string().optional(),
+    confirmPassword: z.string().optional(),
+    enableSafeMode: z.boolean(),
+    profilePicture: z.instanceof(File).optional(),
+  })
+  .superRefine(({ password, confirmPassword }, ctx) => {
+    if (password && confirmPassword && password !== confirmPassword) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Passwords do not match.",
+        path: ["confirmPassword"],
+      });
+    }
+  });
 
 export const ProfileSettings: FC<ProfileSettingsProps> = ({
   onClose,
-  open,
   user,
 }) => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<IEditProfileFormInput>();
+  const [showTooltip, setShowTooltip] = useState(false);
+  const handleToolTipClick = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowTooltip(true);
+  };
 
-  const onSubmit: SubmitHandler<IEditProfileFormInput> = async (data) => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      displayName: user.displayName || "",
+      password: "",
+      confirmPassword: "",
+      enableSafeMode: user.userPreference?.enableSafeMode ?? true,
+    },
+  });
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const formData = new FormData();
-    data.password && formData.append("password", data.password);
-    data.displayName && formData.append("display_name", data.displayName);
-    data.enableSafeMode !== undefined &&
-      formData.append("enable_safe_mode", data.enableSafeMode.toString());
-    data.profilePicture &&
+    if (data.password) formData.append("password", data.password);
+    formData.append("display_name", data.displayName);
+    formData.append("enable_safe_mode", data.enableSafeMode.toString());
+    if (data.profilePicture)
       formData.append("profile_picture", data.profilePicture);
-    await putRequestFile("/api/user/edit_user_settings", formData);
+    toast.promise(putRequestFile("/api/user/edit_user_settings", formData), {
+      loading: "Updating your profile ...",
+      success: () => {
+        return "You have successfully updated your profile.";
+      },
+      error: `Error while updating your profile`,
+    });
     mutate("/api/users/me");
-    toast.success("You have succesfully updated your settings.");
+    handleModalClose();
+  };
+
+  const handleModalClose = () => {
+    form.reset();
     onClose();
   };
 
-  const [enableSafeMode, setEnableSafeMode] = useState<boolean>(
-    user.userPreference?.enableSafeMode !== undefined
-      ? user.userPreference?.enableSafeMode
-      : true
-  );
-
-  const handleCheckboxChange = () => {
-    setValue("enableSafeMode", !enableSafeMode);
-    setEnableSafeMode(!enableSafeMode);
-  };
-
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogContent sx={{ padding: "8px" }}>
-        <form
-          style={{ display: "flex", flexDirection: "column", padding: "10px" }}
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <Stack direction={"row"} gap={5}>
-            <Stack justifyContent="center" alignItems="center">
-              <CustomAvatar user={user} setValue={setValue} />
-              <Stack direction="row">
+    <DialogContent className="w-max rounded sm:px-10">
+      <Form {...form}>
+        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+          <DialogHeader className="pb-2">
+            <DialogTitle>Edit Profile</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col justify-center items-center gap-2">
+              <CustomAvatar user={user} setValue={form.setValue} />
+              <div className="flex flex-row gap-2">
                 <Switch
-                  checked={enableSafeMode}
-                  onChange={handleCheckboxChange}
+                  checked={form.watch("enableSafeMode")}
+                  onCheckedChange={(checked) =>
+                    form.setValue("enableSafeMode", checked)
+                  }
                 />
-                <Stack direction="row" alignItems="center">
-                  <Typography>Safe Mode</Typography>
-                  <Tooltip title="Get asked for confirmation before irrevertible actions">
-                    <InfoOutlinedIcon />
+                <div className="flex flex-row justify-center items-center gap-1">
+                  <Small>Safe Mode</Small>
+                  <Tooltip open={showTooltip}>
+                    <TooltipTrigger>
+                      <Info
+                        size={20}
+                        onClick={handleToolTipClick}
+                        onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}
+                        onTouchStart={handleToolTipClick}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>
+                        Get asked for confirmation before irreversible actions.
+                      </p>
+                    </TooltipContent>
                   </Tooltip>
-                </Stack>
-              </Stack>
-            </Stack>
-            <Stack
-              justifyContent="center"
-              alignItems="center"
-              direction="column"
-            >
-              <input
-                {...register("displayName")}
-                className={styles.FormInput}
-                defaultValue={user.displayName}
-              />
-              <input
-                placeholder="New Password"
-                className={styles.FormInput}
-                {...register("password")}
-                type="password"
-                defaultValue=""
-              />
-              <input
-                placeholder="Confirm New Password"
-                className={styles.FormInput}
-                {...register("confirmPassword", {
-                  validate: (val: string) => {
-                    if (watch("password") !== val) {
-                      return "Your passwords do no match";
-                    }
-                  },
-                })}
-                type="password"
-                defaultValue=""
-              />
-              <Stack spacing={2}>
-                {errors.confirmPassword && (
-                  <Alert severity="error">Your passwords don't match</Alert>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col justify-center items-center gap-2">
+              <FormField
+                control={form.control}
+                name="displayName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input className="bg-slate-100" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </Stack>
-            </Stack>
-          </Stack>
-          <Stack
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            spacing={2}
-          >
-            <Button variant="contained" onClick={onClose}>
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="New Password"
+                        className="bg-slate-100"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Confirm Password"
+                        className="bg-slate-100"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="flex flex-row justify-between items-center">
+            <Button type="reset" onClick={handleModalClose}>
               Cancel
             </Button>
-            <Button variant="contained" type="submit">
-              Edit
-            </Button>
-          </Stack>
+            <Button type="submit">Edit</Button>
+          </div>
         </form>
-      </DialogContent>
-    </Dialog>
+      </Form>
+    </DialogContent>
   );
 };

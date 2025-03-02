@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { ProfileSettings } from "../Profile/ProfileSettings";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Dialog, DialogTrigger } from "../ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,15 +25,8 @@ const NavbarAvatarMenu = () => {
   }
 
   return (
-    <>
-      {openEditProfileModal && (
-        <ProfileSettings
-          open={openEditProfileModal}
-          onClose={() => setOpenEditProfileModal(false)}
-          user={user}
-        />
-      )}
-      <DropdownMenu>
+    <Dialog open={openEditProfileModal} onOpenChange={setOpenEditProfileModal}>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger>
           <Avatar>
             <AvatarImage
@@ -44,13 +38,20 @@ const NavbarAvatarMenu = () => {
         <DropdownMenuContent className="mr-2">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => setOpenEditProfileModal(true)}>
-            Profile
-          </DropdownMenuItem>
+          <DialogTrigger asChild>
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+              Profile
+            </DropdownMenuItem>
+          </DialogTrigger>
+
           <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </>
+      <ProfileSettings
+        onClose={() => setOpenEditProfileModal(false)}
+        user={user}
+      />
+    </Dialog>
   );
 };
 export default NavbarAvatarMenu;
