@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { useForm } from "react-hook-form";
 import { loginRequest } from "../../api/auth/Login";
@@ -27,7 +26,6 @@ const formSchema = z.object({
 
 const LoginForm = () => {
   const { login } = useAuth();
-  const navigate = useNavigate();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { username, password, remember } = values;
@@ -39,7 +37,6 @@ const LoginForm = () => {
 
     if (!tokenDetails.detail) {
       login(tokenDetails.access_token);
-      navigate("/home");
     } else {
       alert(tokenDetails.detail);
     }

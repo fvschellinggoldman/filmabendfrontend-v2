@@ -4,6 +4,7 @@ import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import { Small } from "shadcn-typography";
 import imgUrl from "../../assets/loginPage.jpeg";
+import NeonText from "../Typography/NeonText";
 
 const LoginPage = () => {
   const [showLoginForm, setShowLoginForm] = useState<boolean>(true);
@@ -18,11 +19,7 @@ const LoginPage = () => {
       }
     >
       <div className="p-5 rounded-lg shadow-md mr-[2%] mt-[15%] bg-white/50">
-        <h2
-          className={`${styles.NeonText} text-center text-[calc(0.1*100vh)] sm:text-[calc(0.15*100vh)] text-secondary font-[MarqueeMoon,Arial,serif]`}
-        >
-          Filmabend
-        </h2>
+        <NeonText text={"Filmabend"} />
         {showLoginForm ? (
           <>
             <LoginForm />

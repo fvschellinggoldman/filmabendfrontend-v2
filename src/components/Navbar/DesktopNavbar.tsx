@@ -15,7 +15,7 @@ const DesktopNavbar = ({ navbarItems }: DesktopNavbarProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="mr-4 hidden md:flex">
+    <div className="hidden md:flex">
       {/* <Button variant={"link"}> FILMABEND </Button> */}
 
       <NavigationMenu>

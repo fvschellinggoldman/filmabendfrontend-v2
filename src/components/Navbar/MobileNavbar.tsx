@@ -1,7 +1,7 @@
 import { NavbarItem } from "@/types/navbarItem";
 import { Menu } from "lucide-react";
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
@@ -21,14 +21,12 @@ const MobileNavbar = ({ navbarItems }: MobileNavbarProps) => {
     navigate(url);
   };
 
-  //Highlight current tab
-
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button
           variant="ghost"
-          className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+          className="mr-2 pl-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
         >
           <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle Menu</span>

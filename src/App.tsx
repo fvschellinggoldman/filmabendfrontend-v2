@@ -25,11 +25,11 @@ const theme = createTheme({
 
 function App() {
   return (
-    <AuthProvider>
-      <Toaster position="bottom-right" />
-      <ThemeProvider theme={theme}>
-        <div className="App">
-          <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <Toaster position="bottom-right" />
+        <ThemeProvider theme={theme}>
+          <div className="App">
             <Navbar />
 
             <Routes>
@@ -44,10 +44,10 @@ function App() {
               />
               <Route path="*" element={<Navigate to="/home" />}></Route>
             </Routes>
-          </BrowserRouter>
-        </div>
-      </ThemeProvider>
-    </AuthProvider>
+          </div>
+        </ThemeProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

@@ -1,189 +1,35 @@
-import React, { FC, useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import { Outlet, useNavigate } from "react-router-dom";
-import _ from "lodash";
-import { useFetchUser } from "../../api/users/Users";
-import { ProfileSettings } from "../Profile/ProfileSettings";
+import { useAuth } from "../AuthProvider/AuthProvider";
+import NeonText from "../Typography/NeonText";
 import DesktopNavbar from "./DesktopNavbar";
 import MobileNavbar from "./MobileNavbar";
+import NavbarAvatar from "./NavbarAvatar";
 
-const pages = ["Home", "Archive", "Statistics", "Create Categories"];
+const pages = [
+  { label: "HOME", url: "/home" },
+  { label: "ARCHIVE", url: "/archive" },
+  { label: "STATISTICS", url: "/statistics" },
+  { label: "CREATE CATEGORIES", url: "/createCategories" },
+];
 
-// const pages = [
-//   { label: "HOME", url: "/home" },
-//   { label: "ARCHIVE", url: "/archive" },
-//   { label: "STATISTICS", url: "/statistics" },
-//   { label: "CREATE CATEGORIES", url: "/createCategories" },
-// ];
+const Navbar = () => {
+  const { isLoggedIn } = useAuth();
 
-interface NavbarProps {}
-
-const Navbar: FC<NavbarProps> = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  let navigate = useNavigate();
-
-  const [openEditProfileModal, setOpenEditProfileModal] =
-    useState<boolean>(false);
-
-  const { user, isError } = useFetchUser();
-
-  if (user === undefined || isError !== undefined) {
-    return null;
+  if (!isLoggedIn) {
+    return <></>;
   }
 
-  const routeChange = (page: string) => {
-    navigate("/" + _.camelCase(page));
-  };
-
-  const handleOpenNavMenu = (event: { currentTarget: any }) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: { currentTarget: any }) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleHamburgerClick = (page: string) => {
-    routeChange(page);
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   return (
-    <>
-      {openEditProfileModal && (
-        <ProfileSettings
-          open={openEditProfileModal}
-          onClose={() => setOpenEditProfileModal(false)}
-          user={user}
-        />
-      )}
-      {/* <div className="flex container h-14 items-center">
+    <div className="flex flex-row h-14 items-center border-b w-full grow justify-between px-2">
+      <div>
         <DesktopNavbar navbarItems={pages} />
         <MobileNavbar navbarItems={pages} />
-      </div> */}
+      </div>
+      <div className="sm:hidden">
+        <NeonText text={"Filmabend"} size={5} />
+      </div>
 
-      <AppBar position="static">
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: "block", md: "none" },
-                }}
-              >
-                {pages.map((page) => (
-                  <MenuItem
-                    key={page}
-                    onClick={() => handleHamburgerClick(page)}
-                  >
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={() => routeChange(page)}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                  variant="outlined"
-                >
-                  {page}
-                </Button>
-              ))}
-            </Box>
-
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open user settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  {user ? (
-                    <Avatar
-                      alt={user?.displayName}
-                      src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${user?.profilePicturePath}`}
-                    />
-                  ) : (
-                    <Avatar
-                      alt="Guest"
-                      src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/no_movie.png`}
-                    />
-                  )}
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <MenuItem
-                  key="Edit Profile"
-                  onClick={() => setOpenEditProfileModal(true)}
-                >
-                  <Typography textAlign="center">Edit Profile</Typography>
-                </MenuItem>
-                <MenuItem key="Logout">
-                  <Typography textAlign="center">Logout</Typography>
-                </MenuItem>
-              </Menu>
-            </Box>
-          </Toolbar>
-        </Container>
-        <Outlet />
-      </AppBar>
-    </>
+      <NavbarAvatar />
+    </div>
   );
 };
 export default Navbar;
