@@ -64,12 +64,12 @@ const SearchBar = ({ event }: SearchBarProps) => {
         </PopoverTrigger>
         <PopoverContent className="w-full p-0">
           {searchResults.length > 0 ? (
-            <ul className="max-h-60 overflow-auto">
+            <ul className="max-h-60 max-w-96 overflow-auto">
               {searchResults.map((result) => (
                 <SearchResult
                   result={result}
                   event={event}
-                  key={result.title}
+                  key={result.tmdbId}
                 />
               ))}
             </ul>

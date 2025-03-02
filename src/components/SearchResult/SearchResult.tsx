@@ -41,8 +41,8 @@ const SearchResult: FC<SearchResultProps> = ({ result, event }) => {
           : "opacity-40 cursor-not-allowed"
       }`}
     >
-      <div>
-        <Large>{result.title}</Large>
+      <div className="max-w-1/2 truncate">
+        <Large className="truncate">{result.title}</Large>
         {result.releaseDate && <Small>{result.releaseDate.toString()}</Small>}
       </div>
       {canBeAdded && <CirclePlus className="min-w-6 min-h-6" />}
