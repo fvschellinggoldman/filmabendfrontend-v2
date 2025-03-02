@@ -1,11 +1,10 @@
 import { FC } from "react";
 import VotingElement from "../VotingElement/VotingElement";
 import SearchInterface from "../SearchInterface/SearchInterface";
-import EventImage from "../EventImage/EventImage";
 import { useEvent } from "../../api/events/Events";
 import { useFetchUser } from "../../api/users/Users";
 import SkeletonPage from "../SkeletonPage/SkeletonPage";
-import EventImageV3 from "../EventImage/EventImageV3";
+import EventImage from "../EventImage/EventImage";
 
 interface VotingPageProps {}
 
