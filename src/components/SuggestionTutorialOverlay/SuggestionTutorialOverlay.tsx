@@ -1,5 +1,5 @@
 import { DialogContent } from "@mui/material";
-import React, { FC } from "react";
+import { FC } from "react";
 import TutorialAcceptance from "../TutorialAcceptance/TutorialAcceptance";
 import styles from "./SuggestionTutorialOverlay.module.scss";
 

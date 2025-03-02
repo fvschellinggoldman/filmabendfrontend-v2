@@ -1,11 +1,10 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useFetchPersonalStatistics } from "../../api/users/PersonalStatistics";
 import { User } from "../../types/user";
 import { PersonalStatisticCard } from "./PersonalStatisticCard";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import styles from "./PersonalStatisticsCardContainer.module.scss";
 import { isMobile } from "react-device-detect";
 
 interface PersonalStatisticsContainerProps {

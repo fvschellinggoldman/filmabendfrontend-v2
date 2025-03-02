@@ -10,7 +10,6 @@ import {
 import { useFetchPersonalRanking } from "../../api/movies/PersonalRanking";
 import { UserRatedMovie } from "../../types/movie";
 
-import styles from "./PersonalRanking.module.scss";
 import { User } from "../../types/user";
 
 const sortData = (

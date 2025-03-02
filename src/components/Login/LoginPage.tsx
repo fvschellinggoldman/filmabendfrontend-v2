@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styles from "./LoginPage.module.scss"; // Import the styles
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import { Small } from "shadcn-typography";
