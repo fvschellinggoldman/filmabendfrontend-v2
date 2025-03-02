@@ -42,7 +42,7 @@ const SearchBar = ({ event }: SearchBarProps) => {
   };
 
   return (
-    <div className="relative w-80 flex items-center">
+    <div className="relative max-w-96 grow flex items-center">
       <Popover open={open} onOpenChange={() => setOpen(false)}>
         <PopoverTrigger asChild>
           <div className="flex w-full items-center">
@@ -62,9 +62,9 @@ const SearchBar = ({ event }: SearchBarProps) => {
             />
           </div>
         </PopoverTrigger>
-        <PopoverContent className="w-80 p-0">
+        <PopoverContent className="w-full p-0">
           {searchResults.length > 0 ? (
-            <ul className="max-h-60 overflow-auto ">
+            <ul className="max-h-60 overflow-auto">
               {searchResults.map((result) => (
                 <SearchResult
                   result={result}

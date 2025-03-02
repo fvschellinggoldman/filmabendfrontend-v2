@@ -71,7 +71,7 @@ const EventImage: FC<EventImageProps> = ({ event, user }) => {
           inView
             ? "bg-transparent"
             : "bg-white/40 backdrop-blur-md border border-white/20"
-        } shadow-xs p-4  items-center justify-center gap-2 transition-colors duration-500`}
+        } shadow-xs p-4 items-center justify-center gap-2 transition-colors duration-500`}
       >
         <div className="flex flex-col justify-center items-center grow">
           <p className="line-clamp-2 font-bold text-md">{event.name}</p>

@@ -35,7 +35,7 @@ const SearchResult: FC<SearchResultProps> = ({ result, event }) => {
   return (
     <li
       onClick={handleAddMovie}
-      className={`px-4 py-2  flex flex-row items-center justify-between odd:bg-white even:bg-slate-100  ${
+      className={`px-4 py-2 flex flex-row items-center justify-between odd:bg-white even:bg-slate-100  ${
         canBeAdded
           ? "cursor-pointer hover:bg-accent"
           : "opacity-40 cursor-not-allowed"

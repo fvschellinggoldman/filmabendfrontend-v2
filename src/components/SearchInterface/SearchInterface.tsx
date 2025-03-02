@@ -23,23 +23,24 @@ const SearchInterface: FC<SearchInterfaceProps> = ({ event }) => {
   const { movieSuggestion } = useFetchMovieEventSuggestions(event.id);
 
   return (
-    <div
-      className={
-        "flex flex-row align-items justify-center gap-2 px-2 mx-2 mt-2"
-      }
-    >
-      <SearchBar event={event} />
-      {movieSuggestion && (
-        <Button
-          variant="outline"
-          onClick={handleOpenSuggestionModal}
-          className={
-            "[&_svg]:size-6 h-14 w-14 border-[#ba8f9b] hover:border-neutral-950"
-          }
-        >
-          <Bot />
-        </Button>
-      )}
+    <div className={"flex flex-row grow align-items justify-center gap-2 px-2"}>
+      <div className="flex grow justify-center">
+        <SearchBar event={event} />
+      </div>
+      <div className="flex justify-center align-items sm:w-[120px]">
+        {movieSuggestion && (
+          <div className="w-[120px] flex justify-center">
+            <Button
+              variant={"textIcon"}
+              onClick={handleOpenSuggestionModal}
+              className="[&_svg]:size-6 h-fit w-14"
+            >
+              <Bot />
+              <span className="text-xs font-medium leading-none">AI</span>
+            </Button>
+          </div>
+        )}
+      </div>
       <Dialog
         open={showMovieSuggestionModal}
         onClose={handleCloseSuggestionModal}
