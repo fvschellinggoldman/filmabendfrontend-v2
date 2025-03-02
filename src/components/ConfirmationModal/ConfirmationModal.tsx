@@ -1,13 +1,13 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
 import { FC } from "react";
 import { Action } from "../../types/action";
+import { Button } from "../ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 
 interface ConfirmationModalProps {
   open: boolean;
@@ -36,19 +36,15 @@ export const ConfirmationModal: FC<ConfirmationModalProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Confirm {action}?</DialogTitle>
-      <DialogContent>
-        <DialogContentText>{descriptionText}</DialogContentText>
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent className="max-w-fit rounded-md">
+        <DialogTitle>Confirm {action}?</DialogTitle>
+        <DialogDescription>{descriptionText}</DialogDescription>
+        <div className="flex justify-between gap-4">
+          <Button onClick={handleClose}>Go Back</Button>
+          <Button onClick={handleConfirm}>Confirm</Button>
+        </div>
       </DialogContent>
-      <DialogActions style={{ justifyContent: "space-between" }}>
-        <Button variant="contained" onClick={handleClose}>
-          Go Back
-        </Button>
-        <Button variant="contained" onClick={handleConfirm}>
-          Confirm
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };
