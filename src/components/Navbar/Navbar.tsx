@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import NeonText from "../Typography/NeonText";
 import DesktopNavbar from "./DesktopNavbar";
@@ -14,6 +15,8 @@ const pages = [
 const Navbar = () => {
   const { isLoggedIn } = useAuth();
 
+  const navigate = useNavigate();
+
   if (!isLoggedIn) {
     return <></>;
   }
@@ -24,7 +27,10 @@ const Navbar = () => {
         <DesktopNavbar navbarItems={pages} />
         <MobileNavbar navbarItems={pages} />
       </div>
-      <div className="sm:hidden">
+      <div
+        className="sm:hidden cursor-pointer"
+        onClick={() => navigate("/home")}
+      >
         <NeonText text={"Filmabend"} size={5} />
       </div>
 
