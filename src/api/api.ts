@@ -13,7 +13,7 @@ export async function postRequest<T>(url: string, data: any): Promise<T> {
   return fetch(`${baseUrl}${url}`, options).then((res) => res.json());
 }
 
-export async function putRequest<T>(url: string, data: any): Promise<T> {
+export async function putRequest<T>(url: string, data: any): Promise<Response> {
   const options = {
     method: "PUT", // Specify the HTTP method (GET, POST, PATCH, DELETE, etc.)
     headers: {
@@ -23,7 +23,7 @@ export async function putRequest<T>(url: string, data: any): Promise<T> {
     },
     body: JSON.stringify(data),
   };
-  return fetch(`${baseUrl}${url}`, options).then((res) => res.json());
+  return fetch(`${baseUrl}${url}`, options);
 }
 
 export async function putRequestFile<T>(url: string, data: any): Promise<T> {
