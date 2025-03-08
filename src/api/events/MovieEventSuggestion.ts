@@ -5,7 +5,7 @@ import { MovieSuggestion } from "../../types/movie";
 export function useFetchMovieEventSuggestions(eventId: number) {
   const api_url = `/api/event/${eventId}/suggestion`;
 
-  const { data, error, isLoading } = useSWR<MovieSuggestion, Error>(
+  const { data, error, isLoading, mutate } = useSWR<MovieSuggestion, Error>(
     api_url,
     (url) => getRequest(url, null)
   );
@@ -14,5 +14,6 @@ export function useFetchMovieEventSuggestions(eventId: number) {
     movieSuggestion: data,
     isLoading,
     isError: error,
+    mutate,
   };
 }

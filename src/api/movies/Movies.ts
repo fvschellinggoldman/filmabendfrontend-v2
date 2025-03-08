@@ -62,5 +62,4 @@ async function _updateSuggestionState(
   await putRequest(url, {
     newState,
   });
-  mutate(`/api/event/${suggestedMovie.eventId}/suggestion`);
 }
