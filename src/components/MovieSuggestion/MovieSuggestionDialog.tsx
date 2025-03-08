@@ -1,9 +1,14 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { MovieSuggestion } from "@/types/movie";
 import { DialogContent } from "../ui/dialog";
 import { X, Check } from "lucide-react";
 import { Button } from "../ui/button";
-import { motion, useMotionValue, useTransform } from "motion/react";
+import {
+  motion,
+  useAnimation,
+  useMotionValue,
+  useTransform,
+} from "motion/react";
 import { Small } from "shadcn-typography";
 
 interface MovieSuggestionDialogProps {
@@ -27,12 +32,36 @@ const MovieSuggestionDialog: FC<MovieSuggestionDialogProps> = ({
 
   const rotate = useTransform(x, [-150, 150], [-18, 18]);
 
+  const controls = useAnimation();
+
   const handleDragEnd = () => {
     const xValue = x.get();
     if (xValue > 50) handleSuggestionAction(movieSuggestion, "accept");
     else if (xValue < -50) handleSuggestionAction(movieSuggestion, "decline");
     else return;
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      controls.start({
+        x: [0, -10, 10, -10, 10, -5, 5, -5, 5, 0],
+        transition: { duration: 0.8, ease: "easeInOut" },
+      });
+    }, 3000); // Start after 3 seconds
+
+    // Set up a repeating interval for the shake
+    const intervalId = setInterval(() => {
+      controls.start({
+        x: [0, -10, 10, -10, 10, -5, 5, -5, 5, 0],
+        transition: { duration: 0.8, ease: "easeInOut" },
+      });
+    }, 10000); // Repeat every 10 seconds
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(intervalId);
+    };
+  }, [controls]);
 
   return (
     <DialogContent className="rounded-md w-fit pb-4">
@@ -45,6 +74,8 @@ const MovieSuggestionDialog: FC<MovieSuggestionDialogProps> = ({
             left: 0,
             right: 0,
           }}
+          animate={controls}
+          initial={{ x: 0 }}
           style={{ x, opacity, rotate }}
           alt={`Movie poster for ${movieSuggestion.originalTitle}`}
           src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movieSuggestion.moviePosterPath}`}
