@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Skeleton } from "../ui/skeleton";
 
 const NavbarAvatarMenu = () => {
   const [openEditProfileModal, setOpenEditProfileModal] =
@@ -21,7 +22,7 @@ const NavbarAvatarMenu = () => {
   const { logout } = useAuth();
 
   if (user === undefined || isError !== undefined) {
-    return null;
+    return <Skeleton className="h-10 w-10 rounded-full bg-slate-200" />;
   }
 
   return (
