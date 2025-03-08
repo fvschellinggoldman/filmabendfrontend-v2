@@ -38,6 +38,7 @@
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.473.0",
+    "motion": "^12.4.10",
     "node-sass": "^7.0.3",
     "react": "^18.2.0",
     "react-canvas-confetti": "^2.0.7",

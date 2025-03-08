@@ -2,10 +2,11 @@ import { FC, useState } from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import { Event } from "../../types/event";
 import { Dialog } from "@mui/material";
-import MovieSuggestionElement from "../MovieSuggestion/MovieSuggestionElement";
+import MovieSuggestionElement from "../MovieSuggestion/MovieSuggestionDialog";
 import { useFetchMovieEventSuggestions } from "../../api/events/MovieEventSuggestion";
 import { Button } from "../ui/button";
 import { Bot } from "lucide-react";
+import MovieSuggestionDialog from "../MovieSuggestion/MovieSuggestionDialog";
 
 interface SearchInterfaceProps {
   event: Event;
@@ -46,10 +47,10 @@ const SearchInterface: FC<SearchInterfaceProps> = ({ event }) => {
         onClose={handleCloseSuggestionModal}
         maxWidth="lg"
       >
-        <MovieSuggestionElement
+        <MovieSuggestionDialog
           handleCloseSuggestionModal={handleCloseSuggestionModal}
           eventId={event.id}
-        ></MovieSuggestionElement>
+        ></MovieSuggestionDialog>
       </Dialog>
     </div>
   );

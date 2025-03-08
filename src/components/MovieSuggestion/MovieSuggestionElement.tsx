@@ -1,119 +1,77 @@
-import React, { FC, useEffect, useState } from "react";
-import { useSwipeable } from "react-swipeable";
+import { MovieSuggestion } from "@/types/movie";
 import {
-  addSuggestedMovie,
-  declineSuggestedMovie,
-} from "../../api/movies/Movies";
-import { useFetchMovieEventSuggestions } from "../../api/events/MovieEventSuggestion";
-import { Dialog, DialogContent, Typography } from "@mui/material";
-import SuggestionTutorialOverlay from "../SuggestionTutorialOverlay/SuggestionTutorialOverlay";
-import { useFetchUserPreference } from "../../api/users/UserPreferences";
-import { BrowserView, MobileView, isMobile } from "react-device-detect";
-import WebSuggestionTutorialOverlay from "../WebSuggestionTutorialOverlay/WebSuggestionTutorialOverlay";
-import { toast } from "sonner";
+  motion,
+  useMotionValue,
+  useAnimation,
+  useDragControls,
+} from "motion/react";
+import { ReactNode, useRef, useState } from "react";
 
-interface MovieSuggestionElementProps {
-  handleCloseSuggestionModal: () => void;
-  eventId: number;
+interface MovieEventSuggestionProps {
+  movieSuggestion: MovieSuggestion;
+  handleSuggestionAction?: (
+    movieSuggestion: MovieSuggestion,
+    action: "accept" | "decline"
+  ) => void;
 }
 
-const MovieSuggestionElement: FC<MovieSuggestionElementProps> = ({
-  handleCloseSuggestionModal,
-  eventId,
-}) => {
-  const { userPreference } = useFetchUserPreference();
-  const { movieSuggestion } = useFetchMovieEventSuggestions(eventId);
-  const [showTutorial, setShowTutorial] = useState(
-    isMobile
-      ? userPreference.showMobileTutorial
-      : userPreference.showWebTutorial
-  );
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => declineSuggestedMovie(movieSuggestion),
-    onSwipedRight: () => addSuggestedMovie(movieSuggestion),
-    onSwipedDown: () => handleCloseSuggestionModal(),
-  });
+const MovieSuggestionElement = ({
+  movieSuggestion,
+}: MovieEventSuggestionProps) => {
+  const x = useMotionValue(0);
+  // const controls = useAnimation();
+  const cardElem = useRef<HTMLDivElement>(null);
 
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [constrained, setConstrained] = useState(true);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setScreenWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const [direction, setDirection] = useState();
 
-  useEffect(() => {
-    setShowTutorial(
-      isMobile
-        ? userPreference.showMobileTutorial
-        : userPreference.showWebTutorial
-    );
-  }, [userPreference]);
+  const [velocity, setVelocity] = useState();
 
-  if (!movieSuggestion) {
-    handleCloseSuggestionModal();
-    toast.info("Out of suggestions for this event!");
-    return <></>;
-  }
+  const [dragDistance, setDragDistance] = useState({ x: 0, y: 0 });
 
-  const mouseDownHandler = (event: React.MouseEvent) => {
-    const { clientX } = event.nativeEvent;
-    const clickedOnLeft = clientX < screenWidth / 2;
-    if (clickedOnLeft) {
-      declineSuggestedMovie(movieSuggestion);
+  const getAction = (
+    childNode: HTMLDivElement,
+    parentNode: HTMLDivElement
+  ): string | undefined => {
+    const childRect = childNode.getBoundingClientRect();
+    const parentRect = parentNode.getBoundingClientRect();
+
+    if (parentRect.left >= childRect.right) {
+      return "decline";
+    } else if (parentRect.right <= childRect.left) {
+      return "accept";
     } else {
-      addSuggestedMovie(movieSuggestion);
+      return;
     }
   };
 
-  const handleCloseTutorial = () => {
-    setShowTutorial(false);
-  };
+  const distance = Math.hypot(dragDistance.x, dragDistance.y);
+  const opacity = Math.max(1 - distance / 300, 0.2);
 
   return (
-    <DialogContent
-      {...swipeHandlers}
-      className={"flex flex-col text-center justify-center items-center"}
+    <motion.div
+      drag={"x"}
+      dragMomentum={false}
+      onDrag={(event, info) => setDragDistance(info.offset)}
+      onDragEnd={}
     >
       <img
-        className={
-          "max-w-[80vw] max-h-[80vh] border-2 border-solid border-black"
-        }
-        onMouseDown={mouseDownHandler}
+        className={`max-w-[80vw] max-h-[80vh] border-2 border-solid border-black transition-opacity`}
+        style={{ opacity }}
         alt={`Movie poster for ${movieSuggestion.originalTitle}`}
+        draggable={false}
         src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movieSuggestion.moviePosterPath}`}
       ></img>
-      <div
-        className={
-          "flex absolute bottom-[0.5vw] left-0 right-0 align items-center justify-center bg-white/90 h-[9%]"
-        }
-      >
-        <Typography variant="body2">{movieSuggestion.title}</Typography>
-      </div>
-      {showTutorial && (
-        <>
-          <BrowserView>
-            <Dialog open={true} onClose={handleCloseTutorial}>
-              <WebSuggestionTutorialOverlay
-                closeDialog={handleCloseTutorial}
-              ></WebSuggestionTutorialOverlay>
-            </Dialog>
-          </BrowserView>
-          <MobileView>
-            <Dialog open={true} onClose={handleCloseTutorial}>
-              <SuggestionTutorialOverlay
-                closeDialog={handleCloseTutorial}
-              ></SuggestionTutorialOverlay>
-            </Dialog>
-          </MobileView>
-        </>
-      )}
-    </DialogContent>
+      <p>
+        Dragged Distance: X: {dragDistance.x.toFixed(2)}, Y:{" "}
+        {dragDistance.y.toFixed(2)}
+      </p>
+    </motion.div>
+
+    // <div className={`flex items-center justify-center`}>
+    //   MovieSuggestionElementSingle
+    // </div>
   );
 };
-
 export default MovieSuggestionElement;

@@ -43,7 +43,10 @@ const EventImageDialog = ({
       </Button>
 
       <Dialog open={openDialog} onOpenChange={handleCloseDialog}>
-        <DialogContent className="max-w-fit">
+        <DialogContent
+          className="max-w-fit rounded"
+          aria-describedby="Event Image"
+        >
           {eventImageIsNew && (
             <Realistic onInit={({ conductor }) => conductor.shoot()} />
           )}
