@@ -17,7 +17,7 @@ interface MovieSuggestionElementProps {
   eventId: number;
 }
 
-const MovieSuggestionElement: FC<MovieSuggestionElementProps> = ({
+const MovieSuggestionElementV2: FC<MovieSuggestionElementProps> = ({
   handleCloseSuggestionModal,
   eventId,
 }) => {
@@ -116,4 +116,4 @@ const MovieSuggestionElement: FC<MovieSuggestionElementProps> = ({
   );
 };
 
-export default MovieSuggestionElement;
+export default MovieSuggestionElementV2;
