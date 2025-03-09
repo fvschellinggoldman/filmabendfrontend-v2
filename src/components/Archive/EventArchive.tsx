@@ -1,4 +1,3 @@
-import { Box } from "@mui/system";
 import { useState } from "react";
 import { InfiniteLoader } from "../InfiniteLoader/InfiniteLoader";
 import { EventArchivePage } from "./EventArchivePage";
@@ -12,9 +11,9 @@ export const EventArchive = () => {
   }
 
   return (
-    <Box sx={{ mt: 2 }}>
+    <div className="px-2">
       {pages}
       <InfiniteLoader oldIndex={pageIndex} handleChange={setPageIndex} />
-    </Box>
+    </div>
   );
 };

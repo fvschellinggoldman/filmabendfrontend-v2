@@ -1,9 +1,7 @@
 import { FC } from "react";
 import { Event } from "../../types/event";
-import { Card, CardContent, CardHeader, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
 import { useNavigate } from "react-router-dom";
-import { isMobile } from "react-device-detect";
+import { Large, Small } from "shadcn-typography";
 
 interface EventArchiveTileProps {
   event: Event;
@@ -26,43 +24,38 @@ export const EventArchiveTile: FC<EventArchiveTileProps> = ({
   }
 
   return (
-    <Card
-      sx={{
-        marginBottom: "2rem",
-        backgroundColor: index % 2 === 0 ? "#A9D6E5" : "#2C7DA0",
-      }}
+    <div
+      className={`rounded-md flex flex-col ${
+        index % 2 ? "bg-secondary" : "bg-primary"
+      }`}
     >
-      <CardHeader title={event.name}></CardHeader>
-      <CardContent key="Watched movies">
-        <Stack
-          direction={isMobile ? "column" : "row"}
-          justifyContent="left"
-          flexGrow="true"
-        >
-          {event.movies.map((movie) => (
-            <Stack
-              direction="row"
-              key={movie.name}
-              className={"pr-1 hover:cursor-pointer"}
-            >
+      <Large> {event.name} </Large>
+      <div className="grid grid-cols-1 sm:grid-cols-3 p-2">
+        {event.movies.map((movie) => (
+          <div
+            key={movie.name}
+            className={"pr-1 hover:cursor-pointer flex flex-row"}
+          >
+            <div className="grid grid-cols-4">
               <img
                 onClick={() => navigate(`/movie/${movie.id}`)}
                 src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
                 alt="Movie poster"
                 loading="lazy"
                 height={100}
+                className={"rounded-md"}
               />
-              <Stack justifyContent="center">
-                <Typography>{movie.name}</Typography>
-                <Typography>{movie.averageRating}</Typography>
-                <Typography variant="subtitle2">
+              <div className="flex flex-col items-start justify-center col-span-3 px-2">
+                <p>{movie.name}</p>
+                <p>{movie.averageRating}</p>
+                <p className="italic text-xs leading-6">
                   {movie.ratingClosedOn ? formatDate(movie.ratingClosedOn) : ""}
-                </Typography>
-              </Stack>
-            </Stack>
-          ))}
-        </Stack>
-      </CardContent>
-    </Card>
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };

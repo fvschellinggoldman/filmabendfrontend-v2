@@ -1,4 +1,3 @@
-import { ImageListItem, ImageListItemBar } from "@mui/material";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFetchWatchedMovies } from "../../api/movies/WatchedMovies";
@@ -19,15 +18,20 @@ const MovieArchivePage: FC<MovieArchivePageProps> = ({ index, hidden }) => {
   return (
     <>
       {movies.map((movie) => (
-        <ImageListItem key={movie.id} className={"hover:cursor-pointer"}>
+        <div key={movie.id} className="hover:cursor-pointer relative">
           <img
             onClick={() => navigate(`/movie/${movie.id}`)}
             src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
             alt="Movie poster"
             loading="lazy"
+            className="rounded-lg"
           />
-          <ImageListItemBar title={movie.name} />
-        </ImageListItem>
+          <div
+            className={`absolute w-full py-2 bottom-0 flex justify-center align-items text-md bg-black/50 truncate text-white rounded-lg`}
+          >
+            {movie.name}
+          </div>
+        </div>
       ))}
     </>
   );

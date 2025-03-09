@@ -1,23 +1,9 @@
-import { ImageList } from "@mui/material";
 import MovieArchivePage from "./MovieArchivePage";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { InfiniteLoader } from "../InfiniteLoader/InfiniteLoader";
 
 export const MovieArchive = () => {
   const [pageIndex, setPageIndex] = useState(1);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setScreenWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    // Clean up the event listener when the component is unmounted
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-  const columnAmount = screenWidth <= 600 ? 1 : 4;
 
   const pages = [];
   for (let i = 0; i < pageIndex; i++) {
@@ -27,9 +13,7 @@ export const MovieArchive = () => {
 
   return (
     <>
-      <ImageList cols={columnAmount} gap={6}>
-        {pages}
-      </ImageList>
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 px-2">{pages}</div>
       <InfiniteLoader oldIndex={pageIndex} handleChange={setPageIndex} />
     </>
   );
