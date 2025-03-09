@@ -28,7 +28,7 @@ const Navbar = () => {
         <MobileNavbar navbarItems={pages} />
       </div>
       <div
-        className="sm:hidden cursor-pointer"
+        className="md:hidden cursor-pointer"
         onClick={() => navigate("/home")}
       >
         <NeonText text={"Filmabend"} size={5} />
