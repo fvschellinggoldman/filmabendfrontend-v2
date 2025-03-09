@@ -33,7 +33,7 @@ const ArchiveTabs = () => {
     <Tabs defaultValue={"Movie"} className="w-full py-2">
       <TabsList className="border-black border p-2">
         {ArchiveTabValues.map(({ value, icon }) => (
-          <TabsTrigger value={value}>
+          <TabsTrigger value={value} key={`${value}Trigger`}>
             <div className="flex flex-row items-center">
               {icon}
               {value}
@@ -42,7 +42,9 @@ const ArchiveTabs = () => {
         ))}
       </TabsList>
       {ArchiveTabValues.map(({ value, component }) => (
-        <TabsContent value={value}>{component}</TabsContent>
+        <TabsContent value={value} key={value}>
+          {component}
+        </TabsContent>
       ))}
     </Tabs>
   );

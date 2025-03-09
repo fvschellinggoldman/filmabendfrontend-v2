@@ -26,7 +26,12 @@ const theme = createTheme({
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <AuthProvider>
         <TooltipProvider>
           <Toaster position="bottom-right" />

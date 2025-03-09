@@ -7,7 +7,9 @@ export const EventArchive = () => {
   const pages = [];
   for (let i = 0; i < pageIndex; i++) {
     pages.push(<EventArchivePage index={i} key={i} hidden={false} />);
-    pages.push(<EventArchivePage index={i + 1} key={i} hidden={true} />);
+    pages.push(
+      <EventArchivePage index={i + 1} key={`hidden_${i}`} hidden={true} />
+    );
   }
 
   return (

@@ -8,7 +8,9 @@ export const MovieArchive = () => {
   const pages = [];
   for (let i = 0; i < pageIndex; i++) {
     pages.push(<MovieArchivePage index={i} key={i} hidden={false} />);
-    pages.push(<MovieArchivePage index={i + 1} key={i} hidden={true} />);
+    pages.push(
+      <MovieArchivePage index={i + 1} key={`hidden_${i}`} hidden={true} />
+    );
   }
 
   return (
