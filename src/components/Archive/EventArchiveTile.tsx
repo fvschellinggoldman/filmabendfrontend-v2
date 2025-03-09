@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Event } from "../../types/event";
 import { useNavigate } from "react-router-dom";
-import { Large, Small } from "shadcn-typography";
+import { Large } from "shadcn-typography";
 
 interface EventArchiveTileProps {
   event: Event;
