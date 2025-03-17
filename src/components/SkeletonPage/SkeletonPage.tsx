@@ -7,7 +7,7 @@ const SkeletonPage = () => {
       {
         // Navbar
       }
-      <Skeleton className="w-full h-[200px] rounded bg-slate-300" />
+      <Skeleton className="w-full h-[92px] rounded bg-slate-300" />
       {/* searchbar */}
       <div className="py-4 w-full flex justify-center">
         <Input

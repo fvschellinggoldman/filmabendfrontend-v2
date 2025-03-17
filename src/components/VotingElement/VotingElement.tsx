@@ -72,7 +72,9 @@ const VotingElement: FC<VotingElementProps> = ({
         )}
 
         <img
-          className={`w-3/5 sm:w-full h-auto ${selected ? "opacity-30" : ""} `}
+          className={`w-3/5 rounded-l-md sm:rounded-md sm:w-full h-auto ${
+            selected ? "opacity-30" : ""
+          } `}
           src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
           alt="Movie poster"
           loading="lazy"
@@ -92,7 +94,7 @@ const VotingElement: FC<VotingElementProps> = ({
             transformStyle: "preserve-3d",
           }}
           className={
-            "w-2/5 sm:w-full top-0 left-0 flex justify-center items-center sm:absolute sm:h-full sm:rotate-y-180 transition-all duration-500 backface-hidden grow"
+            "w-2/5 sm:w-full top-0 left-0 flex justify-center items-center sm:absolute sm:h-full sm:rotate-y-180 transition-all duration-500 backface-hidden grow rounded-r-md sm:rounded-md"
           }
         >
           {movie.rateable || recentlyRated ? (

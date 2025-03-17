@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import VotingPage from "../VotingPage/VotingPage";
@@ -10,7 +10,7 @@ const ApplicationContainer: FC<ApplicationContainerProps> = () => {
 
   if (isLoggedIn === false) {
     // Redirect to the login page if the user is not logged in
-    return <Navigate to="/login" /> //prettier-ignore
+    return <Navigate to="/login" />;
   }
 
   return <VotingPage></VotingPage>;

@@ -14,6 +14,18 @@ import { toast } from "sonner";
 import { Typography } from "@mui/material";
 import { mutate } from "swr";
 import { Category } from "../../types/category";
+import { ColumnDef } from "@tanstack/react-table";
+
+const columns: ColumnDef<Category>[] = [
+  {
+    accessorKey: "category",
+    header: "Category",
+  },
+  {
+    accessorKey: "author",
+    header: "Author",
+  },
+];
 
 const CategoryArchive = () => {
   const { categories } = useFetchArchivedCategories();
