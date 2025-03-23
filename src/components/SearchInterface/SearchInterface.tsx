@@ -68,6 +68,7 @@ const SearchInterface: FC<SearchInterfaceProps> = ({ event }) => {
       <Dialog
         open={showMovieSuggestionModal}
         onOpenChange={handleCloseSuggestionModal}
+        aria-describedby="AI Suggestion"
       >
         {movieSuggestion && (
           <MovieSuggestionDialog

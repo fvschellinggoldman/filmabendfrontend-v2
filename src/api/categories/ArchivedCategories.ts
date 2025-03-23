@@ -5,14 +5,16 @@ import { getRequest, postRequest } from "../api";
 export function useFetchArchivedCategories() {
   const api_url = "/api/past_categories";
 
-  const { data, error, isLoading } = useSWR<Category[], Error>(api_url, (url) =>
-    getRequest(url, null)
+  const { data, error, isLoading, mutate } = useSWR<Category[], Error>(
+    api_url,
+    (url) => getRequest(url, null)
   );
 
   return {
     categories: data,
     isLoading,
     isError: error,
+    mutate,
   };
 }
 

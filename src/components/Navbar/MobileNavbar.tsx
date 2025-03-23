@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 
 interface MobileNavbarProps {
   navbarItems: NavbarItem[];
@@ -33,6 +33,8 @@ const MobileNavbar = ({ navbarItems }: MobileNavbarProps) => {
         </Button>
       </SheetTrigger>
       <SheetContent side="left">
+        <SheetTitle hidden>Navigation Sheet</SheetTitle>
+
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10">
           <div className="flex flex-col space-y-3">
             {navbarItems.map(({ label, url }) => (

@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
 import { MovieSuggestion } from "@/types/movie";
-import { DialogContent } from "../ui/dialog";
+import { DialogContent, DialogDescription } from "../ui/dialog";
 import { X, Check } from "lucide-react";
 import { Button } from "../ui/button";
 import {
@@ -10,6 +10,7 @@ import {
   useTransform,
 } from "motion/react";
 import { Small } from "shadcn-typography";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface MovieSuggestionDialogProps {
   movieSuggestion: MovieSuggestion;
@@ -64,47 +65,58 @@ const MovieSuggestionDialog: FC<MovieSuggestionDialogProps> = ({
   }, [controls]);
 
   return (
-    <DialogContent className="rounded-md w-fit pb-4">
-      <div className={"flex flex-col gap-4 text-center"}>
-        <motion.img
-          className={`max-w-[80vw] max-h-[60vh] rounded-lg hover:cursor-grab active:cursor-grabbing`}
-          drag="x"
-          dragMomentum={false}
-          dragConstraints={{
-            left: 0,
-            right: 0,
-          }}
-          animate={controls}
-          initial={{ x: 0 }}
-          style={{ x, opacity, rotate }}
-          alt={`Movie poster for ${movieSuggestion.originalTitle}`}
-          src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movieSuggestion.moviePosterPath}`}
-          onDragEnd={handleDragEnd}
-        ></motion.img>
-        <Small>{movieSuggestion.title}</Small>
-        <div className="flex flex-row justify-between">
-          <motion.div style={{ opacity: opacityDecline }}>
-            <Button
-              className="rounded-md bg-[#cb6565] border-black w-[100px]"
-              variant="outline"
-              onClick={() => handleSuggestionAction(movieSuggestion, "decline")}
-            >
-              <X />
-            </Button>
-          </motion.div>
+    <>
+      <DialogTitle hidden> AI Suggestion </DialogTitle>
+      <DialogContent className="rounded-md w-fit pb-4">
+        <div className={"flex flex-col gap-4 text-center"}>
+          <motion.img
+            className={`max-w-[80vw] max-h-[60vh] rounded-lg hover:cursor-grab active:cursor-grabbing`}
+            drag="x"
+            dragMomentum={false}
+            dragConstraints={{
+              left: 0,
+              right: 0,
+            }}
+            animate={controls}
+            initial={{ x: 0 }}
+            style={{ x, opacity, rotate }}
+            alt={`Movie poster for ${movieSuggestion.originalTitle}`}
+            src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movieSuggestion.moviePosterPath}`}
+            onDragEnd={handleDragEnd}
+          ></motion.img>
+          <Small>{movieSuggestion.title}</Small>
+          <div className="flex flex-row justify-between">
+            <motion.div style={{ opacity: opacityDecline }}>
+              <Button
+                className="rounded-md bg-[#cb6565] border-black w-[100px]"
+                variant="outline"
+                onClick={() =>
+                  handleSuggestionAction(movieSuggestion, "decline")
+                }
+              >
+                <X />
+              </Button>
+            </motion.div>
 
-          <motion.div style={{ opacity: opacityAccept }}>
-            <Button
-              className="rounded-md bg-[#88c2a5] border-black w-[100px]"
-              variant="outline"
-              onClick={() => handleSuggestionAction(movieSuggestion, "accept")}
-            >
-              <Check />
-            </Button>
-          </motion.div>
+            <motion.div style={{ opacity: opacityAccept }}>
+              <Button
+                className="rounded-md bg-[#88c2a5] border-black w-[100px]"
+                variant="outline"
+                onClick={() =>
+                  handleSuggestionAction(movieSuggestion, "accept")
+                }
+              >
+                <Check />
+              </Button>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </DialogContent>
+        <DialogDescription hidden>
+          An image suggested for the event, drag right to accept and drag left
+          to deny
+        </DialogDescription>
+      </DialogContent>
+    </>
   );
 };
 
