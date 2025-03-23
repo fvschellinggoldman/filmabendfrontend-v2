@@ -1,86 +1,109 @@
-import { FC } from "react";
+import { useRef, type FC } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { postFile } from "../../api/api";
 import { toast } from "sonner";
-import {
-  Container,
-  Typography,
-  Button,
-  TextField,
-  Input,
-  FormHelperText,
-} from "@mui/material";
 import { mutate } from "swr";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-type ICategoryCreationFormInput = {
-  name: string;
-  categoryImage: File[];
-  date: Date;
-};
+const formSchema = z.object({
+  name: z.string().min(1, { message: "Category name is required" }),
+  categoryImage: z.instanceof(FileList).refine((files) => files.length > 0, {
+    message: "Category image is required",
+  }),
+});
 
-interface CategoryCreationInterfaceProps {}
+type FormValues = z.infer<typeof formSchema>;
+
+type CategoryCreationInterfaceProps = {};
 
 const CategoryCreationInterface: FC<CategoryCreationInterfaceProps> = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<ICategoryCreationFormInput>();
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+    },
+  });
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const onSubmit = async (data: ICategoryCreationFormInput) => {
+  const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
     formData.append("category_image", data.categoryImage[0]);
     formData.append("name", data.name);
-    toast.success(`Category ${data.name} has been submitted!`);
-    await postFile("/api/category", formData);
-    reset();
-    mutate("/api/remaining_categories");
+
+    toast.promise(postFile("/api/category", formData), {
+      loading: `Submitting category '${data.name}' ...`,
+      success: () => {
+        form.reset({ name: undefined, categoryImage: undefined });
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        mutate("/api/remaining_categories");
+        return `Your category '${data.name}' has successfully been submitted.`;
+      },
+      error: `Error while submitting your category '${data.name}'`,
+    });
   };
 
   return (
-    <Container>
-      <Typography variant="h4" align="center" padding={5}>
-        Create Category
-      </Typography>
-      <div className={"flex flex-col items-center"}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            {...register("name", { required: "Category is required" })}
-            label="Category"
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            error={!!errors.name}
-            helperText={errors.name?.message}
-            className={"w-full mb-4"}
-          />
-          {/* Category Image */}
-          <Input
-            {...register("categoryImage")}
-            type="file"
-            fullWidth
-            error={!!errors.categoryImage}
-            className={"w-full mb-4"}
-          />
-          {/* Validation Errors */}
-          {errors.categoryImage && (
-            <FormHelperText error>
-              {errors.categoryImage.message}
-            </FormHelperText>
-          )}
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={"w-full mb-4"}
+    <div className="container mx-auto px-4">
+      <h1 className="text-2xl font-bold text-center py-10">Create Category</h1>
+      <div className="flex flex-col items-center">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-6 w-full max-w-md"
           >
-            Submit Category
-          </Button>
-        </form>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="text-left">
+                  <FormLabel>Category Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter category name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="categoryImage"
+              render={({ field: { onChange } }) => (
+                <FormItem className="text-left">
+                  <FormLabel>Category Image</FormLabel>
+                  <FormControl>
+                    <Input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => onChange(e.target.files)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit" className="w-full">
+              Submit Category
+            </Button>
+          </form>
+        </Form>
       </div>
-    </Container>
+    </div>
   );
 };
 

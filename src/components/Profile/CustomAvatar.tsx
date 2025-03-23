@@ -1,5 +1,5 @@
 import { Avatar, Badge } from "@mui/material";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { User } from "../../types/user";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
