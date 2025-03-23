@@ -3,7 +3,7 @@ import VotingElement from "../VotingElement/VotingElement";
 import SearchInterface from "../SearchInterface/SearchInterface";
 import { useEvent } from "../../api/events/Events";
 import { useFetchUser } from "../../api/users/Users";
-import SkeletonPage from "../SkeletonPage/SkeletonPage";
+import SkeletonPage from "../Skeletons/SkeletonPage";
 import EventImage from "../EventImage/EventImage";
 
 interface VotingPageProps {}

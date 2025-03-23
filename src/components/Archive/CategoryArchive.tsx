@@ -13,14 +13,14 @@ const CategoryArchive = () => {
     return null;
   }
 
-  const columns: ColumnDef<Category, any>[] = [
+  const columns: ColumnDef<Category>[] = [
     {
       accessorKey: "name",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
-            className="[&_svg]:size-4 flex-row p-1 gap-2 my-2 mx-0"
+            className="[&_svg]:size-5 flex-row p-1 gap-2 my-2 mx-0 font-bold text-xl"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Category
