@@ -26,7 +26,7 @@ export const EventArchiveTile: FC<EventArchiveTileProps> = ({
   return (
     <div
       className={`rounded-md flex flex-col ${
-        index % 2 ? "bg-secondary" : "bg-primary"
+        index % 2 ? "bg-secondary text-white" : "bg-primary"
       }`}
     >
       <Large> {event.name} </Large>
