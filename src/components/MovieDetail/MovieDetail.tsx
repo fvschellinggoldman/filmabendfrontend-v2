@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useFetchMovie } from "../../api/movies/Movies";
-import MovieDetailData from "./MovieDetailData";
+import MovieDetailData from "./MovieDetailDataV2";
 
 export const MovieDetail = () => {
   const { slug } = useParams();
@@ -14,10 +14,10 @@ export const MovieDetail = () => {
   }
 
   return (
-    <div className={"flex flex-col sm:flex-row"}>
+    <div className={"flex flex-col sm:flex-row px-5"}>
       <div
         className={
-          "flex w-full sm: w-3/4 h-fit items-center justify-center my-4"
+          "flex flex-col w-full sm:w-3/4 h-fit items-center justify-center my-4"
         }
       >
         <img
