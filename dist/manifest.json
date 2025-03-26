@@ -1,6 +1,6 @@
 {
   "short_name": "Filmabend",
-  "name": "Filmabend Frontend",
+  "name": "Filmabend",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,12 +10,12 @@
     {
       "src": "logo192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "191x134"
     },
     {
       "src": "logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x358"
     }
   ],
   "start_url": ".",
