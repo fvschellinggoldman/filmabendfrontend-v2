@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useFetchMovie } from "../../api/movies/Movies";
-import MovieDetailData from "./MovieDetailDataV2";
+import MovieDetailData from "./MovieDetailData";
 
 export const MovieDetail = () => {
   const { slug } = useParams();
@@ -22,9 +22,8 @@ export const MovieDetail = () => {
       >
         <img
           src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
-          width="90%"
-          height="90%"
           alt="Movie Poster"
+          className="rounded-md"
         ></img>
       </div>
       <MovieDetailData movie={movie}></MovieDetailData>
