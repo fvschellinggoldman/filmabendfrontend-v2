@@ -1,35 +1,17 @@
-import { Divider, ImageList } from "@mui/material";
-import React, { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import VotingElement from "../VotingElement/VotingElement";
-import styles from "./VotingPage.module.scss";
 import SearchInterface from "../SearchInterface/SearchInterface";
-import EventImage from "../EventImage/EventImage";
 import { useEvent } from "../../api/events/Events";
 import { useFetchUser } from "../../api/users/Users";
+import SkeletonPage from "../Skeletons/SkeletonPage";
+import EventImage from "../EventImage/EventImage";
 
 interface VotingPageProps {}
 
 const VotingPage: FC<VotingPageProps> = () => {
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const { event } = useEvent();
-  const { user } = useFetchUser();
+  const { event, isLoading } = useEvent();
+  const { user, isLoading: userLoading } = useFetchUser();
 
-  useEffect(() => {
-    const handleResize = () => {
-      setScreenWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    // Clean up the event listener when the component is unmounted
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  if (!user) {
-    return <></>;
-  }
-
-  const columnAmount = screenWidth <= 600 ? 1 : 3;
   const movies = event ? event.movies : [];
   if (event && event.closed) {
     movies.sort(
@@ -39,18 +21,22 @@ const VotingPage: FC<VotingPageProps> = () => {
     );
   }
 
+  if (isLoading || userLoading) {
+    return <SkeletonPage />;
+  }
+
+  if (!user) {
+    return <></>;
+  }
+
   return (
     <>
       {event && (
-        <div>
-          <EventImage event={event} user={user}></EventImage>
-          <div className={styles.VotingPageContainer}>
-            <ImageList
-              sx={{ overflowY: "visible !important" }}
-              className={styles.ImageList}
-              cols={columnAmount}
-              gap={6}
-            >
+        <>
+          <EventImage event={event} user={user} />
+          <SearchInterface event={event} />
+          <div className="flex flex-col sm:flex-row p-2">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-4 gap-2 h-fit">
               {movies.map((movie) => (
                 <VotingElement
                   movie={movie}
@@ -59,11 +45,9 @@ const VotingPage: FC<VotingPageProps> = () => {
                   user={user}
                 ></VotingElement>
               ))}
-            </ImageList>
-            <Divider orientation="vertical" flexItem={true}></Divider>
-            <SearchInterface event={event} user={user}></SearchInterface>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );

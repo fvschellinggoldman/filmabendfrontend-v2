@@ -1,26 +1,18 @@
-import {
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  Toolbar,
-  Tooltip,
-} from "@mui/material";
-import React, { FC, useState } from "react";
-import styles from "./VotingMovieDetails.module.scss";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import InfoIcon from "@mui/icons-material/Info";
+import { FC, useState } from "react";
 import { Movie } from "../../types/movie";
-import { postRequest } from "../../api/api";
+import { deleteRequest, postRequest } from "../../api/api";
 import { mutate } from "swr";
 import { toast } from "sonner";
-import cn from "classnames";
-import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { ConfirmationModal } from "../ConfirmationModal/ConfirmationModal";
 import { Action } from "../../types/action";
 import { User } from "../../types/user";
+import { Small } from "shadcn-typography";
+import { Button } from "../ui/button";
+import { BookOpenText, Info, ListOrdered, Trash2 } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { isMobile } from "react-device-detect";
+import { Label } from "../ui/label";
 
 interface VotingMovieDetailsProps {
   movie: Movie;
@@ -38,6 +30,10 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
   user,
 }) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showConfirmationDeletionModal, setShowConfirmationDeletionModal] =
+    useState(false);
+
+  const [showPlot, setShowPlot] = useState(false);
 
   const handleRatingChange = async () => {
     toast.success(`${movie.name} has been opened for rating!`);
@@ -53,13 +49,31 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
       : handleRatingChange();
   };
 
+  const handleMovieDeletionClick = () => {
+    user.userPreference && user.userPreference.enableSafeMode
+      ? setShowConfirmationDeletionModal(true)
+      : handleDelete();
+  };
+
   const navigate = useNavigate();
   const handleNavigate = () => {
     navigate(`/movie/${movie.id}`);
   };
 
+  const handleDelete = () => {
+    const { name, id } = movie;
+    toast.promise(deleteRequest(`/api/movie/${id}`), {
+      loading: `Deleting ${name}`,
+      success: () => {
+        return `${name} has been deleted!`;
+      },
+      error: `Error while deleting ${name}`,
+    });
+    mutate("/api/event");
+  };
+
   return (
-    <div>
+    <>
       {showConfirmationModal && (
         <ConfirmationModal
           open={true}
@@ -69,58 +83,78 @@ const VotingMovieDetails: FC<VotingMovieDetailsProps> = ({
           confirmationFunction={handleRatingChange}
         />
       )}
-      <Table>
-        <TableBody>
-          <TableRow>
-            <TableCell className={styles.inheritColor}>{movie.name}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className={cn(styles.cursiveFont, styles.inheritColor)}>
-              {movie.genres.join(", ")}
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-      <Toolbar className={styles.OverlayToolbar}>
-        {eventClosed && (
-          <Tooltip title="Unlock Rating">
-            <IconButton
-              onClick={handleRatingChangeClick}
-              color="inherit"
-              aria-label="unlock rating"
-            >
-              <LockOpenIcon></LockOpenIcon>
-            </IconButton>
-          </Tooltip>
-        )}
-        <Tooltip title="More Information">
-          <IconButton
-            onClick={handleNavigate}
-            color="inherit"
-            aria-label="get movie details"
-          >
-            <InfoIcon></InfoIcon>
-          </IconButton>
-        </Tooltip>
-      </Toolbar>
-      {selected ? (
-        <Button
-          variant="contained"
-          onClick={handleClick}
-          disabled={eventClosed}
-        >
-          Remove Vote
-        </Button>
-      ) : (
-        <Button
-          variant="contained"
-          onClick={handleClick}
-          disabled={eventClosed}
-        >
-          Add Vote
-        </Button>
+      {showConfirmationDeletionModal && (
+        <ConfirmationModal
+          open={true}
+          action={Action.deleteMovie}
+          descriptionText={`This will remove the movie ${movie.name} from voting.`}
+          setModalState={setShowConfirmationDeletionModal}
+          confirmationFunction={handleDelete}
+        />
       )}
-    </div>
+      <div className="flex flex-col justify-evenly h-full w-full px-2">
+        <Small>{movie.name}</Small>
+        <hr />
+        <Small className="italic"> {movie.genres.join(", ")}</Small>
+        <hr />
+
+        {eventClosed ? (
+          <div className="flex justify-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleRatingChangeClick}
+              className={"[&_svg]:size-6 flex flex-col p-1 h-12 w-12"}
+            >
+              <ListOrdered />
+              <Label className="text-xs">Rate</Label>
+            </Button>
+          </div>
+        ) : (
+          <div className="w-full gap-4 flex-col flex justify-evenly">
+            <div className="flex flex-row justify-evenly">
+              <Popover open={showPlot}>
+                <PopoverTrigger
+                  onMouseLeave={() => !isMobile && setShowPlot(false)}
+                  onClick={() => setShowPlot(!showPlot)}
+                  className={
+                    "flex-col p-1 h-12 w-12 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground"
+                  }
+                >
+                  <BookOpenText />
+                  <Label className="text-xs">Plot</Label>
+                </PopoverTrigger>
+                <PopoverContent onPointerDownOutside={() => setShowPlot(false)}>
+                  {movie.description}
+                </PopoverContent>
+              </Popover>
+              <Button variant="ghost" size="cardIcon" onClick={handleNavigate}>
+                <Info />
+                <Label className="text-xs">Info</Label>
+              </Button>
+              {user.moderator && (
+                <Button
+                  variant="ghost"
+                  size="cardIcon"
+                  onClick={handleMovieDeletionClick}
+                >
+                  <Trash2 />
+                  <Label className="text-xs">Delete</Label>
+                </Button>
+              )}
+            </div>
+
+            <Button
+              onClick={handleClick}
+              disabled={eventClosed}
+              className="w-full"
+            >
+              {selected ? "Remove" : "Add"} Vote
+            </Button>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

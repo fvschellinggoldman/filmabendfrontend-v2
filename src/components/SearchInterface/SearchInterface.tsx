@@ -1,61 +1,83 @@
-import React, { FC, useState } from "react";
-import { MovieSearchResult } from "../../types/movie";
+import { FC, useEffect, useState } from "react";
 import SearchBar from "../SearchBar/SearchBar";
-import SearchResults from "../SearchResults/SearchResults";
-import styles from "./SearchInterface.module.scss";
 import { Event } from "../../types/event";
-import { Button, Dialog, Tooltip } from "@mui/material";
-import AssistantIcon from "@mui/icons-material/Assistant";
-import { User } from "../../types/user";
-import MovieSuggestionElement from "../MovieSuggestion/MovieSuggestionElement";
+import MovieSuggestionElement from "../MovieSuggestion/MovieSuggestionDialog";
 import { useFetchMovieEventSuggestions } from "../../api/events/MovieEventSuggestion";
+import { Button } from "../ui/button";
+import { Bot } from "lucide-react";
+import MovieSuggestionDialog from "../MovieSuggestion/MovieSuggestionDialog";
+import { Dialog } from "../ui/dialog";
+import { toast } from "sonner";
+import { addSuggestedMovie, declineSuggestedMovie } from "@/api/movies/Movies";
+import { MovieSuggestion } from "@/types/movie";
 
 interface SearchInterfaceProps {
   event: Event;
-  user: User;
 }
 
-const SearchInterface: FC<SearchInterfaceProps> = ({ event, user }) => {
-  const [searchResults, setSearchResults] = useState<MovieSearchResult[]>([]);
+const SearchInterface: FC<SearchInterfaceProps> = ({ event }) => {
   const [showMovieSuggestionModal, setShowMovieSuggestionModal] =
     useState(false);
+
   const handleOpenSuggestionModal = () => {
     setShowMovieSuggestionModal(true);
   };
   const handleCloseSuggestionModal = () => {
     setShowMovieSuggestionModal(false);
   };
-  const { movieSuggestion } = useFetchMovieEventSuggestions(event.id);
+
+  const { movieSuggestion, isLoading, mutate } = useFetchMovieEventSuggestions(
+    event.id
+  );
+
+  const handleSuggestionAction = async (
+    movieSuggestion: MovieSuggestion,
+    action: "accept" | "decline"
+  ) => {
+    action === "accept"
+      ? await addSuggestedMovie(movieSuggestion)
+      : await declineSuggestedMovie(movieSuggestion);
+    mutate();
+  };
+
+  useEffect(() => {
+    if (!movieSuggestion && !isLoading && showMovieSuggestionModal) {
+      toast.info("Out of suggestions for this event");
+      setShowMovieSuggestionModal(false);
+    }
+  }, [movieSuggestion]);
 
   return (
-    <div className={styles.SearchInterfaceWrapper}>
-      <div className={styles.SearchBarWrapper}>
-        <SearchBar onSearch={setSearchResults}></SearchBar>
-        {movieSuggestion && (
-          <Tooltip title="AI Suggestion">
-            <Button
-              className={styles.SuggestionButton}
-              variant="outlined"
-              startIcon={<AssistantIcon />}
-              onClick={handleOpenSuggestionModal}
-            ></Button>
-          </Tooltip>
-        )}
-        <Dialog
-          open={showMovieSuggestionModal}
-          onClose={handleCloseSuggestionModal}
-          maxWidth="lg"
-        >
-          <MovieSuggestionElement
-            handleCloseSuggestionModal={handleCloseSuggestionModal}
-            eventId={event.id}
-          ></MovieSuggestionElement>
-        </Dialog>
+    <div className={"flex flex-row grow align-items justify-center gap-2 px-2"}>
+      <div className="flex grow justify-center">
+        <SearchBar event={event} />
       </div>
-      <SearchResults
-        searchResults={searchResults}
-        event={event}
-      ></SearchResults>
+      <div className="flex justify-center align-items sm:w-[120px]">
+        <div className="w-[120px] flex justify-center">
+          <Button
+            variant={"textIcon"}
+            onClick={handleOpenSuggestionModal}
+            disabled={isLoading || !movieSuggestion}
+            className="[&_svg]:size-6 h-fit w-14"
+          >
+            <Bot />
+            <span className="text-xs font-medium leading-none">AI</span>
+          </Button>
+        </div>
+      </div>
+      <Dialog
+        open={showMovieSuggestionModal}
+        onOpenChange={handleCloseSuggestionModal}
+        aria-describedby="AI Suggestion"
+      >
+        {movieSuggestion && (
+          <MovieSuggestionDialog
+            movieSuggestion={movieSuggestion}
+            eventId={event.id}
+            handleSuggestionAction={handleSuggestionAction}
+          />
+        )}
+      </Dialog>
     </div>
   );
 };

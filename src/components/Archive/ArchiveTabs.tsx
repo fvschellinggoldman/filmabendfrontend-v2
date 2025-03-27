@@ -1,53 +1,52 @@
 import * as React from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
 import CategoryArchive from "./CategoryArchive";
 import { MovieArchive } from "./MovieArchive";
 import { EventArchive } from "./EventArchive";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Calendar, FilmIcon, LibraryBig } from "lucide-react";
 
+const ArchiveTabValues = [
+  {
+    value: "Movie",
+    icon: <FilmIcon />,
+    component: <MovieArchive />,
+  },
+  {
+    value: "Event",
+    icon: <Calendar />,
+    component: <EventArchive />,
+  },
+  {
+    value: "Category",
+    icon: <LibraryBig />,
+    component: <CategoryArchive />,
+  },
+];
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
 
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index } = props;
-
-  return (
-    <div role="tabpanel" hidden={value !== index}>
-      {value === index && <>{children}</>}
-    </div>
-  );
-}
-
 const ArchiveTabs = () => {
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
   return (
-    <Box sx={{ width: "100%", marginTop: "3px" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={value} onChange={handleChange} centered>
-          <Tab label="Movie Archive" />
-          <Tab label="Event Archive" />
-          <Tab label="Category Archive" />
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-        <MovieArchive />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <EventArchive />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <CategoryArchive />
-      </TabPanel>
-    </Box>
+    <Tabs defaultValue={"Movie"} className="w-full py-2">
+      <TabsList className="border-black border p-2">
+        {ArchiveTabValues.map(({ value, icon }) => (
+          <TabsTrigger value={value} key={`${value}Trigger`}>
+            <div className="flex flex-row items-center">
+              {icon}
+              {value}
+            </div>
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      {ArchiveTabValues.map(({ value, component }) => (
+        <TabsContent value={value} key={value}>
+          {component}
+        </TabsContent>
+      ))}
+    </Tabs>
   );
 };
 

@@ -1,10 +1,11 @@
-import { Avatar, Badge } from "@mui/material";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { User } from "../../types/user";
-import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { UseFormSetValue } from "react-hook-form";
 import { IEditProfileFormInput } from "./ProfileSettings";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Badge } from "../ui/badge";
+import { Camera } from "lucide-react";
 
 interface FilePreview extends File {
   preview: string;
@@ -41,43 +42,32 @@ export const CustomAvatar: FC<CustomAvatarProps> = ({ user, setValue }) => {
     <>
       <div
         {...getRootProps({ className: "dropzone" })}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+        className="relative inline-block hover:cursor-pointer hover:opacity-40"
       >
         <input {...getInputProps()} />
-        <Badge
-          overlap="circular"
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          badgeContent={
-            <AddAPhotoIcon
-              style={{
-                border: `3px solid white`,
-                width: "2.5vh",
-                height: "2.5vh",
-                backgroundColor: "black",
-                color: "white",
-                padding: "2px",
-                borderRadius: "30%",
-              }}
+        {previewImage ? (
+          <Avatar className="size-[15vh]">
+            <AvatarImage
+              src={previewImage.preview}
+              alt="Profile picture preview"
             />
+            <AvatarFallback>{user.displayName}</AvatarFallback>
+          </Avatar>
+        ) : (
+          <Avatar className="size-[15vh]">
+            <AvatarImage
+              src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${user.profilePicturePath}`}
+              alt="Profile picture"
+            />
+            <AvatarFallback>{user.displayName}</AvatarFallback>
+          </Avatar>
+        )}
+        <Badge
+          className={
+            "absolute bottom-0 right-0 flex size-8 cursor-pointer items-center justify-center rounded-full p-0"
           }
         >
-          {previewImage ? (
-            <Avatar
-              alt="Profile picture preview"
-              src={previewImage.preview}
-              sx={{ width: "15vh", height: "15vh" }}
-            />
-          ) : (
-            <Avatar
-              alt="Profile picture"
-              src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${user.profilePicturePath}`}
-              sx={{ width: "15vh", height: "15vh", ":hover": { opacity: 0.4 } }}
-            ></Avatar>
-          )}
+          <Camera size={18} />
         </Badge>
       </div>
     </>

@@ -12,10 +12,10 @@ export type Movie = {
   genres: string[];
   tmdbId: number;
   season: number;
+  description: string;
 };
 
 export type MovieDetail = Movie & {
-  description: string;
   runtime: number;
   releaseDate: Date;
   season: number;

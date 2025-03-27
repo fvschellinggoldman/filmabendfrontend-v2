@@ -1,149 +1,33 @@
-import React, { FC, useState } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import { FC } from "react";
 import { MovieDetail } from "../../types/movie";
-import styles from "./MovieDetailData.module.scss";
-import { Box, Button, Collapse, IconButton, Typography } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { Separator } from "../ui/separator";
+import { Badge } from "../ui/badge";
+import MovieSummaryCard from "./MovieSummaryCard";
+import AudienceScoreCard from "./AudienceScoreCard";
+import KeyFactsCard from "./KeyFactsCard";
 
 interface MovieDetailDataProps {
   movie: MovieDetail;
 }
 
 const MovieDetailData: FC<MovieDetailDataProps> = ({ movie }) => {
-  const [showImdbRating, setShowImdbRating] = useState(false);
-  const [showRatingBreakdown, setShowRatingBreakdown] = useState(false);
-
   return (
-    <TableContainer component={Paper} className={styles.MuiTableContainer}>
-      <Table className={styles.table}>
-        <TableBody>
-          <TableRow key="movieId" className={styles.stripedRow}>
-            <TableCell sx={{ width: "1rem" }}></TableCell>
-            <TableCell className={styles.boldCell}>Name</TableCell>
-            <TableCell>{movie.name}</TableCell>
-          </TableRow>
-          <TableRow key="description" className={styles.stripedRow}>
-            <TableCell></TableCell>
-            <TableCell className={styles.boldCell}>Description</TableCell>
-            <TableCell>
-              {movie.description ? movie.description : "N/A"}
-            </TableCell>
-          </TableRow>
-          <TableRow key="runtime" className={styles.stripedRow}>
-            <TableCell></TableCell>
-            <TableCell className={styles.boldCell}>Runtime</TableCell>
-            <TableCell>
-              {movie.runtime ? movie.runtime + " minutes" : "N/A"}
-            </TableCell>
-          </TableRow>
-          <TableRow key="releaseDate" className={styles.stripedRow}>
-            <TableCell></TableCell>
-            <TableCell className={styles.boldCell}>Release Date</TableCell>
-            <TableCell>
-              {movie.releaseDate ? movie.releaseDate.toString() : "N/A"}
-            </TableCell>
-          </TableRow>
-          <TableRow key="genres" className={styles.stripedRow}>
-            <TableCell></TableCell>
-            <TableCell className={styles.boldCell}>Genres</TableCell>
-            <TableCell>
-              {movie.genres.join(", ") ? movie.genres.join(", ") : "N/A"}
-            </TableCell>
-          </TableRow>
-          <TableRow key="season" className={styles.stripedRow}>
-            <TableCell></TableCell>
-            <TableCell className={styles.boldCell}>Season</TableCell>
-            <TableCell>{movie.season}</TableCell>
-          </TableRow>
-          {movie.categoryName && (
-            <TableRow key="event" className={styles.stripedRow}>
-              <TableCell></TableCell>
-              <TableCell className={styles.boldCell}>Event</TableCell>
-              <TableCell>{movie.categoryName}</TableCell>
-            </TableRow>
-          )}
-          {movie.imdbRating && (
-            <TableRow key="imdbRating" className={styles.stripedRow}>
-              <TableCell></TableCell>
-              <TableCell className={styles.boldCell}>Imdb Rating</TableCell>
-              {showImdbRating ? (
-                <TableCell>{movie.imdbRating}</TableCell>
-              ) : (
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    onClick={() => setShowImdbRating(true)}
-                  >
-                    Show Imdb Rating
-                  </Button>
-                </TableCell>
-              )}
-            </TableRow>
-          )}
-          {movie.averageRating && movie.breakdown && (
-            <>
-              <TableRow key="average Rating" className={styles.stripedRow}>
-                <TableCell>
-                  <IconButton
-                    aria-label="expand row"
-                    size="small"
-                    onClick={() => setShowRatingBreakdown(!showRatingBreakdown)}
-                  >
-                    {showRatingBreakdown ? (
-                      <KeyboardArrowUpIcon />
-                    ) : (
-                      <KeyboardArrowDownIcon />
-                    )}
-                  </IconButton>
-                </TableCell>
-                <TableCell className={styles.boldCell}>
-                  Average Rating
-                </TableCell>
-                <TableCell>{movie.averageRating}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell
-                  style={{ paddingBottom: 0, paddingTop: 0 }}
-                  colSpan={2}
-                >
-                  <Collapse
-                    in={showRatingBreakdown}
-                    timeout="auto"
-                    unmountOnExit
-                  >
-                    <Box sx={{ margin: 1 }}>
-                      <Typography variant="h6" gutterBottom component="div">
-                        Breakdown
-                      </Typography>
-                      <Table size="small" aria-label="purchases">
-                        <TableBody>
-                          {movie.breakdown.map((rating) => (
-                            <TableRow key={rating.displayName}>
-                              <TableCell component="th" scope="row">
-                                {rating.displayName}
-                              </TableCell>
-                              <TableCell align="right">
-                                {rating.rating}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </Box>
-                  </Collapse>
-                </TableCell>
-              </TableRow>
-            </>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div className="w-full pt-4 flex flex-col gap-4 pb-4">
+      <div className="flex flex-col gap-2 sm:flex-row sm:justify-between w-full">
+        <h1 className="text-4xl md:text-5xl font-bold bg-clip-text">
+          {movie.name}
+        </h1>
+        <div className="flex flex-row gap-2 justify-center">
+          {movie.genres.map((genre) => {
+            return <Badge className="bg-primary rounded-full"> {genre} </Badge>;
+          })}
+        </div>
+      </div>
+      <Separator />
+      <KeyFactsCard movie={movie} />
+      <AudienceScoreCard movie={movie} />
+      <MovieSummaryCard description={movie.description} />
+    </div>
   );
 };
 

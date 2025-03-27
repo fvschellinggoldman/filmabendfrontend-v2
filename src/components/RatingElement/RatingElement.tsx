@@ -1,6 +1,4 @@
-// RatingElement.js
-import { Button } from "@mui/material";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { toast } from "sonner";
 import { mutate } from "swr";
 import { postRequest } from "../../api/api";
@@ -9,7 +7,7 @@ import { Movie } from "../../types/movie";
 import { RatingStatus } from "../../types/rating";
 import { User } from "../../types/user";
 import { ConfirmationModal } from "../ConfirmationModal/ConfirmationModal";
-import styles from "./RatingElement.module.scss";
+import { Button } from "../ui/button";
 
 interface RatingElementProps {
   movie: Movie;
@@ -94,20 +92,20 @@ const RatingElement: FC<RatingElementProps> = ({
       )}
 
       {userHasRated ? (
-        <>
+        <div className="flex flex-col gap-2 px-2">
           <p>Waiting for results to be tallied.</p>
           {user.moderator && (
-            <Button variant="contained" onClick={handleRatingStateChangeClick}>
-              Close Rating
-            </Button>
+            <Button onClick={handleRatingStateChangeClick}>Close Rating</Button>
           )}
-        </>
+        </div>
       ) : (
-        <div className={styles.RatingElement}>
+        <div className={"flex flex-col h-full justify-evenly w-full p-1 gap-1"}>
           {Array.from({ length: 10 }).map((_, index) => (
             <div
               key={`${movie.id}_rating_${index}`}
-              className={styles.rectangle}
+              className={
+                "text-white text-center font-bold cursor-pointer flex justify-center items-center h-full hover:opacity-80"
+              }
               style={{ backgroundColor: colorScale[index] }}
               onClick={() => handleRectangleClick(10 - index)}
             >

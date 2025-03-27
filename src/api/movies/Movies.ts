@@ -24,19 +24,18 @@ export function addSearchedMovie(
   searchedMovie: MovieSearchResult,
   eventId: number
 ) {
-  _addMovie(searchedMovie, eventId);
-  mutate("/api/event");
+  return _addMovie(searchedMovie, eventId);
 }
 
-export function addSuggestedMovie(suggestedMovie?: MovieSuggestion) {
+export async function addSuggestedMovie(suggestedMovie?: MovieSuggestion) {
   if (suggestedMovie) {
     _addMovie(suggestedMovie, suggestedMovie.eventId);
-    _updateSuggestionState(suggestedMovie, "ACCEPTED");
+    await _updateSuggestionState(suggestedMovie, "ACCEPTED");
   }
 }
 
-export function declineSuggestedMovie(suggestedMovie?: MovieSuggestion) {
-  if (suggestedMovie) _updateSuggestionState(suggestedMovie, "DECLINED");
+export async function declineSuggestedMovie(suggestedMovie?: MovieSuggestion) {
+  if (suggestedMovie) await _updateSuggestionState(suggestedMovie, "DECLINED");
 }
 
 export function useFetchMovie(movieId: number) {
@@ -60,8 +59,7 @@ async function _updateSuggestionState(
   newState: string
 ) {
   const url = `/api/event/${suggestedMovie.eventId}/${suggestedMovie.id}/update_suggestion_state`;
-  await putRequest(url, {
+  return putRequest(url, {
     newState,
   });
-  mutate(`/api/event/${suggestedMovie.eventId}/suggestion`);
 }

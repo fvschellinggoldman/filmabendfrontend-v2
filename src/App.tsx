@@ -2,7 +2,6 @@ import "./App.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import { AuthProvider } from "./components/AuthProvider/AuthProvider";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Toaster } from "sonner";
 import ApplicationContainer from "./components/ApplicationContainer/ApplicationContainer";
 import { CategoryCreationContainer } from "./components/Categories/CategoryCreationContainer";
@@ -10,26 +9,20 @@ import ArchiveTabs from "./components/Archive/ArchiveTabs";
 import { MovieDetail } from "./components/MovieDetail/MovieDetail";
 import LoginPage from "./components/Login/LoginPage";
 import { PersonalStatistics } from "./components/Statistics/PersonalStatistics";
-
-// Create a custom theme
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#e92f6c",
-    },
-    secondary: {
-      main: "#000", // Set your desired secondary color
-    },
-  },
-});
+import { TooltipProvider } from "./components/ui/tooltip";
 
 function App() {
   return (
-    <AuthProvider>
-      <Toaster position="bottom-right" />
-      <ThemeProvider theme={theme}>
-        <div className="App">
-          <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster position="bottom-right" />
+          <div className="App">
             <Navbar />
 
             <Routes>
@@ -44,10 +37,10 @@ function App() {
               />
               <Route path="*" element={<Navigate to="/home" />}></Route>
             </Routes>
-          </BrowserRouter>
-        </div>
-      </ThemeProvider>
-    </AuthProvider>
+          </div>
+        </TooltipProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

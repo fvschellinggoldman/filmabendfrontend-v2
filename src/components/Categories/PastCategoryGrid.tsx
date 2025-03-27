@@ -1,6 +1,5 @@
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
-import React from "react";
 import { Category } from "../../types/category";
+import { Card, CardContent } from "../ui/card";
 
 export const PastCategoryGrid = () => {
   const pastCategories: Category[] = [];
@@ -8,17 +7,12 @@ export const PastCategoryGrid = () => {
   return (
     <>
       {pastCategories.map((category) => (
-        <Card sx={{ maxWidth: 345 }} key={category.id}>
-          <CardMedia
-            sx={{ height: 140 }}
-            image={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${category.imageUrl}`}
-            title="event image"
+        <Card className="max-w-[345px]" key={category.id}>
+          <img
+            src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${category.imageUrl}`}
+            className="h-[140px]"
           />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {category.name}
-            </Typography>
-          </CardContent>
+          <CardContent>{category.name}</CardContent>
         </Card>
       ))}
     </>

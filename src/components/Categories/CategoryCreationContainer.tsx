@@ -1,23 +1,21 @@
-import { Typography } from "@mui/material";
 import { useRemainingCategory } from "../../api/categories/Categories";
 import CategoryCreationInterface from "./CategoryCreationInterface";
 import { PastCategoryGrid } from "./PastCategoryGrid";
+import { Large, Small } from "shadcn-typography";
 
 export const CategoryCreationContainer = () => {
   const { remainingCategories } = useRemainingCategory();
 
   return (
     <>
-      <Typography variant="h4">
+      <p className="text-xl">
         You have {remainingCategories} categories left to write this season.
-      </Typography>
+      </p>
       {remainingCategories !== undefined && remainingCategories > 0 && (
-        <CategoryCreationInterface></CategoryCreationInterface>
+        <CategoryCreationInterface />
       )}
-      <Typography variant="h2"> Your past categories </Typography>
-      <Typography variant="subtitle1" style={{ fontStyle: "italic" }}>
-        Coming soon
-      </Typography>
+      <Large> Your past categories </Large>
+      <Small className="italic">Coming soon</Small>
       <PastCategoryGrid></PastCategoryGrid>
     </>
   );

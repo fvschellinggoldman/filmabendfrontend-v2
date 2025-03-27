@@ -1,4 +1,3 @@
-import { Box } from "@mui/system";
 import { useState } from "react";
 import { InfiniteLoader } from "../InfiniteLoader/InfiniteLoader";
 import { EventArchivePage } from "./EventArchivePage";
@@ -8,13 +7,15 @@ export const EventArchive = () => {
   const pages = [];
   for (let i = 0; i < pageIndex; i++) {
     pages.push(<EventArchivePage index={i} key={i} hidden={false} />);
-    pages.push(<EventArchivePage index={i + 1} key={i} hidden={true} />);
+    pages.push(
+      <EventArchivePage index={i + 1} key={`hidden_${i}`} hidden={true} />
+    );
   }
 
   return (
-    <Box sx={{ mt: 2 }}>
+    <div className="px-2">
       {pages}
       <InfiniteLoader oldIndex={pageIndex} handleChange={setPageIndex} />
-    </Box>
+    </div>
   );
 };

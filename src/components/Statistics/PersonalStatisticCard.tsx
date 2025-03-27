@@ -1,6 +1,5 @@
-import { Card, CardContent, Typography } from "@mui/material";
-import React, { FC } from "react";
-
+import { FC } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 interface PersonalStatisticCardProps {
   title: string;
   content: string;
@@ -11,16 +10,11 @@ export const PersonalStatisticCard: FC<PersonalStatisticCardProps> = ({
   content,
 }) => {
   return (
-    <Card
-      variant="outlined"
-      sx={{ display: "flex", flexGrow: 1, justifyContent: "center" }}
-    >
-      <CardContent>
-        <Typography variant="h5" component="div">
-          {title}
-        </Typography>
-        <Typography variant="body2">{content}</Typography>
-      </CardContent>
+    <Card className="flex grow justify-center">
+      <CardHeader>
+        <CardTitle> {title}</CardTitle>
+      </CardHeader>
+      <CardContent>{content}</CardContent>
     </Card>
   );
 };

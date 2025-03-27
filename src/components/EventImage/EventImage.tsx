@@ -1,15 +1,15 @@
-import React, { FC, useState } from "react";
-import styles from "./EventImage.module.scss";
-import LockIcon from "@mui/icons-material/Lock";
-import { IconButton, Toolbar, Tooltip } from "@mui/material";
+import { FC, useState } from "react";
 import { Event } from "../../types/event";
-import { AddCircle } from "@mui/icons-material";
 import { postRequest } from "../../api/api";
 import { mutate } from "swr";
 import { toast } from "sonner";
 import { User } from "../../types/user";
 import { ConfirmationModal } from "../ConfirmationModal/ConfirmationModal";
 import { Action } from "../../types/action";
+import { Button } from "../ui/button";
+import { CalendarPlus, Lock } from "lucide-react";
+import EventImageDialog from "./EventImageDialog";
+import { useInView } from "react-intersection-observer";
 
 interface EventImageProps {
   event: Event;
@@ -19,6 +19,10 @@ interface EventImageProps {
 const EventImage: FC<EventImageProps> = ({ event, user }) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [startingEvent, setStartingEvent] = useState(false);
+
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
 
   const closeVoting = async () => {
     toast.success(`${event.name} has been closed for voting!`);
@@ -61,36 +65,42 @@ const EventImage: FC<EventImageProps> = ({ event, user }) => {
           confirmationFunction={startingEvent ? startNewEvent : closeVoting}
         />
       )}
-      <div className={styles.EventImageContainer}>
-        <img
-          src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${event?.imageUrl}`}
-          width="100%"
-          height={200}
-          alt="Event"
-        ></img>
-        <div className={styles.OverlayText}>{event?.name}</div>
-        {user.moderator && (
-          <Toolbar className={styles.OverlayToolbar}>
-            <Tooltip title="Close Voting">
-              <IconButton
-                onClick={handleCloseEventClick}
-                color="inherit"
-                aria-label="close voting"
-              >
-                <LockIcon style={{ fontSize: "36px" }}></LockIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Create new Event">
-              <IconButton
-                onClick={handleNewEventClick}
-                color="inherit"
-                aria-label="create event"
-              >
-                <AddCircle style={{ fontSize: "36px" }}></AddCircle>
-              </IconButton>
-            </Tooltip>
-          </Toolbar>
-        )}
+      <div ref={ref} className="h-1"></div>
+      <div
+        className={`sticky top-0 z-10 flex flex-row ${
+          inView
+            ? "bg-transparent"
+            : "bg-white/40 backdrop-blur-md border border-white/20"
+        } shadow-xs p-4 items-center justify-center gap-2 transition-colors duration-500`}
+      >
+        <div className="flex flex-col justify-center items-center grow">
+          <p className="line-clamp-2 font-bold text-md">{event.name}</p>
+          <EventImageDialog
+            imageUrl={event.imageUrl}
+            eventName={event.name}
+            eventId={event.id}
+          />
+        </div>
+        <div className="flex flex-row justify-end gap-2">
+          <Button
+            variant={"textIcon"}
+            onClick={handleCloseEventClick}
+            className="[&_svg]:size-6 h-fit w-14"
+            disabled={event.closed}
+          >
+            <Lock />
+            <span className="text-xs font-medium leading-none">Close</span>
+          </Button>
+          <Button
+            variant={"textIcon"}
+            onClick={handleNewEventClick}
+            className="[&_svg]:size-6 h-fit w-14"
+            disabled={!event.closed}
+          >
+            <CalendarPlus />
+            <span className="text-xs font-medium leading-none">New</span>
+          </Button>
+        </div>
       </div>
     </>
   );

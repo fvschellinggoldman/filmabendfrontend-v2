@@ -1,6 +1,7 @@
 // AuthContext.tsx
 import { createContext, useContext, useState, ReactNode } from "react";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -15,6 +16,8 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const navigate = useNavigate();
+
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
     const storedToken = localStorage.getItem("bearerToken");
     if (storedToken) {
@@ -31,10 +34,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = (access_token: string) => {
     localStorage.setItem("bearerToken", access_token);
     setIsLoggedIn(true);
+    navigate("/home");
   };
 
   const logout = () => {
+    localStorage.removeItem("bearerToken");
     setIsLoggedIn(false);
+    navigate("/login");
   };
 
   const contextValue: AuthContextType = {

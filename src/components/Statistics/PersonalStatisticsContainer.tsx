@@ -1,11 +1,10 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useFetchPersonalStatistics } from "../../api/users/PersonalStatistics";
 import { User } from "../../types/user";
 import { PersonalStatisticCard } from "./PersonalStatisticCard";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import styles from "./PersonalStatisticsCardContainer.module.scss";
 import { isMobile } from "react-device-detect";
 
 interface PersonalStatisticsContainerProps {
@@ -22,7 +21,7 @@ export const PersonalStatisticsContainer: FC<
   }
 
   return isMobile ? (
-    <div className={styles.MobilePersonalStatisticCardContainer}>
+    <div className={"py-4 h-full"}>
       <Slider
         infinite={true}
         centerPadding="60px"
@@ -32,7 +31,10 @@ export const PersonalStatisticsContainer: FC<
         slidesToScroll={1}
       >
         {statistics.map((statistic) => (
-          <div className={styles.PersonalStatisticCard} key={statistic.title}>
+          <div
+            className={"w-1/3 flex justify-center items-center h-full"}
+            key={statistic.title}
+          >
             <PersonalStatisticCard
               title={statistic.title}
               content={statistic.content}
@@ -42,9 +44,12 @@ export const PersonalStatisticsContainer: FC<
       </Slider>
     </div>
   ) : (
-    <div className={styles.PersonalStatisticCardContainer}>
+    <div className={"flex justify-around w-full py-4 h-full"}>
       {statistics.map((statistic) => (
-        <div className={styles.PersonalStatisticCard} key={statistic.title}>
+        <div
+          className={"w-1/3 flex justify-center items-center h-full"}
+          key={statistic.title}
+        >
           <PersonalStatisticCard
             title={statistic.title}
             content={statistic.content}

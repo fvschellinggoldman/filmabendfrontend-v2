@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is a frontend application built with React, TypeScript, and MUI (Material-UI) components.
+This project is a frontend application built with React, TypeScript, and ShadCN components.
 
 ## Requirements
 
