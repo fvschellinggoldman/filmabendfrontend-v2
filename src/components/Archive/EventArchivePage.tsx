@@ -18,7 +18,7 @@ export const EventArchivePage: FC<EventArchivePageProps> = ({
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 pb-2">
       {events.map((event, index) => (
         <EventArchiveTile key={event.name} event={event} index={index} />
       ))}

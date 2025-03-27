@@ -14,16 +14,16 @@ export const MovieDetail = () => {
   }
 
   return (
-    <div className={"flex flex-col sm:flex-row px-5"}>
+    <div className={"flex flex-col sm:flex-row px-5 gap-4"}>
       <div
         className={
-          "flex flex-col w-full sm:w-3/4 h-fit items-center justify-center my-4"
+          "flex flex-col w-full sm:w-1/2 h-fit items-center justify-center my-4"
         }
       >
         <img
           src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
           alt="Movie Poster"
-          className="rounded-md"
+          className="rounded-lg max-w-[50vh]"
         ></img>
       </div>
       <MovieDetailData movie={movie}></MovieDetailData>

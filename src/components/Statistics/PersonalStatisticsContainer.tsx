@@ -21,7 +21,7 @@ export const PersonalStatisticsContainer: FC<
   }
 
   return isMobile ? (
-    <div className={"py-4 h-full"}>
+    <div className={"py-4 h-full "}>
       <Slider
         infinite={true}
         centerPadding="60px"

@@ -12,7 +12,7 @@ interface MovieDetailDataProps {
 
 const MovieDetailData: FC<MovieDetailDataProps> = ({ movie }) => {
   return (
-    <div className="w-full pt-4 flex flex-col gap-4 pb-4">
+    <div className="w-full sm:w-1/2 pt-4 flex flex-col gap-4 pb-4">
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-between w-full">
         <h1 className="text-4xl md:text-5xl font-bold bg-clip-text">
           {movie.name}

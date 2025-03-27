@@ -10,7 +10,7 @@ export const PersonalStatisticCard: FC<PersonalStatisticCardProps> = ({
   content,
 }) => {
   return (
-    <Card className="flex grow justify-center">
+    <Card className="flex flex-col grow justify-center mx-2">
       <CardHeader>
         <CardTitle> {title}</CardTitle>
       </CardHeader>

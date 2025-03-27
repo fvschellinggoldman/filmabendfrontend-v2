@@ -15,22 +15,22 @@ const KeyFactsCard = ({ movie }: KeyFactsCardProps) => {
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <KeyMovieData
-          icon={<Clock />}
+          icon={<Clock size={18} />}
           iconLabel="Runtime"
           value={`${movie.runtime} minutes`}
         />
         <KeyMovieData
-          icon={<Calendar />}
+          icon={<Calendar size={18} />}
           iconLabel="Released"
           value={movie.releaseDate.toString()}
         />
         <KeyMovieData
-          icon={<Tag />}
+          icon={<Tag size={18} />}
           iconLabel="Season"
           value={movie.season.toString()}
         />
         <KeyMovieData
-          icon={<Library />}
+          icon={<Library size={18} />}
           iconLabel="Category"
           value={movie.categoryName || ""}
         />

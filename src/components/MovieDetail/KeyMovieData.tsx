@@ -9,7 +9,7 @@ interface KeyMovieDataProps {
 const KeyMovieData = ({ icon, iconLabel, value }: KeyMovieDataProps) => {
   return (
     <div className="flex flex-row justify-between items-center">
-      <div className="flex gap-1">
+      <div className="flex gap-1 items-center">
         {icon}
         {iconLabel}
       </div>

@@ -24,7 +24,7 @@ const MovieArchivePage: FC<MovieArchivePageProps> = ({ index, hidden }) => {
             src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${movie.moviePosterData.filepath}`}
             alt="Movie poster"
             loading="lazy"
-            className="rounded-lg"
+            className="rounded-lg w-full h-full"
           />
           <div
             className={`absolute w-full py-2 bottom-0 flex justify-center align-items text-md bg-black/50 truncate text-white rounded-lg`}
