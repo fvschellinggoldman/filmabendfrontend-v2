@@ -36,7 +36,7 @@ const VotingPage: FC<VotingPageProps> = () => {
           <EventImage event={event} user={user} />
           <SearchInterface event={event} />
           <div className="flex flex-col sm:flex-row p-2">
-            <div className="w-full grid grid-cols-1 sm:grid-cols-4 gap-2 h-fit">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-4 xl:grid-cols-5 gap-2 h-fit">
               {movies.map((movie) => (
                 <VotingElement
                   movie={movie}

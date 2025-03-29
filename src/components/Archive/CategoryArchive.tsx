@@ -38,12 +38,15 @@ const CategoryArchive = () => {
           rowB.getValue(columnId)?.toString()
         );
       },
+      meta: {
+        align: "left",
+      },
     },
   ];
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={categories} />
+      <DataTable columns={columns} data={categories} cellAlignment="left" />
     </div>
   );
 };

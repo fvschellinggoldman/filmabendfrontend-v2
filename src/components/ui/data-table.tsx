@@ -22,11 +22,13 @@ import { useState } from "react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  cellAlignment?: "left" | "center";
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  cellAlignment = "center",
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -49,7 +51,10 @@ export function DataTable<TData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id} className="font-bold text-lg">
+                  <TableHead
+                    key={header.id}
+                    className="font-bold text-lg text-center justify-center items-center"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -70,7 +75,12 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="text-left px-3">
+                  <TableCell
+                    key={cell.id}
+                    className={`${
+                      cellAlignment === "left" ? "text-left" : "text-center"
+                    } px-3`}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -80,7 +90,9 @@ export function DataTable<TData, TValue>({
             <TableRow>
               <TableCell
                 colSpan={columns.length}
-                className="h-24 px-3 text-left"
+                className={`${
+                  cellAlignment === "left" ? "text-left" : "text-center"
+                } px-3 h-24`}
               >
                 No results.
               </TableCell>
