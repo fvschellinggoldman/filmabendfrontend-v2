@@ -17,7 +17,7 @@ export const MovieDetail = () => {
     <div className={"flex flex-col sm:flex-row px-5 gap-4"}>
       <div
         className={
-          "flex flex-col w-full sm:w-1/2 h-fit items-center justify-center my-4"
+          "flex flex-col w-full sm:w-1/2 h-fit items-center justify-center mt-4"
         }
       >
         <img

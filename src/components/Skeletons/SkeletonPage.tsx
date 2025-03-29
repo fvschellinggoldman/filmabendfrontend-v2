@@ -18,7 +18,7 @@ const SkeletonPage = () => {
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 pt-2">
+      <div className="grid grid-cols-1 sm:grid-cols-4 xl:grid-cols-5 gap-2 pt-2">
         <Skeleton className="w-full h-[500px] rounded bg-slate-200" />
         <Skeleton className="w-full h-[500px] rounded bg-slate-200" />
         <Skeleton className="w-full h-[500px] rounded bg-slate-200" />

@@ -78,7 +78,7 @@ const AudienceScoreCard = ({ movie }: AudienceScoreCardProps) => {
                 </div>
               </div>
             </div>
-            <div className="flex justify-center pt-1 pb-0">
+            <div className="flex justify-center py-1">
               <Button
                 variant={"ghost"}
                 onClick={() => setShowRatingBreakdown(!showRatingBreakdown)}
