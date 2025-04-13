@@ -4,8 +4,7 @@ import { getRequest } from "../../api/api";
 import { useDebouncedCallback } from "use-debounce";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Input } from "../ui/input";
-import { Large, Small } from "shadcn-typography";
-import { CirclePlus, LoaderCircle, Search } from "lucide-react";
+import { LoaderCircle, Search } from "lucide-react";
 import SearchResult from "../SearchResult/SearchResult";
 import { Event } from "@/types/event";
 
