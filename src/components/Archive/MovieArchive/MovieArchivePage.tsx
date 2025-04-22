@@ -1,6 +1,6 @@
+import { useFetchWatchedMovies } from "@/api/movies/WatchedMovies";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { useFetchWatchedMovies } from "../../api/movies/WatchedMovies";
 
 interface MovieArchivePageProps {
   index: number;

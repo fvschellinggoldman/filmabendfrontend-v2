@@ -1,11 +1,9 @@
 import { NavbarItem } from "@/types/navbarItem";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from "../ui/navigation-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface DesktopNavbarProps {
   navbarItems: NavbarItem[];
@@ -14,21 +12,51 @@ interface DesktopNavbarProps {
 const DesktopNavbar = ({ navbarItems }: DesktopNavbarProps) => {
   const navigate = useNavigate();
 
-  return (
-    <div className="hidden md:flex">
-      {/* <Button variant={"link"}> FILMABEND </Button> */}
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-      <NavigationMenu>
-        <NavigationMenuList>
-          {navbarItems.map(({ label, url }) => (
-            <NavigationMenuItem key={url}>
-              <Button variant={"link"} onClick={() => navigate(url)}>
-                {label}
-              </Button>
-            </NavigationMenuItem>
-          ))}
-        </NavigationMenuList>
-      </NavigationMenu>
+  const handleNavigationClick = (url: string) => {
+    navigate(url);
+    setDropdownOpen(false);
+  };
+
+  return (
+    <div className="hidden md:flex flex-row">
+      {navbarItems.map(({ label, url, dropDownItems }) => (
+        <>
+          {dropDownItems ? (
+            <Popover open={dropdownOpen} onOpenChange={setDropdownOpen}>
+              <PopoverTrigger asChild>
+                <Button variant="link" className="hover:bg-accent">
+                  {label}
+                  {dropdownOpen ? <ChevronUp /> : <ChevronDown />}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-fit bg-background">
+                <div className="flex flex-col gap-3 bg-background ">
+                  {dropDownItems.map(({ url, label, icon }) => (
+                    <Button
+                      variant="link"
+                      onClick={() => handleNavigationClick(url)}
+                      className="justify-start hover:bg-accent"
+                    >
+                      {icon}
+                      {label}
+                    </Button>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <Button
+              variant="link"
+              className="hover:bg-accent"
+              onClick={() => handleNavigationClick(url)}
+            >
+              {label}
+            </Button>
+          )}
+        </>
+      ))}
     </div>
   );
 };

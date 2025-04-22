@@ -48,3 +48,14 @@ export type UserRatedMovie = {
   userId: string;
   rating: number;
 };
+
+type MovieRatingFilter = {
+  ratingOperator?: string;
+  ratingValue?: string;
+};
+
+export type MovieFilter = {
+  rating?: MovieRatingFilter;
+  season?: string;
+  search?: string;
+};

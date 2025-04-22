@@ -4,10 +4,20 @@ import NeonText from "../Typography/NeonText";
 import DesktopNavbar from "./DesktopNavbar";
 import MobileNavbar from "./MobileNavbar";
 import NavbarAvatar from "./NavbarAvatar";
+import { NavbarItem } from "@/types/navbarItem";
+import { Calendar, FilmIcon, LibraryBig } from "lucide-react";
 
-const pages = [
+const pages: NavbarItem[] = [
   { label: "HOME", url: "/home" },
-  { label: "ARCHIVE", url: "/archive" },
+  {
+    label: "ARCHIVE",
+    url: "/archive",
+    dropDownItems: [
+      { label: "Movie", url: "/archive/movie", icon: <FilmIcon /> },
+      { label: "Event", url: "/archive/event", icon: <Calendar /> },
+      { label: "Category", url: "/archive/category", icon: <LibraryBig /> },
+    ],
+  },
   { label: "STATISTICS", url: "/statistics" },
   { label: "CREATE CATEGORIES", url: "/createCategories" },
 ];
