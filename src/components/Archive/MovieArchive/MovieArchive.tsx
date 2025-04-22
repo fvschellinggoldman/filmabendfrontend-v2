@@ -3,13 +3,14 @@ import { InfiniteLoader } from "../../InfiniteLoader/InfiniteLoader";
 import MovieArchiveFilter from "./MovieArchiveFilter";
 import { MovieFilter } from "@/types/movie";
 import MovieArchivePage from "./MovieArchivePage";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 export const MovieArchive = () => {
   const [pageIndex, setPageIndex] = useState(1);
 
   const [selectedFilter, setSelectedFilter] = useState<MovieFilter>();
-  const [selectedRating, setSelectedRating] = useState("0");
-  const [selectedOperator, setSelectedOperator] = useState(">");
 
   const pages = [];
   for (let i = 0; i < pageIndex; i++) {
@@ -19,18 +20,6 @@ export const MovieArchive = () => {
     );
   }
 
-  const handleOperatorChange = (value: string) => {
-    setSelectedOperator(value);
-    setSelectedFilter(`Rating ${value} ${selectedRating}`);
-  };
-
-  const handleRatingChange = (value: string) => {
-    setSelectedRating(value);
-    setSelectedFilter(`Rating ${selectedOperator} ${value}`);
-  };
-
-  // Could think about making this a HOC -> Takes in the select content component
-
   return (
     <div className="flex flex-col gap-2 w-full px-2 pt-4">
       <div className="flex items-center justify-center w-full">
@@ -39,6 +28,20 @@ export const MovieArchive = () => {
           setSelectedFilter={setSelectedFilter}
         />
       </div>
+
+      <Badge className="bg-slate-200 hover:bg-slate-200 rounded-xl w-fit px-2 flex gap-1 items-center text-black">
+        {/* label */}
+        <p className="font-bold"> Season </p>
+        {/* //value */}
+        {selectedFilter?.season}
+        <Button
+          variant="ghost"
+          className="h-4 w-4 [&_svg]:size-3 px-0 hover:bg-slate-200"
+          onClick={() => {}} //onclick handler => remove
+        >
+          <X />
+        </Button>
+      </Badge>
 
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">{pages}</div>
       <InfiniteLoader oldIndex={pageIndex} handleChange={setPageIndex} />
