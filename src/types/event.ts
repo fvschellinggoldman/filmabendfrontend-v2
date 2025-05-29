@@ -1,5 +1,5 @@
 import { Movie } from "./movie";
-import { User } from "./user";
+import { EventSubmitter } from "./user";
 
 export type Event = {
   name: string;
@@ -7,6 +7,5 @@ export type Event = {
   id: number;
   closed: boolean;
   movies: Movie[];
-  submitterId: string;
-  creator?: User;
+  submitter: EventSubmitter;
 };

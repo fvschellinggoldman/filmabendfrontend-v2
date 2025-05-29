@@ -79,7 +79,7 @@ const EventImage: FC<EventImageProps> = ({ event, user }) => {
             imageUrl={event.imageUrl}
             eventName={event.name}
             eventId={event.id}
-            eventCreator={event.creator}
+            eventSubmitter={event.submitter}
           />
         </div>
         <div className="flex flex-row justify-end gap-2">

@@ -7,20 +7,20 @@ import Realistic from "react-canvas-confetti/dist/presets/realistic";
 import { Small } from "shadcn-typography";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { User } from "@/types/user";
+import { EventSubmitter } from "@/types/user";
 
 interface EventImageDialogProps {
   imageUrl: string;
   eventName: string;
   eventId: number;
-  eventCreator?: User;
+  eventSubmitter?: EventSubmitter;
 }
 
 const EventImageDialog = ({
   imageUrl,
   eventName,
   eventId,
-  eventCreator,
+  eventSubmitter,
 }: EventImageDialogProps) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [eventImageIsNew, setEventImageIsNew] = useState(false);
@@ -50,7 +50,7 @@ const EventImageDialog = ({
 
       <Dialog open={openDialog} onOpenChange={handleCloseDialog}>
         <DialogContent
-          className="max-w-fit rounded"
+          className="w-fit max-h-screen rounded"
           aria-describedby="Event Image"
         >
           {eventImageIsNew && (
@@ -65,15 +65,15 @@ const EventImageDialog = ({
           <div className="flex flex-row gap-2 items-center">
             <Small> Submitted by: </Small>
             <Tooltip>
-              <TooltipTrigger asChild>
+              <TooltipTrigger asChild >
                 <Avatar>
                   <AvatarImage
-                    src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${eventCreator?.profilePicturePath}`}
+                    src={`https://filmabend-bucket.s3.eu-central-1.amazonaws.com/${eventSubmitter?.profilePicturePath}`}
                   />
                   <AvatarFallback>FG</AvatarFallback>
                 </Avatar>
               </TooltipTrigger>
-              <TooltipContent>{eventCreator?.displayName}</TooltipContent>
+              <TooltipContent>{eventSubmitter?.name}</TooltipContent>
             </Tooltip>
           </div>
         </DialogContent>

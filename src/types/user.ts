@@ -7,6 +7,12 @@ export type User = {
     userPreference?: UserPreference
 }
 
+export type EventSubmitter = {
+    name: string;
+    profilePicturePath: string;
+    id: string;
+}
+
 export type UserPreference = {
     showMobileTutorial: boolean,
     showWebTutorial: boolean,
