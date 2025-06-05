@@ -8,7 +8,7 @@ export function useEvent(id?: number) {
     const { data, error, isLoading } = useSWR<Event, Error>(
       api_url, 
       (url) => getRequest(url, null), 
-      { refreshInterval: 1000 });
+      );
   
     return {
       event: data,
