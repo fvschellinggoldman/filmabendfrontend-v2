@@ -1,4 +1,4 @@
-import { Movie } from "./movie"
+import { Movie, MovieSuggestion } from "./movie"
 
 export type Event = { 
     name: string
@@ -7,4 +7,5 @@ export type Event = {
     closed: boolean
     movies: Movie[]
     submitterId: string
+    suggestions: MovieSuggestion[]
 }

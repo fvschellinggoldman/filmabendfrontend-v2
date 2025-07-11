@@ -36,6 +36,7 @@ export type MovieSuggestion = MovieSearchResult & {
   moviePosterPath: string;
   eventId: number;
   id: number;
+  state: "SUGGESTED" | "ACCEPTED" | "DECLINED";
 };
 
 export type MovieImageMetaData = {

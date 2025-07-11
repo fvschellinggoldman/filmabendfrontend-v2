@@ -26,8 +26,13 @@ const SearchInterface: FC<SearchInterfaceProps> = ({ event }) => {
     setShowMovieSuggestionModal(false);
   };
 
+  const eventHasSuggestions = event.suggestions.some(
+    ({ state }) => state === "SUGGESTED"
+  );
+
   const { movieSuggestion, isLoading, mutate } = useFetchMovieEventSuggestions(
-    event.id
+    event.id, 
+    !eventHasSuggestions
   );
 
   const handleSuggestionAction = async (
@@ -57,7 +62,7 @@ const SearchInterface: FC<SearchInterfaceProps> = ({ event }) => {
           <Button
             variant={"textIcon"}
             onClick={handleOpenSuggestionModal}
-            disabled={isLoading || !movieSuggestion}
+            disabled={!eventHasSuggestions || isLoading || !movieSuggestion}
             className="[&_svg]:size-6 h-fit w-14"
           >
             <Bot />
