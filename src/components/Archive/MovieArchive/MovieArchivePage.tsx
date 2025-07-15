@@ -1,14 +1,16 @@
+import { useFetchWatchedMovies } from "@/api/movies/WatchedMovies";
+import { MovieFilter } from "@/types/movie";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { useFetchWatchedMovies } from "../../api/movies/WatchedMovies";
 
 interface MovieArchivePageProps {
   index: number;
   hidden: boolean;
+  selectedFilter?: MovieFilter;
 }
 
-const MovieArchivePage: FC<MovieArchivePageProps> = ({ index, hidden }) => {
-  const { movies } = useFetchWatchedMovies(index);
+const MovieArchivePage: FC<MovieArchivePageProps> = ({ index, hidden, selectedFilter }) => {
+  const { movies } = useFetchWatchedMovies(index, selectedFilter);
   const navigate = useNavigate();
 
   if (movies === undefined || hidden === true) {

@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import { Event } from "../../types/event";
-import MovieSuggestionElement from "../MovieSuggestion/MovieSuggestionDialog";
 import { useFetchMovieEventSuggestions } from "../../api/events/MovieEventSuggestion";
 import { Button } from "../ui/button";
 import { Bot } from "lucide-react";

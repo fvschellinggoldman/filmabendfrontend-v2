@@ -5,11 +5,13 @@ import { AuthProvider } from "./components/AuthProvider/AuthProvider";
 import { Toaster } from "sonner";
 import ApplicationContainer from "./components/ApplicationContainer/ApplicationContainer";
 import { CategoryCreationContainer } from "./components/Categories/CategoryCreationContainer";
-import ArchiveTabs from "./components/Archive/ArchiveTabs";
 import { MovieDetail } from "./components/MovieDetail/MovieDetail";
 import LoginPage from "./components/Login/LoginPage";
 import { PersonalStatistics } from "./components/Statistics/PersonalStatistics";
 import { TooltipProvider } from "./components/ui/tooltip";
+import { MovieArchive } from "./components/Archive/MovieArchive/MovieArchive";
+import { EventArchive } from "./components/Archive/EventArchive";
+import CategoryArchive from "./components/Archive/CategoryArchive";
 
 function App() {
   return (
@@ -28,7 +30,10 @@ function App() {
             <Routes>
               <Route path="/home" element={<ApplicationContainer />}></Route>
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/archive" element={<ArchiveTabs />} />
+              <Route path="/archive" element={<MovieArchive />} />
+              <Route path="/archive/movie" element={<MovieArchive />} />
+              <Route path="/archive/event" element={<EventArchive />} />
+              <Route path="/archive/category" element={<CategoryArchive />} />
               <Route path="/statistics" element={<PersonalStatistics />} />
               <Route path="/movie/:slug" element={<MovieDetail />} />
               <Route

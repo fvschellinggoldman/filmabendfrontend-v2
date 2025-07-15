@@ -1,5 +1,5 @@
 import { NavbarItem } from "@/types/navbarItem";
-import { Menu } from "lucide-react";
+import { ChevronDown, ChevronUp, Menu } from "lucide-react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
@@ -12,17 +12,28 @@ interface MobileNavbarProps {
 
 const MobileNavbar = ({ navbarItems }: MobileNavbarProps) => {
   const [open, setOpen] = useState(false);
+  const [showArchiveDropdown, setShowArchiveDropDown] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { pathname } = location;
 
   const handleClick = (url: string) => {
     setOpen(false);
+    setShowArchiveDropDown(false);
     navigate(url);
   };
 
+  const handleOpenChange = (open: boolean) => {
+    setOpen(open);
+    setShowArchiveDropDown(false);
+  };
+
+  const handleOpenMore = () => {
+    setShowArchiveDropDown(!showArchiveDropdown);
+  };
+
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={open} onOpenChange={handleOpenChange}>
       <SheetTrigger asChild>
         <Button
           variant="ghost"
@@ -37,15 +48,41 @@ const MobileNavbar = ({ navbarItems }: MobileNavbarProps) => {
 
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10">
           <div className="flex flex-col space-y-3">
-            {navbarItems.map(({ label, url }) => (
-              <Button
-                key={url}
-                variant={pathname === url ? "outline" : "link"}
-                onClick={() => handleClick(url)}
-              >
-                {label}
-              </Button>
-            ))}
+            {navbarItems.map(({ label, url, dropDownItems }) => {
+              return (
+                <>
+                  <Button
+                    key={url}
+                    variant={"link"}
+                    onClick={() =>
+                      dropDownItems ? handleOpenMore() : handleClick(url)
+                    }
+                    className={`${
+                      pathname.startsWith(url) ? "font-black" : ""
+                    } justify-start`}
+                  >
+                    {label}
+                    {dropDownItems &&
+                      (showArchiveDropdown ? <ChevronUp /> : <ChevronDown />)}
+                  </Button>
+                  {showArchiveDropdown &&
+                    dropDownItems &&
+                    dropDownItems.map(({ label, url, icon }) => (
+                      <Button
+                        key={url}
+                        variant={"link"}
+                        onClick={() => handleClick(url)}
+                        className={`justify-start ml-4 ${
+                          pathname === url ? "font-black" : ""
+                        }`}
+                      >
+                        {icon}
+                        {label}
+                      </Button>
+                    ))}
+                </>
+              );
+            })}
           </div>
         </ScrollArea>
       </SheetContent>
