@@ -3,9 +3,7 @@ import { InfiniteLoader } from "../../InfiniteLoader/InfiniteLoader";
 import MovieArchiveFilter from "./MovieArchiveFilter";
 import { MovieFilter } from "@/types/movie";
 import MovieArchivePage from "./MovieArchivePage";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import MovieArchiveFilterPill from "./MovieArchiveFilterPill";
 
 export const MovieArchive = () => {
   const [pageIndex, setPageIndex] = useState(1);
@@ -14,9 +12,21 @@ export const MovieArchive = () => {
 
   const pages = [];
   for (let i = 0; i < pageIndex; i++) {
-    pages.push(<MovieArchivePage index={i} key={i} hidden={false} />);
     pages.push(
-      <MovieArchivePage index={i + 1} key={`hidden_${i}`} hidden={true} />
+      <MovieArchivePage
+        index={i}
+        key={i}
+        hidden={false}
+        selectedFilter={selectedFilter}
+      />
+    );
+    pages.push(
+      <MovieArchivePage
+        index={i + 1}
+        key={`hidden_${i}`}
+        hidden={true}
+        selectedFilter={selectedFilter}
+      />
     );
   }
 
@@ -29,19 +39,35 @@ export const MovieArchive = () => {
         />
       </div>
 
-      <Badge className="bg-slate-200 hover:bg-slate-200 rounded-xl w-fit px-2 flex gap-1 items-center text-black">
-        {/* label */}
-        <p className="font-bold"> Season </p>
-        {/* //value */}
-        {selectedFilter?.season}
-        <Button
-          variant="ghost"
-          className="h-4 w-4 [&_svg]:size-3 px-0 hover:bg-slate-200"
-          onClick={() => {}} //onclick handler => remove
-        >
-          <X />
-        </Button>
-      </Badge>
+      <div className="flex flex-row gap-2">
+        {selectedFilter?.name && (
+          <MovieArchiveFilterPill
+            label="Name: "
+            value={selectedFilter.name}
+            handleRemove={() => {
+              setSelectedFilter((prev) => ({ ...prev, name: undefined }));
+            }}
+          />
+        )}
+        {selectedFilter?.rating && (
+          <MovieArchiveFilterPill
+            label="Rating "
+            value={`${selectedFilter.rating.ratingOperator} ${selectedFilter.rating.ratingValue}`}
+            handleRemove={() => {
+              setSelectedFilter((prev) => ({ ...prev, rating: undefined }));
+            }}
+          />
+        )}
+        {selectedFilter?.season && (
+          <MovieArchiveFilterPill
+            label="Season: "
+            value={selectedFilter.season}
+            handleRemove={() => {
+              setSelectedFilter((prev) => ({ ...prev, season: undefined }));
+            }}
+          />
+        )}
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">{pages}</div>
       <InfiniteLoader oldIndex={pageIndex} handleChange={setPageIndex} />

@@ -50,7 +50,7 @@ export type UserRatedMovie = {
   rating: number;
 };
 
-type MovieRatingFilter = {
+export type MovieRatingFilter = {
   ratingOperator?: string;
   ratingValue?: string;
 };
@@ -58,5 +58,5 @@ type MovieRatingFilter = {
 export type MovieFilter = {
   rating?: MovieRatingFilter;
   season?: string;
-  search?: string;
+  name?: string;
 };

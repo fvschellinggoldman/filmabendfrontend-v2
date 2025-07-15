@@ -1,25 +1,17 @@
 import { Filter, LoaderCircle, Search } from "lucide-react";
 import { Input } from "../../ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { Button } from "../../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { Label } from "../../ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../ui/select";
 import { MovieFilter } from "@/types/movie";
 import MovieArchiveSelect from "./MovieArchiveSelect";
 
 const operators = [
-  { label: "greater than (>)", value: ">" },
+  { label: "greater or equal (>=)", value: ">=" },
   { label: "is equal to (=)", value: "=" },
-  { label: "less than (<)", value: "<" },
+  { label: "less or equal (<=)", value: "<=" },
 ];
 
 interface MovieArchiveFilterProps {
@@ -43,23 +35,29 @@ const MovieArchiveFilter = ({
   const handleSearch = async (value: string) => {
     if (!value) return;
     // search using input
-    console.log("test");
+    setSelectedFilter({
+      ...selectedFilter,
+      name: value,
+    });
+    setIsLoading(false);
   };
 
   const debounced = useDebouncedCallback((value) => {
     handleSearch(value);
   }, 1000);
 
-  // TODO: Seperate filter and search bar into seperate components (maybe reuseable)
-
   const handleFilterUpdate = (filterUpdate: Partial<MovieFilter>) => {
     setSelectedFilter({
       ...selectedFilter,
       ...filterUpdate,
     });
-    console.log(selectedFilter);
-    console.log(filterUpdate);
   };
+
+  useEffect(() => {
+    if (!selectedFilter?.name) {
+      setSearch("");
+    }
+  }, [selectedFilter]);
 
   return (
     <div className="flex flex-row gap-2 w-full max-w-4xl">
@@ -84,24 +82,28 @@ const MovieArchiveFilter = ({
                   onValueChange={(value: string) =>
                     handleFilterUpdate({
                       rating: {
-                        ...selectedFilter?.rating,
+                        ratingValue: selectedFilter?.rating?.ratingValue || "5",
                         ratingOperator: value,
                       },
                     })
                   }
-                  placeholder=">"
+                  placeholder={selectedFilter?.rating?.ratingOperator || ">="}
                   itemSelectionArray={operators}
                 />
                 <MovieArchiveSelect
                   onValueChange={(value: string) =>
                     handleFilterUpdate({
-                      rating: { ...selectedFilter?.rating, ratingValue: value },
+                      rating: {
+                        ratingValue: value,
+                        ratingOperator:
+                          selectedFilter?.rating?.ratingOperator || ">=",
+                      },
                     })
                   }
-                  placeholder="Value"
+                  placeholder={selectedFilter?.rating?.ratingValue || "5"}
                   itemSelectionArray={Array.from({ length: 10 }, (_, i) => ({
                     label: String(i + 1),
-                    value: `rating_${String(i + 1)}`,
+                    value: `${String(i + 1)}`,
                   }))}
                 />
               </div>
@@ -113,10 +115,10 @@ const MovieArchiveFilter = ({
                       season: value,
                     })
                   }
-                  placeholder="Value"
-                  itemSelectionArray={Array.from({ length: 10 }, (_, i) => ({
+                  placeholder={selectedFilter?.season || "6"}
+                  itemSelectionArray={Array.from({ length: 6 }, (_, i) => ({
                     label: String(i + 1),
-                    value: `season_${String(i + 1)}`,
+                    value: `${String(i + 1)}`,
                   }))}
                 />
               </div>
